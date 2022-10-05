@@ -22,7 +22,12 @@ void main() async {
   final List<Map<String, dynamic>> networks = networksDataTest();
   const int networkIndex = 1;
 
-  Provider.connect(NetworkModel.fromJson(networks[networkIndex]));
+  setUpAll(() async {
+    bool isConnected = await Provider.connect(
+      NetworkModel.fromJson(networks[networkIndex]),
+    );
+    printDebug("${Provider.networkModel.name} connection status: $isConnected");
+  });
 
   group("Wallet Storage Group:", () {
     test("Test (addNewWallet)", () async {
