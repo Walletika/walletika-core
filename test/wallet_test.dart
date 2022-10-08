@@ -16,9 +16,9 @@ void main() async {
   await walletikaSDKInitialize();
 
   final List<Map<String, dynamic>> wallets = walletsDataTest();
-  final List<Map<String, dynamic>> tokens = tokensETHRopstenDataTest();
+  final List<Map<String, dynamic>> tokens = tokensBSCTestnetDataTest();
   final List<Map<String, dynamic>> transactions =
-      transactionsETHRopstenDataTest();
+      transactionsBSCTestnetDataTest();
   final List<Map<String, dynamic>> networks = networksDataTest();
   const int networkIndex = 1;
 

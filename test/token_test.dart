@@ -13,11 +13,11 @@ void main() async {
   await walletikaSDKInitialize();
 
   final List<Map<String, dynamic>> wallets = walletsDataTest();
-  final List<Map<String, dynamic>> tokens = tokensETHRopstenDataTest();
+  final List<Map<String, dynamic>> tokens = tokensBSCTestnetDataTest();
   final List<Map<String, dynamic>> networks = networksDataTest();
-  const int walletIndex = 0;
-  const int tokenIndex = 2;
-  const int networkIndex = 1;
+  const int walletIndex = 0; // Username1
+  const int tokenIndex = 2; // WTK Token
+  const int networkIndex = 2; // BSC Testnet
 
   late WalletEngine walletEngine;
   late EthPrivateKey? credentials;
@@ -233,7 +233,7 @@ txURL: ${Provider.getExploreUrl(sendTransaction)}
       );
       EtherAmount amount = EtherAmount.fromUnitAndValue(
         EtherAmount.getUintDecimals(tokenModel.decimals),
-        0.01,
+        0.1,
       );
       TxDetailsModel txDetails = await tokenEngine.transfer(
         recipient: recipient,

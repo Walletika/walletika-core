@@ -43,13 +43,6 @@ List<Map<String, dynamic>> networksDataTest() {
       "explorer": "https://etherscan.io",
     },
     {
-      "rpc": "https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-      "name": "Ethereum Ropsten (Testnet)",
-      "chainID": 3,
-      "symbol": "ETH",
-      "explorer": "https://ropsten.etherscan.io",
-    },
-    {
       "rpc": "https://bsc-dataseed1.binance.org",
       "name": "Binance Smart Chain",
       "chainID": 56,
@@ -66,22 +59,22 @@ List<Map<String, dynamic>> networksDataTest() {
   ];
 }
 
-List<Map<String, dynamic>> tokensETHRopstenDataTest() {
+List<Map<String, dynamic>> tokensBSCTestnetDataTest() {
   return [
     {
-      'contract': '0x45Fa0b2Dc4095Be21D7b3d1985f71a52f6a34c07',
+      'contract': '0x8cA86F6eE71Ee4B951279711341F051195B188F8',
       'symbol': 'USDT',
       'decimals': 6,
       'website': '',
     },
     {
-      'contract': '0x6168F02C4745D27aA8fde8e844162583C42f8cBF',
+      'contract': '0xCc0710d99467BE543e5d85f67A31cA674125659C',
       'symbol': 'USDC',
       'decimals': 18,
       'website': '',
     },
     {
-      'contract': '0x11DCF2Af29068d9814A4C890e07A0Ad245738433',
+      'contract': '0xc4d3716B65b9c4c6b69e4E260b37e0e476e28d87',
       'symbol': 'WTK',
       'decimals': 18,
       'website': '',
@@ -89,49 +82,74 @@ List<Map<String, dynamic>> tokensETHRopstenDataTest() {
   ];
 }
 
-List<Map<String, dynamic>> transactionsETHRopstenDataTest() {
+List<Map<String, dynamic>> stakesBSCTestnetDataTest() {
+  return [
+    {
+      'rpc': 'https://data-seed-prebsc-1-s1.binance.org:8545',
+      'contract': '0xbfAa034b854703f31B34eCC1c68C356feeb19268',
+      'stakeToken': {
+        'contract': '0xc4d3716B65b9c4c6b69e4E260b37e0e476e28d87',
+        'symbol': 'WTK',
+        'decimals': 18,
+        'website': '',
+      },
+      'rewardToken': {
+        'contract': '0xc4d3716B65b9c4c6b69e4E260b37e0e476e28d87',
+        'symbol': 'WTK',
+        'decimals': 18,
+        'website': '',
+      },
+      'startBlock': 23545120,
+      'endBlock': 128636320,
+      'startTime': '2022-10-09 09:00:00',
+      'endTime': '2032-10-09 09:00:00',
+    },
+  ];
+}
+
+List<Map<String, dynamic>> transactionsBSCTestnetDataTest() {
   return [
     {
       'txHash':
-          '0x9458917fbda7477757a9a3a547d94f903c8eae031a16afb1f7b7847213133812',
+          '0x0999608c57697ff7a6051bbbc76f8fe7d2c552d1df7e0f0553d91798f722ec3f',
       'function': 'transfer',
-      'fromAddress': '0x81b7E08F65Bdf5648606c89998A9CC8164397647',
-      'toAddress': '0x113f049b5Dc0b8D757beDDBde0c06d2a78344bF1',
-      'amount': '1000000000000000000',
-      'symbol': 'ETH',
+      'fromAddress': '0x5c8CE2AaDA53a7c909e5e1ddf26Da19c32083E6D',
+      'toAddress': '0xD99D1c33F9fC3444f8101754aBC46c52416550D1',
+      'amount': '0',
+      'symbol': 'BNB',
       'dateCreated': '2022-10-04 14:10:16.648948',
       'status': 1,
     },
     {
       'txHash':
-          '0x899be183e4100344a8def59cc9c89ff1a4168c5ec8baf5c150a6dfdf13743a60',
+          '0x4071ff1b7601ab547599fe059bfced11e7e00dff684bd99b146156e69da50b1d',
       'function': 'transfer',
-      'fromAddress': '0x0033C8D927bB2FC7B8D918804B73Ba0e63711002',
-      'toAddress': '0x971947E77F2C6e91a81D05c8aD202a8111d2aB69',
-      'amount': '1000000000000000000',
-      'symbol': 'ETH',
+      'fromAddress': '0x4f5d7100c48EE070caF6C8Ae940C125b23f12Fa4',
+      'toAddress': '0x8f7af74A269aD76cbd3B278A7E7080295819f161',
+      'amount': '0',
+      'symbol': 'BNB',
       'dateCreated': '2022-10-04 14:10:16.648948',
       'status': 1,
     },
     {
       'txHash':
-          '0xecbc7811ffd30542b7d0c5cf8016931517ac2995c795bc3cb46f26175c266df1',
+          '0x49158a8a258d9a6b264746f02e1387de6c4df4694b1f3637d6624de15844ee0b',
       'function': 'transfer',
-      'fromAddress': '0x81b7E08F65Bdf5648606c89998A9CC8164397647',
-      'toAddress': '0x971947E77F2C6e91a81D05c8aD202a8111d2aB69',
+      'fromAddress': '0x3f5ab9e22360921BE88e255C8a22b63B5E76dFf1',
+      'toAddress': '0xD99D1c33F9fC3444f8101754aBC46c52416550D1',
       'amount': '1000000000000000000',
-      'symbol': 'ETH',
+      'symbol': 'BNB',
       'dateCreated': '2022-10-04 14:10:16.648948',
       'status': 1,
     },
     {
       'txHash':
-          '0xb66c55407daec7bf7441dddad477cb0b6026c02108f77daa3edd9c0f00f76a89',
+          '0x4b30e31aeced2c7e3ee65c02fc929bec5790d84d6d94077edce9bcd4d3a84b40',
       'function': 'transfer',
-      'fromAddress': '0x2cA5F489CC1Fd1CEC24747B64E8dE0F4A6A850E1',
-      'toAddress': '0x971947E77F2C6e91a81D05c8aD202a8111d2aB69',
+      'fromAddress': '0x47814C91626B0929c1A786846487eFdbA100846c',
+      'toAddress': '0x9027A1A724ffa5bcB1478E3AC994a706AFa7C2DE',
       'amount': '1000000000000000000',
-      'symbol': 'ETH',
+      'symbol': 'BNB',
       'dateCreated': '2022-10-04 14:10:16.648948',
       'status': 1,
     },

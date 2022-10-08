@@ -14,7 +14,7 @@ void main() async {
 
   final List<Map<String, dynamic>> wallets = walletsDataTest();
   final List<Map<String, dynamic>> networks = networksDataTest();
-  const int networkIndex = 1;
+  const int networkIndex = 2; // BSC Testnet
 
   group("Provider View Group:", () {
     test("Test (connect)", () async {
@@ -116,7 +116,7 @@ txURL: $txURL
 
     test("Test (getTransaction)", () async {
       String txHash =
-          '0xea990434854a23753062bd01ebc87cf3ff452b68d3f0eabeb1fdb545cab537b6';
+          '0x0999608c57697ff7a6051bbbc76f8fe7d2c552d1df7e0f0553d91798f722ec3f';
 
       TransactionInformation? tx = await Provider.getTransaction(txHash);
 
@@ -133,7 +133,7 @@ value: ${tx.value}
 
     test("Test (getTransactionReceipt)", () async {
       String txHash =
-          '0xea990434854a23753062bd01ebc87cf3ff452b68d3f0eabeb1fdb545cab537b6';
+          '0x0999608c57697ff7a6051bbbc76f8fe7d2c552d1df7e0f0553d91798f722ec3f';
 
       TransactionReceipt? tx = await Provider.getTransactionReceipt(txHash);
 
@@ -234,7 +234,7 @@ txURL: ${Provider.getExploreUrl(sendTransaction)}
         expect(tx.to, equals(recipient));
         expect(tx.value, equals(amount));
         expect(tx.data, isNull);
-        expect(tx.nonce, greaterThan(0));
+        expect(tx.nonce, greaterThanOrEqualTo(0));
         expect(tx.maxGas, greaterThanOrEqualTo(21000));
         if (tx.isEIP1559) {
           expect(tx.maxPriorityFeePerGas!.getInWei, greaterThan(BigInt.zero));
