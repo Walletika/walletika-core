@@ -4,39 +4,32 @@ import 'package:web3dart/web3dart.dart';
 import '../core/core.dart';
 import '../models.dart';
 
-Future<List<StakeModel>> getAllStakes() async {
-  List<StakeModel> result = [];
+Stream<StakeModel> getAllStakes() async* {
+  await for (final RowModel row in stakeDB.select()) {
+    yield StakeModel.fromJson(row.items);
+  }
+}
 
-  await for (RowModel row in stakeDB.select()) {
-    StakeModel stake = StakeModel.fromJson(row.items);
-    result.add(stake);
+Future<bool> importStakeContracts(String apiURL) async {
+  bool result = false;
+
+  final List<dynamic> dataFetched = await fetcher(apiURL);
+
+  if (dataFetched.isNotEmpty) {
+    stakeDB.clear();
+
+    for (final Map<String, dynamic> data in dataFetched) {
+      await stakeDB.insert(
+        rowIndex: stakeDB.countRow(),
+        items: data,
+      );
+    }
+
+    await stakeDB.dump();
+    result = true;
   }
 
   return result;
-}
-
-Future<bool> importStakeContracts(String apiURL) {
-  return Future(() async {
-    bool result = false;
-
-    List<dynamic> dataFetched = await fetcher(apiURL);
-
-    if (dataFetched.isNotEmpty) {
-      stakeDB.clearSync();
-
-      for (Map<String, dynamic> data in dataFetched) {
-        stakeDB.insertSync(
-          rowIndex: stakeDB.countRowSync(),
-          items: data,
-        );
-      }
-
-      stakeDB.dumpSync();
-      result = true;
-    }
-
-    return result;
-  });
 }
 
 class StakeEngine extends ContractEngine {
@@ -349,8 +342,9 @@ class StakeEngine extends ContractEngine {
     );
   }
 
-  Future<TxDetailsModel> transferOwnership(
-      {required EthereumAddress newOwner}) {
+  Future<TxDetailsModel> transferOwnership({
+    required EthereumAddress newOwner,
+  }) {
     return buildTransaction(
       function: 'transferOwnership',
       params: [newOwner],
