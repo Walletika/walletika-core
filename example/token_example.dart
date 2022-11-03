@@ -10,11 +10,11 @@ void main() async {
   await walletikaSDKInitialize();
 
   NetworkModel networkModel = NetworkModel(
-    rpc: 'https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-    name: 'Ethereum Ropsten (Testnet)',
-    chainID: 3,
-    symbol: 'ETH',
-    explorer: 'https://ropsten.etherscan.io',
+    rpc: 'https://data-seed-prebsc-1-s1.binance.org:8545',
+    name: 'Binance Smart Chain (Testnet)',
+    chainID: 97,
+    symbol: 'BNB',
+    explorer: 'https://testnet.bscscan.com',
   );
 
   // Connect with RPC
@@ -22,7 +22,7 @@ void main() async {
 
   TokenModel tokenModel = TokenModel(
     contract: EthereumAddress.fromHex(
-      '0x45Fa0b2Dc4095Be21D7b3d1985f71a52f6a34c07',
+      '0x8cA86F6eE71Ee4B951279711341F051195B188F8',
     ),
     symbol: 'USDT',
     decimals: 6,

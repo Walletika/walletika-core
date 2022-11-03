@@ -30,7 +30,9 @@ void main() async {
   );
 
   // Get all wallets
-  List<WalletModel> allWallets = await getAllWallets();
+  List<WalletModel> allWallets = [
+    await for (WalletModel wallet in getAllWallets()) wallet
+  ];
 
   // Remove a wallet
   bool isRemoved = await removeWallet(allWallets[0]);
@@ -39,16 +41,18 @@ void main() async {
   WalletEngine walletEngine = WalletEngine(allWallets[0]);
 
   // Login
-  walletEngine.login(password: password, otpCode: otpCode);
+  await walletEngine.login(password: password, otpCode: otpCode);
 
   // Get privateKey (Must be login)
-  walletEngine.privateKey(otpCode);
+  await walletEngine.privateKey(otpCode);
 
   // Logout
   walletEngine.logout();
 
   // Get all tokens
-  List<TokenModel> allTokens = await walletEngine.tokens();
+  List<TokenModel> allTokens = [
+    await for (TokenModel item in walletEngine.tokens()) item
+  ];
 
   // Add token
   await walletEngine.addToken(allTokens[0]);
@@ -57,7 +61,9 @@ void main() async {
   await walletEngine.removeToken(allTokens[0]);
 
   // Get all transactions
-  List<TransactionModel> allTransactions = await walletEngine.transactions();
+  List<TransactionModel> allTransactions = [
+    await for (TransactionModel item in walletEngine.transactions()) item
+  ];
 
   // Add transaction
   await walletEngine.addTransaction(allTransactions[0]);

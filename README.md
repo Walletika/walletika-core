@@ -51,10 +51,8 @@ EtherAmount maxAmount = txGasDetails.maxAmount;
 
 // Send transaction
 String sendTransaction = await Provider.sendTransaction(
-credentials: EthPrivateKey.fromHex(
-    '0xe394b45f8ab120fbf238e356de30c14fdfa6ddf87b2c19253e161a850bfd03f7',
-),
-tx: tx,
+    credentials: EthPrivateKey.fromHex('0xe394b45f...850bfd03f7'),
+    tx: tx,
 );
 ```
 
@@ -70,7 +68,7 @@ String otpKey_ = otpKeyGenerator(
 ### Use `walletGenerator` function to get wallet details
 ```dart
 // Generate a wallet
-WalletInfoModel wallet = walletGenerator(
+WalletInfoModel wallet = await walletGenerator(
     username: 'username',
     password: 'password',
     recoveryPassword: 'recoveryPassword'.codeUnits,
@@ -88,10 +86,10 @@ Uint8List recoveryPasswordBytes = wallet.recoveryPassword!;
 WalletEngine walletEngine = WalletEngine(walletModel);
 
 // Login
-walletEngine.login(password: password, otpCode: otpCode);
+await walletEngine.login(password: password, otpCode: otpCode);
 
 // Get privateKey (Must be login)
-walletEngine.privateKey(otpCode);
+await walletEngine.privateKey(otpCode);
 
 // Get all tokens
 List<TokenModel> allTokens = await walletEngine.tokens();

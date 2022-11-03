@@ -14,7 +14,9 @@ void main() async {
   bool isAdded = await addNewAddressBook(username: username, address: address);
 
   // Get all addresses book
-  List<AddressBookModel> allAddressesBook = await getAllAddressesBook();
+  List<AddressBookModel> allAddressesBook = [
+    await for (AddressBookModel item in getAllAddressesBook()) item
+  ];
 
   // Remove a address book
   bool isRemoved = await removeAddressBook(allAddressesBook[0]);

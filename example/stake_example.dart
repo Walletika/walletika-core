@@ -10,11 +10,11 @@ void main() async {
   await walletikaSDKInitialize();
 
   NetworkModel networkModel = NetworkModel(
-    rpc: 'https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-    name: 'Ethereum Ropsten (Testnet)',
-    chainID: 3,
-    symbol: 'ETH',
-    explorer: 'https://ropsten.etherscan.io',
+    rpc: 'https://data-seed-prebsc-1-s1.binance.org:8545',
+    name: 'Binance Smart Chain (Testnet)',
+    chainID: 97,
+    symbol: 'BNB',
+    explorer: 'https://testnet.bscscan.com',
   );
 
   // Connect with RPC
@@ -22,22 +22,22 @@ void main() async {
 
   TokenModel tokenModel = TokenModel(
     contract: EthereumAddress.fromHex(
-      '0x45Fa0b2Dc4095Be21D7b3d1985f71a52f6a34c07',
+      '0xc4d3716B65b9c4c6b69e4E260b37e0e476e28d87',
     ),
-    symbol: 'USDT',
-    decimals: 6,
+    symbol: 'WTK',
+    decimals: 18,
     website: '',
   );
 
   StakeModel stakeModel = StakeModel(
-    rpc: 'https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+    rpc: 'https://data-seed-prebsc-1-s1.binance.org:8545',
     contract: EthereumAddress.fromHex(
-      '0x2071D97f7795742eAcb03783F349163E987455a7',
+      '0xbfAa034b854703f31B34eCC1c68C356feeb19268',
     ),
     stakeToken: tokenModel,
     rewardToken: tokenModel,
-    startBlock: 0,
-    endBlock: 0,
+    startBlock: 23545120,
+    endBlock: 128636320,
     startTime: DateTime.parse('1970-01-01 02:00:00.000'),
     endTime: DateTime.parse('1970-01-01 02:00:00.000'),
   );
