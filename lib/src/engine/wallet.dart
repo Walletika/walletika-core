@@ -10,16 +10,18 @@ import '../core/core.dart';
 import '../models.dart';
 import 'provider.dart';
 
-Future<List<WalletModel>> getAllWallets() async {
-  List<WalletModel> result = [];
-
-  await for (RowModel row in walletsDB.select()) {
-    WalletModel wallet = WalletModel.fromJson(row.items);
-    int index = wallet.isFavorite ? 0 : result.length;
-    result.insert(index, wallet);
+Stream<WalletModel> getAllWallets() async* {
+  await for (final RowModel row in walletsDB.select(
+    items: {"isFavorite": true},
+  )) {
+    yield WalletModel.fromJson(row.items);
   }
 
-  return result;
+  await for (final RowModel row in walletsDB.select(
+    items: {"isFavorite": false},
+  )) {
+    yield WalletModel.fromJson(row.items);
+  }
 }
 
 Future<bool> addNewWallet({
@@ -27,40 +29,38 @@ Future<bool> addNewWallet({
   required String password,
   required String recoveryPassword,
   required String otpCode,
-}) {
-  return Future(() {
-    WalletInfoModel wallet = walletGenerator(
-      username: username,
-      password: password,
-      recoveryPassword: recoveryPassword.codeUnits,
-      otpCode: otpCode,
+}) async {
+  final WalletInfoModel wallet = await walletGenerator(
+    username: username,
+    password: password,
+    recoveryPassword: recoveryPassword.codeUnits,
+    otpCode: otpCode,
+  );
+
+  if (wallet.isValid) {
+    await walletsDB.insert(
+      rowIndex: walletsDB.countRow(),
+      items: {
+        "username": username,
+        "address": wallet.address!.hexEip55,
+        "recoveryPassword": jsonEncode(wallet.recoveryPassword!),
+        "dateCreated": DateTime.now().toString(),
+        "isFavorite": false,
+      },
     );
 
-    if (wallet.isValid) {
-      walletsDB.insertSync(
-        rowIndex: walletsDB.countRowSync(),
-        items: {
-          "username": username,
-          "address": wallet.address!.hexEip55,
-          "recoveryPassword": jsonEncode(wallet.recoveryPassword!),
-          "dateCreated": DateTime.now().toString(),
-          "isFavorite": false,
-        },
-      );
+    await walletsDB.dump();
+  }
 
-      walletsDB.dumpSync();
-    }
-
-    return wallet.isValid;
-  });
+  return wallet.isValid;
 }
 
 Future<bool> removeWallet(WalletModel wallet) async {
   bool result = false;
 
-  await for (RowModel row in walletsDB.select(items: wallet.toJson())) {
-    walletsDB.removeRowSync(row.index);
-    walletsDB.dumpSync();
+  await for (final RowModel row in walletsDB.select(items: wallet.toJson())) {
+    walletsDB.removeRow(row.index);
+    await walletsDB.dump();
     result = true;
     break;
   }
@@ -73,15 +73,13 @@ Future<String> exportpWallets({
   List<int>? walletIndexes,
   String? password,
   void Function(int value)? progressCallback,
-}) {
-  return Future(() {
-    return walletsDB.exportBackupSync(
-      outputDir: outputDir,
-      rowIndexes: walletIndexes,
-      key: password,
-      progressCallback: progressCallback,
-    );
-  });
+}) async {
+  return await walletsDB.exportBackup(
+    outputDir: outputDir,
+    rowIndexes: walletIndexes,
+    key: password,
+    progressCallback: progressCallback,
+  );
 }
 
 Future<void> importWallets({
@@ -89,16 +87,15 @@ Future<void> importWallets({
   List<int>? walletIndexes,
   String? password,
   void Function(int value)? progressCallback,
-}) {
-  return Future(() {
-    walletsDB.importBackupSync(
-      path: path,
-      rowIndexes: walletIndexes,
-      key: password,
-      progressCallback: progressCallback,
-    );
-    walletsDB.dumpSync();
-  });
+}) async {
+  await walletsDB.importBackup(
+    path: path,
+    rowIndexes: walletIndexes,
+    key: password,
+    progressCallback: progressCallback,
+  );
+
+  await walletsDB.dump();
 }
 
 class WalletEngine {
@@ -121,72 +118,64 @@ class WalletEngine {
 
   bool isLogged() => _isLogged;
 
-  Future<EthPrivateKey?> credentials(String otpCode) {
-    return Future(() {
-      EthPrivateKey? result;
+  Future<EthPrivateKey?> credentials(String otpCode) async {
+    EthPrivateKey? result;
 
-      if (_isLogged) {
-        WalletInfoModel walletInfo = walletGenerator(
-          username: wallet.username,
-          password: _password!,
-          recoveryPassword: wallet.recoveryPassword,
-          otpCode: otpCode,
-        );
+    if (_isLogged) {
+      final WalletInfoModel walletInfo = await walletGenerator(
+        username: wallet.username,
+        password: _password!,
+        recoveryPassword: wallet.recoveryPassword,
+        otpCode: otpCode,
+      );
 
-        if (walletInfo.isValid) {
-          result = walletInfo.credentials;
-        }
+      if (walletInfo.isValid) {
+        result = walletInfo.credentials;
       }
+    }
 
-      return result;
-    });
+    return result;
   }
 
-  Future<String?> privateKey(String otpCode) {
-    return Future(() async {
-      EthPrivateKey? credential = await credentials(otpCode);
+  Future<String?> privateKey(String otpCode) async {
+    final EthPrivateKey? credential = await credentials(otpCode);
 
-      return credential != null
-          ? bytesToHex(
-              credential.privateKey,
-              include0x: true,
-            )
-          : null;
-    });
+    return credential != null
+        ? bytesToHex(
+            credential.privateKey,
+            include0x: true,
+          )
+        : null;
   }
 
-  Future<void> setFavorite(bool status) {
-    return Future(() async {
-      await for (RowModel row in walletsDB.select(items: wallet.toJson())) {
-        wallet.isFavorite = status;
-        walletsDB.editSync(rowIndex: row.index, items: {'isFavorite': status});
-        walletsDB.dumpSync();
-        break;
-      }
-    });
+  Future<void> setFavorite(bool status) async {
+    await for (final RowModel row in walletsDB.select(items: wallet.toJson())) {
+      wallet.isFavorite = status;
+      await walletsDB.edit(rowIndex: row.index, items: {'isFavorite': status});
+      await walletsDB.dump();
+      break;
+    }
   }
 
   Future<bool> login({
     required String password,
     required String otpCode,
-  }) {
-    return Future(() async {
-      if (!_isLogged) {
-        WalletInfoModel walletInfo = walletGenerator(
-          username: wallet.username,
-          password: password,
-          recoveryPassword: wallet.recoveryPassword,
-          otpCode: otpCode,
-        );
+  }) async {
+    if (!_isLogged) {
+      final WalletInfoModel walletInfo = await walletGenerator(
+        username: wallet.username,
+        password: password,
+        recoveryPassword: wallet.recoveryPassword,
+        otpCode: otpCode,
+      );
 
-        if (walletInfo.isValid) {
-          _password = password;
-          _isLogged = true;
-        }
+      if (walletInfo.isValid) {
+        _password = password;
+        _isLogged = true;
       }
+    }
 
-      return _isLogged;
-    });
+    return _isLogged;
   }
 
   void logout() {
@@ -194,51 +183,42 @@ class WalletEngine {
     _isLogged = false;
   }
 
-  Future<List<TokenModel>> tokens() {
-    return Future(() async {
-      List<TokenModel> result = [];
-
-      await for (RowModel row in tokensDB.select(
-        items: {
-          "address": wallet.address.hexEip55,
-          "rpc": Provider.networkModel.rpc,
-        },
-      )) {
-        TokenModel token = TokenModel.fromJson(row.items);
-        result.add(token);
-      }
-
-      return result;
-    });
+  Stream<TokenModel> tokens() async* {
+    await for (final RowModel row in tokensDB.select(
+      items: {
+        "address": wallet.address.hexEip55,
+        "rpc": Provider.networkModel.rpc,
+      },
+    )) {
+      yield TokenModel.fromJson(row.items);
+    }
   }
 
-  Future<void> addToken(TokenModel token) {
-    return Future(() {
-      tokensDB.insertSync(
-        rowIndex: tokensDB.countRowSync(),
-        items: {
-          "address": wallet.address.hexEip55,
-          "rpc": Provider.networkModel.rpc,
-          ...token.toJson(),
-        },
-      );
+  Future<void> addToken(TokenModel token) async {
+    await tokensDB.insert(
+      rowIndex: tokensDB.countRow(),
+      items: {
+        "address": wallet.address.hexEip55,
+        "rpc": Provider.networkModel.rpc,
+        ...token.toJson(),
+      },
+    );
 
-      tokensDB.dumpSync();
-    });
+    await tokensDB.dump();
   }
 
   Future<bool> removeToken(TokenModel token) async {
     bool result = false;
 
-    await for (RowModel row in tokensDB.select(
+    await for (final RowModel row in tokensDB.select(
       items: {
         "address": wallet.address.hexEip55,
         "rpc": Provider.networkModel.rpc,
         ...token.toJson(),
       },
     )) {
-      tokensDB.removeRowSync(row.index);
-      tokensDB.dumpSync();
+      tokensDB.removeRow(row.index);
+      await tokensDB.dump();
       result = true;
       break;
     }
@@ -246,50 +226,41 @@ class WalletEngine {
     return result;
   }
 
-  Future<List<TransactionModel>> transactions() {
-    return Future(() async {
-      List<TransactionModel> result = [];
-
-      await for (RowModel row in transactionsDB.select(
-        items: {
-          "address": wallet.address.hexEip55,
-          "rpc": Provider.networkModel.rpc,
-        },
-      )) {
-        TransactionModel transaction = TransactionModel.fromJson(row.items);
-        result.add(transaction);
-      }
-
-      return result;
-    });
+  Stream<TransactionModel> transactions() async* {
+    await for (final RowModel row in transactionsDB.select(
+      items: {
+        "address": wallet.address.hexEip55,
+        "rpc": Provider.networkModel.rpc,
+      },
+    )) {
+      yield TransactionModel.fromJson(row.items);
+    }
   }
 
-  Future<void> addTransaction(TransactionModel transaction) {
-    return Future(() {
-      transactionsDB.insertSync(
-        items: {
-          "address": wallet.address.hexEip55,
-          "rpc": Provider.networkModel.rpc,
-          ...transaction.toJson(),
-        },
-      );
+  Future<void> addTransaction(TransactionModel transaction) async {
+    await transactionsDB.insert(
+      items: {
+        "address": wallet.address.hexEip55,
+        "rpc": Provider.networkModel.rpc,
+        ...transaction.toJson(),
+      },
+    );
 
-      transactionsDB.dumpSync();
-    });
+    await transactionsDB.dump();
   }
 
   Future<bool> removeTransaction(TransactionModel transaction) async {
     bool result = false;
 
-    await for (RowModel row in transactionsDB.select(
+    await for (final RowModel row in transactionsDB.select(
       items: {
         "address": wallet.address.hexEip55,
         "rpc": Provider.networkModel.rpc,
         ...transaction.toJson(),
       },
     )) {
-      transactionsDB.removeRowSync(row.index);
-      transactionsDB.dumpSync();
+      transactionsDB.removeRow(row.index);
+      await transactionsDB.dump();
       result = true;
       break;
     }
