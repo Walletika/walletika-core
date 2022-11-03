@@ -172,7 +172,7 @@ to: ${tx.to}
         EtherAmount maxAmount;
 
         // Wallet engine
-        WalletModel walletModel = getWalletModel(
+        WalletModel walletModel = await getWalletModel(
           username,
           password,
           recoveryPassword,
@@ -187,7 +187,7 @@ to: ${tx.to}
 
         // Get credentials
         String otpCode = getOTPCode(username, password, recoveryPassword);
-        walletEngine.login(password: password, otpCode: otpCode);
+        await walletEngine.login(password: password, otpCode: otpCode);
         EthPrivateKey? credentials = await walletEngine.credentials(otpCode);
 
         // Build transaction

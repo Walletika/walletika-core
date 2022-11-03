@@ -37,7 +37,9 @@ isAdded: $isAdded
     });
 
     test("Test (getAllAddressesBook)", () async {
-      List<AddressBookModel> allAddressesBook = await getAllAddressesBook();
+      List<AddressBookModel> allAddressesBook = [
+        await for (AddressBookModel item in getAllAddressesBook()) item
+      ];
 
       for (int index = 0; index < allAddressesBook.length; index++) {
         AddressBookModel addressBookModel = allAddressesBook[index];
@@ -57,7 +59,9 @@ username: $username
     });
 
     test("Test (removeAddressBook)", () async {
-      List<AddressBookModel> allAddressesBook = await getAllAddressesBook();
+      List<AddressBookModel> allAddressesBook = [
+        await for (AddressBookModel item in getAllAddressesBook()) item
+      ];
 
       for (int index = 0; index < allAddressesBook.length; index++) {
         AddressBookModel addressBookModel = allAddressesBook[index];

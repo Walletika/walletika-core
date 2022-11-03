@@ -60,7 +60,9 @@ isAdded: $isAdded
     });
 
     test("Test (getAllWallets)", () async {
-      List<WalletModel> allWallets = await getAllWallets();
+      List<WalletModel> allWallets = [
+        await for (WalletModel item in getAllWallets()) item
+      ];
 
       for (int index = 0; index < allWallets.length; index++) {
         WalletModel walletModel = allWallets[index];
@@ -87,7 +89,9 @@ isFavorite: $isFavorite
     });
 
     test("Test (removeWallet)", () async {
-      List<WalletModel> allWallets = await getAllWallets();
+      List<WalletModel> allWallets = [
+        await for (WalletModel item in getAllWallets()) item
+      ];
 
       // Keep wallet 0 for testing with walletEngine
       for (int index = 1; index < allWallets.length; index++) {
@@ -129,7 +133,9 @@ isExists: $isExists
     late WalletEngine walletEngine;
 
     setUpAll(() async {
-      List<WalletModel> allWallets = await getAllWallets();
+      List<WalletModel> allWallets = [
+        await for (WalletModel item in getAllWallets()) item
+      ];
       walletModel = allWallets[walletIndex];
       walletEngine = WalletEngine(walletModel);
     });
@@ -147,8 +153,12 @@ isExists: $isExists
       DateTime dateCreated = walletEngine.dateCreated();
       bool isFavorite = walletEngine.isFavorite();
       bool isLogged = walletEngine.isLogged();
-      List<TokenModel> tokens = await walletEngine.tokens();
-      List<TransactionModel> transactions = await walletEngine.transactions();
+      List<TokenModel> tokens = [
+        await for (TokenModel item in walletEngine.tokens()) item
+      ];
+      List<TransactionModel> transactions = [
+        await for (TransactionModel item in walletEngine.transactions()) item
+      ];
 
       printDebug("""
 address: $address
@@ -304,11 +314,13 @@ decimals: $decimals
         """);
       }
 
-      expect(tokensDB.countRowSync(), tokens.length);
+      expect(tokensDB.countRow(), tokens.length);
     });
 
     test("Test (tokens)", () async {
-      List<TokenModel> allTokens = await walletEngine.tokens();
+      List<TokenModel> allTokens = [
+        await for (TokenModel item in walletEngine.tokens()) item
+      ];
 
       for (int index = 0; index < allTokens.length; index++) {
         TokenModel tokenModel = allTokens[index];
@@ -334,7 +346,9 @@ website: $website
     });
 
     test("Test (removeToken)", () async {
-      List<TokenModel> allTokens = await walletEngine.tokens();
+      List<TokenModel> allTokens = [
+        await for (TokenModel item in walletEngine.tokens()) item
+      ];
 
       for (int index = 0; index < allTokens.length; index++) {
         TokenModel tokenModel = allTokens[index];
@@ -374,12 +388,13 @@ txHash: $txHash
         """);
       }
 
-      expect(transactionsDB.countRowSync(), transactions.length);
+      expect(transactionsDB.countRow(), transactions.length);
     });
 
     test("Test (transactions)", () async {
-      List<TransactionModel> allTransactions =
-          await walletEngine.transactions();
+      List<TransactionModel> allTransactions = [
+        await for (TransactionModel item in walletEngine.transactions()) item
+      ];
       List<Map<String, dynamic>> olderTransactions =
           transactions.reversed.toList();
 
@@ -419,8 +434,9 @@ status: $status
     });
 
     test("Test (removeTransaction)", () async {
-      List<TransactionModel> allTransactions =
-          await walletEngine.transactions();
+      List<TransactionModel> allTransactions = [
+        await for (TransactionModel item in walletEngine.transactions()) item
+      ];
 
       for (int index = 0; index < allTransactions.length; index++) {
         TransactionModel transactionModel = allTransactions[index];

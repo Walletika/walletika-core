@@ -19,14 +19,14 @@ String getOTPCode(
   );
 }
 
-WalletModel getWalletModel(
+Future<WalletModel> getWalletModel(
   String username,
   String password,
   String recoveryPassword,
-) {
+) async {
   String otpCode = getOTPCode(username, password, recoveryPassword);
 
-  WalletInfoModel walletInfo = walletGenerator(
+  WalletInfoModel walletInfo = await walletGenerator(
     username: username,
     password: password,
     recoveryPassword: recoveryPassword.codeUnits,

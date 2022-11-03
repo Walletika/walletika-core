@@ -42,9 +42,9 @@ void main() async {
     String otpCode = getOTPCode(username, password, recoveryPassword);
 
     walletEngine = WalletEngine(
-      getWalletModel(username, password, recoveryPassword),
+      await getWalletModel(username, password, recoveryPassword),
     );
-    walletEngine.login(password: password, otpCode: otpCode);
+    await walletEngine.login(password: password, otpCode: otpCode);
     credentials = await walletEngine.credentials(otpCode);
 
     tokenModel = TokenModel.fromJson(tokens[tokenIndex]);
