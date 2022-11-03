@@ -173,13 +173,12 @@ class WalletikaTokenEngine extends TokenEngine {
     required List<EthereumAddress> addresses,
     required List<EtherAmount> amounts,
   }) {
-    return Future(() async {
-      List<BigInt> amounts_ = amounts.map((e) => e.getInWei).toList();
-      return await buildTransaction(
-        function: 'transferMultiple',
-        params: [addresses, amounts_],
-      );
-    });
+    final List<BigInt> amounts_ = amounts.map((e) => e.getInWei).toList();
+
+    return buildTransaction(
+      function: 'transferMultiple',
+      params: [addresses, amounts_],
+    );
   }
 
   Future<TxDetailsModel> burn({required EtherAmount amount}) {
@@ -222,8 +221,9 @@ class WalletikaTokenEngine extends TokenEngine {
     );
   }
 
-  Future<TxDetailsModel> transferOwnership(
-      {required EthereumAddress newOwner}) {
+  Future<TxDetailsModel> transferOwnership({
+    required EthereumAddress newOwner,
+  }) {
     return buildTransaction(
       function: 'transferOwnership',
       params: [newOwner],
