@@ -34,11 +34,11 @@ void main() async {
     Map<String, dynamic> wallet = wallets[walletIndex];
     String username = wallet['username'];
     String password = wallet['password'];
-    String recoveryPassword = wallet['recoveryPass'];
-    String otpCode = getOTPCode(username, password, recoveryPassword);
+    String securityPassword = wallet['securityPass'];
+    String otpCode = getOTPCode(username, password, securityPassword);
 
     walletEngine = WalletEngine(
-      await getWalletModel(username, password, recoveryPassword),
+      await getWalletModel(username, password, securityPassword),
     );
     await walletEngine.login(password: password, otpCode: otpCode);
     credentials = await walletEngine.credentials(otpCode);

@@ -159,7 +159,7 @@ to: ${tx.to}
         // Wallet data
         String username = wallet['username'];
         String password = wallet['password'];
-        String recoveryPassword = wallet['recoveryPass'];
+        String securityPassword = wallet['securityPass'];
 
         // Transaction details
         Transaction tx;
@@ -175,7 +175,7 @@ to: ${tx.to}
         WalletModel walletModel = await getWalletModel(
           username,
           password,
-          recoveryPassword,
+          securityPassword,
         );
         WalletEngine walletEngine = WalletEngine(walletModel);
 
@@ -186,7 +186,7 @@ to: ${tx.to}
         if (balance.getInWei <= amount.getInWei) continue;
 
         // Get credentials
-        String otpCode = getOTPCode(username, password, recoveryPassword);
+        String otpCode = getOTPCode(username, password, securityPassword);
         await walletEngine.login(password: password, otpCode: otpCode);
         EthPrivateKey? credentials = await walletEngine.credentials(otpCode);
 

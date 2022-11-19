@@ -7,22 +7,22 @@ class WalletModel {
   WalletModel({
     required this.username,
     required this.address,
-    required this.recoveryPassword,
+    required this.securityPassword,
     required this.dateCreated,
     required this.isFavorite,
   });
 
   final String username;
   final EthereumAddress address;
-  final Uint8List recoveryPassword;
+  final Uint8List securityPassword;
   final DateTime dateCreated;
   bool isFavorite;
 
   factory WalletModel.fromJson(Map<String, dynamic> json) => WalletModel(
         username: json["username"],
         address: EthereumAddress.fromHex(json["address"]),
-        recoveryPassword: Uint8List.fromList(
-          List.from(jsonDecode(json["recoveryPassword"])),
+        securityPassword: Uint8List.fromList(
+          List.from(jsonDecode(json["securityPassword"])),
         ),
         dateCreated: DateTime.parse(json["dateCreated"]),
         isFavorite: json["isFavorite"],
@@ -31,7 +31,7 @@ class WalletModel {
   Map<String, dynamic> toJson() => {
         "username": username,
         "address": address.hexEip55,
-        "recoveryPassword": jsonEncode(recoveryPassword),
+        "securityPassword": jsonEncode(securityPassword),
         "dateCreated": dateCreated.toString(),
         "isFavorite": isFavorite,
       };

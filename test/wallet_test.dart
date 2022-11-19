@@ -35,14 +35,14 @@ void main() async {
         String address = wallet['address'];
         String username = wallet['username'];
         String password = wallet['password'];
-        String recoveryPassword = wallet['recoveryPass'];
+        String securityPassword = wallet['securityPass'];
 
-        String otpCode = getOTPCode(username, password, recoveryPassword);
+        String otpCode = getOTPCode(username, password, securityPassword);
 
         bool isAdded = await addNewWallet(
           username: username,
           password: password,
-          recoveryPassword: recoveryPassword,
+          securityPassword: securityPassword,
           otpCode: otpCode,
         );
 
@@ -50,7 +50,7 @@ void main() async {
 address: $address
 username: $username
 password: $password
-recoveryPassword: $recoveryPassword
+securityPassword: $securityPassword
 otpCode: $otpCode
 isAdded: $isAdded
         """);
@@ -68,14 +68,14 @@ isAdded: $isAdded
         WalletModel walletModel = allWallets[index];
         String address = walletModel.address.hexEip55;
         String username = walletModel.username;
-        Uint8List recoveryPassword = walletModel.recoveryPassword;
+        Uint8List securityPassword = walletModel.securityPassword;
         DateTime dateCreated = walletModel.dateCreated;
         bool isFavorite = walletModel.isFavorite;
 
         printDebug("""
 address: $address
 username: $username
-recoveryPassword: $recoveryPassword
+securityPassword: $securityPassword
 dateCreated: ${dateCreated.toString()}
 isFavorite: $isFavorite
         """);
@@ -122,11 +122,11 @@ isExists: $isExists
     const int walletIndex = 0;
     final String walletUsername = wallets[walletIndex]['username'];
     final String walletPassword = wallets[walletIndex]['password'];
-    final String walletRecoveryPassword = wallets[walletIndex]['recoveryPass'];
+    final String walletSecurityPassword = wallets[walletIndex]['securityPass'];
     final String otpCode = getOTPCode(
       walletUsername,
       walletPassword,
-      walletRecoveryPassword,
+      walletSecurityPassword,
     );
 
     late WalletModel walletModel;
@@ -149,7 +149,7 @@ isExists: $isExists
     test("Test getter methods", () async {
       String address = walletEngine.address().hexEip55;
       String username = walletEngine.username();
-      Uint8List recoveryPassword = walletEngine.recoveryPassword();
+      Uint8List securityPassword = walletEngine.securityPassword();
       DateTime dateCreated = walletEngine.dateCreated();
       bool isFavorite = walletEngine.isFavorite();
       bool isLogged = walletEngine.isLogged();
@@ -163,7 +163,7 @@ isExists: $isExists
       printDebug("""
 address: $address
 username: $username
-recoveryPassword: $recoveryPassword
+securityPassword: $securityPassword
 dateCreated: ${dateCreated.toString()}
 isFavorite: $isFavorite
 isLogged: $isLogged
@@ -173,7 +173,7 @@ transactions: $transactions
 
       expect(address, equals(walletModel.address.hexEip55));
       expect(username, equals(walletModel.username));
-      expect(recoveryPassword, equals(walletModel.recoveryPassword));
+      expect(securityPassword, equals(walletModel.securityPassword));
       expect(dateCreated, equals(walletModel.dateCreated));
       expect(isFavorite, equals(walletModel.isFavorite));
       expect(isLogged, isFalse);

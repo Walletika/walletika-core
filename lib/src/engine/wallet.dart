@@ -27,13 +27,13 @@ Stream<WalletModel> getAllWallets() async* {
 Future<bool> addNewWallet({
   required String username,
   required String password,
-  required String recoveryPassword,
+  required String securityPassword,
   required String otpCode,
 }) async {
   final WalletInfoModel wallet = await walletGenerator(
     username: username,
     password: password,
-    recoveryPassword: recoveryPassword.codeUnits,
+    securityPassword: securityPassword.codeUnits,
     otpCode: otpCode,
   );
 
@@ -43,7 +43,7 @@ Future<bool> addNewWallet({
       items: {
         "username": username,
         "address": wallet.address!.hexEip55,
-        "recoveryPassword": jsonEncode(wallet.recoveryPassword!),
+        "securityPassword": jsonEncode(wallet.securityPassword!),
         "dateCreated": DateTime.now().toString(),
         "isFavorite": false,
       },
@@ -110,7 +110,7 @@ class WalletEngine {
 
   EthereumAddress address() => wallet.address;
 
-  Uint8List recoveryPassword() => wallet.recoveryPassword;
+  Uint8List securityPassword() => wallet.securityPassword;
 
   DateTime dateCreated() => wallet.dateCreated;
 
@@ -125,7 +125,7 @@ class WalletEngine {
       final WalletInfoModel walletInfo = await walletGenerator(
         username: wallet.username,
         password: _password!,
-        recoveryPassword: wallet.recoveryPassword,
+        securityPassword: wallet.securityPassword,
         otpCode: otpCode,
       );
 
@@ -165,7 +165,7 @@ class WalletEngine {
       final WalletInfoModel walletInfo = await walletGenerator(
         username: wallet.username,
         password: password,
-        recoveryPassword: wallet.recoveryPassword,
+        securityPassword: wallet.securityPassword,
         otpCode: otpCode,
       );
 

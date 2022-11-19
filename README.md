@@ -61,7 +61,7 @@ String sendTransaction = await Provider.sendTransaction(
 String otpKey_ = otpKeyGenerator(
     username: 'username',
     password: 'password',
-    recoveryPassword: 'recoveryPassword',
+    securityPassword: 'securityPassword',
 );
 ```
 
@@ -71,13 +71,13 @@ String otpKey_ = otpKeyGenerator(
 WalletInfoModel wallet = await walletGenerator(
     username: 'username',
     password: 'password',
-    recoveryPassword: 'recoveryPassword'.codeUnits,
+    securityPassword: 'securityPassword'.codeUnits,
     otpCode: otpCode,
 );
 // Wallet details
 String address = wallet.address!.hexEip55;
 String privateKey = bytesToHex(wallet.credentials!.privateKey);
-Uint8List recoveryPasswordBytes = wallet.recoveryPassword!;
+Uint8List securityPasswordBytes = wallet.securityPassword!;
 ```
 
 ### Wallet engine for wallet management

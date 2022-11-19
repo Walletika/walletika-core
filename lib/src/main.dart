@@ -16,7 +16,7 @@ Future<void> walletikaSDKInitialize({String? encryptionKey}) async {
     columnTitles: [
       "username",
       "address",
-      "recoveryPassword",
+      "securityPassword",
       "dateCreated",
       "isFavorite",
     ],

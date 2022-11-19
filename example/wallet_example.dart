@@ -5,12 +5,12 @@ import 'package:walletika_sdk/walletika_sdk.dart';
 void main() async {
   String username = 'username';
   String password = 'password';
-  String recoveryPassword = 'recoveryPassword';
+  String securityPassword = 'securityPassword';
 
   String otpKey = otpKeyGenerator(
     username: username,
     password: password,
-    recoveryPassword: recoveryPassword,
+    securityPassword: securityPassword,
   );
 
   String otpCode = OTP.generateTOTPCodeString(
@@ -25,7 +25,7 @@ void main() async {
   bool isAdded = await addNewWallet(
     username: username,
     password: password,
-    recoveryPassword: recoveryPassword,
+    securityPassword: securityPassword,
     otpCode: otpCode,
   );
 
