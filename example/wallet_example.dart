@@ -1,4 +1,3 @@
-import 'package:otp/otp.dart';
 import 'package:walletika_creator/walletika_creator.dart';
 import 'package:walletika_sdk/walletika_sdk.dart';
 
@@ -13,10 +12,7 @@ void main() async {
     securityPassword: securityPassword,
   );
 
-  String otpCode = OTP.generateTOTPCodeString(
-    otpKey,
-    DateTime.now().millisecondsSinceEpoch,
-  );
+  String otpCode = currentOTPCode(otpKey);
 
   // initialize walletika SDK
   await walletikaSDKInitialize();

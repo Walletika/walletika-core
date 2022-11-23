@@ -1,4 +1,3 @@
-import 'package:otp/otp.dart';
 import 'package:walletika_creator/walletika_creator.dart';
 import 'package:walletika_sdk/src/models.dart';
 
@@ -13,10 +12,7 @@ String getOTPCode(
     securityPassword: securityPassword,
   );
 
-  return OTP.generateTOTPCodeString(
-    otpKey,
-    DateTime.now().millisecondsSinceEpoch,
-  );
+  return currentOTPCode(otpKey);
 }
 
 Future<WalletModel> getWalletModel(
