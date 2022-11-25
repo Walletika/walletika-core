@@ -138,18 +138,21 @@ class TransactionModel {
 class TokenModel {
   TokenModel({
     required this.contract,
+    required this.name,
     required this.symbol,
     required this.decimals,
     required this.website,
   });
 
   final EthereumAddress contract;
+  final String name;
   final String symbol;
   final int decimals;
   final String website;
 
   factory TokenModel.fromJson(Map<String, dynamic> json) => TokenModel(
         contract: EthereumAddress.fromHex(json["contract"]),
+        name: json["name"],
         symbol: json["symbol"],
         decimals: json["decimals"],
         website: json["website"],
@@ -157,6 +160,7 @@ class TokenModel {
 
   Map<String, dynamic> toJson() => {
         "contract": contract.hexEip55,
+        "name": name,
         "symbol": symbol,
         "decimals": decimals,
         "website": website,
