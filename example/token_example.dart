@@ -24,6 +24,7 @@ void main() async {
     contract: EthereumAddress.fromHex(
       '0x8cA86F6eE71Ee4B951279711341F051195B188F8',
     ),
+    name: 'Tether',
     symbol: 'USDT',
     decimals: 6,
     website: '',

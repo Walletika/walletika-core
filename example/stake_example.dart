@@ -24,6 +24,7 @@ void main() async {
     contract: EthereumAddress.fromHex(
       '0xc4d3716B65b9c4c6b69e4E260b37e0e476e28d87',
     ),
+    name: 'Walletika',
     symbol: 'WTK',
     decimals: 18,
     website: '',
