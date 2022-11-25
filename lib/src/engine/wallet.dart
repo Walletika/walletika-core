@@ -11,15 +11,7 @@ import '../models.dart';
 import 'provider.dart';
 
 Stream<WalletModel> getAllWallets() async* {
-  await for (final RowModel row in walletsDB.select(
-    items: {"isFavorite": true},
-  )) {
-    yield WalletModel.fromJson(row.items);
-  }
-
-  await for (final RowModel row in walletsDB.select(
-    items: {"isFavorite": false},
-  )) {
+  await for (final RowModel row in walletsDB.select()) {
     yield WalletModel.fromJson(row.items);
   }
 }
