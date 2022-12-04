@@ -76,7 +76,7 @@ WalletGeneratorInfo? wallet = await walletGenerator(
 );
 // Wallet details
 String username = wallet!.username;
-String address = wallet.address.hexEip55;
+String address = wallet!.address.hexEip55;
 String privateKey = bytesToHex(wallet!.credentials.privateKey);
 Uint8List securityPasswordBytes = wallet!.securityPassword;
 ```
