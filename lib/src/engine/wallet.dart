@@ -11,7 +11,7 @@ import '../models.dart';
 import 'provider.dart';
 
 Stream<WalletModel> getAllWallets() async* {
-  await for (final RowModel row in walletsDB.select()) {
+  await for (final DBRow row in walletsDB.select()) {
     yield WalletModel.fromJson(row.items);
   }
 }
@@ -20,37 +20,36 @@ Future<bool> addNewWallet({
   required String username,
   required String password,
   required String securityPassword,
-  required String otpCode,
 }) async {
-  final WalletInfoModel wallet = await walletGenerator(
+  final WalletGeneratorInfo? wallet = await walletGenerator(
     username: username,
     password: password,
-    securityPassword: securityPassword.codeUnits,
-    otpCode: otpCode,
+    securityPassword: utf8.encoder.convert(securityPassword),
+    createNew: true,
   );
 
-  if (wallet.isValid) {
-    await walletsDB.insert(
-      rowIndex: walletsDB.countRow(),
-      items: {
-        "username": username,
-        "address": wallet.address!.hexEip55,
-        "securityPassword": jsonEncode(wallet.securityPassword!),
-        "dateCreated": DateTime.now().toString(),
-        "isFavorite": false,
-      },
-    );
+  if (wallet != null) {
+    walletsDB.addRow({
+      DBKeys.username: wallet.username,
+      DBKeys.address: wallet.address.hexEip55,
+      DBKeys.securityPassword: jsonEncode(wallet.securityPassword),
+      DBKeys.dateCreated: DateTime.now().toString(),
+      DBKeys.isFavorite: false,
+    });
 
     await walletsDB.dump();
+    return true;
   }
 
-  return wallet.isValid;
+  return false;
 }
 
 Future<bool> removeWallet(WalletModel wallet) async {
   bool result = false;
 
-  await for (final RowModel row in walletsDB.select(items: wallet.toJson())) {
+  await for (final DBRow row in walletsDB.select(
+    items: wallet.toJson(),
+  )) {
     walletsDB.removeRow(row.index);
     await walletsDB.dump();
     result = true;
@@ -66,7 +65,7 @@ Future<String> exportpWallets({
   String? password,
   void Function(int value)? progressCallback,
 }) async {
-  return await walletsDB.exportBackup(
+  return walletsDB.exportBackup(
     outputDir: outputDir,
     rowIndexes: walletIndexes,
     key: password,
@@ -114,14 +113,15 @@ class WalletEngine {
     EthPrivateKey? result;
 
     if (_isLogged) {
-      final WalletInfoModel walletInfo = await walletGenerator(
+      final WalletGeneratorInfo? walletInfo = await walletGenerator(
         username: wallet.username,
         password: _password!,
         securityPassword: wallet.securityPassword,
         otpCode: otpCode,
+        createNew: false,
       );
 
-      if (walletInfo.isValid) {
+      if (walletInfo != null) {
         result = walletInfo.credentials;
       }
     }
@@ -141,9 +141,11 @@ class WalletEngine {
   }
 
   Future<void> setFavorite(bool status) async {
-    await for (final RowModel row in walletsDB.select(items: wallet.toJson())) {
+    await for (final DBRow row in walletsDB.select(
+      items: wallet.toJson(),
+    )) {
       wallet.isFavorite = status;
-      await walletsDB.edit(rowIndex: row.index, items: {'isFavorite': status});
+      walletsDB.edit(rowIndex: row.index, items: {DBKeys.isFavorite: status});
       await walletsDB.dump();
       break;
     }
@@ -154,14 +156,15 @@ class WalletEngine {
     required String otpCode,
   }) async {
     if (!_isLogged) {
-      final WalletInfoModel walletInfo = await walletGenerator(
+      final WalletGeneratorInfo? walletInfo = await walletGenerator(
         username: wallet.username,
         password: password,
         securityPassword: wallet.securityPassword,
         otpCode: otpCode,
+        createNew: false,
       );
 
-      if (walletInfo.isValid) {
+      if (walletInfo != null) {
         _password = password;
         _isLogged = true;
       }
@@ -176,10 +179,10 @@ class WalletEngine {
   }
 
   Stream<TokenModel> tokens() async* {
-    await for (final RowModel row in tokensDB.select(
+    await for (final DBRow row in tokensDB.select(
       items: {
-        "address": wallet.address.hexEip55,
-        "rpc": Provider.networkModel.rpc,
+        DBKeys.address: wallet.address.hexEip55,
+        DBKeys.rpc: Provider.networkModel.rpc,
       },
     )) {
       yield TokenModel.fromJson(row.items);
@@ -187,14 +190,11 @@ class WalletEngine {
   }
 
   Future<void> addToken(TokenModel token) async {
-    await tokensDB.insert(
-      rowIndex: tokensDB.countRow(),
-      items: {
-        "address": wallet.address.hexEip55,
-        "rpc": Provider.networkModel.rpc,
-        ...token.toJson(),
-      },
-    );
+    tokensDB.addRow({
+      DBKeys.address: wallet.address.hexEip55,
+      DBKeys.rpc: Provider.networkModel.rpc,
+      ...token.toJson(),
+    });
 
     await tokensDB.dump();
   }
@@ -202,10 +202,10 @@ class WalletEngine {
   Future<bool> removeToken(TokenModel token) async {
     bool result = false;
 
-    await for (final RowModel row in tokensDB.select(
+    await for (final DBRow row in tokensDB.select(
       items: {
-        "address": wallet.address.hexEip55,
-        "rpc": Provider.networkModel.rpc,
+        DBKeys.address: wallet.address.hexEip55,
+        DBKeys.rpc: Provider.networkModel.rpc,
         ...token.toJson(),
       },
     )) {
@@ -219,10 +219,10 @@ class WalletEngine {
   }
 
   Stream<TransactionModel> transactions() async* {
-    await for (final RowModel row in transactionsDB.select(
+    await for (final DBRow row in transactionsDB.select(
       items: {
-        "address": wallet.address.hexEip55,
-        "rpc": Provider.networkModel.rpc,
+        DBKeys.address: wallet.address.hexEip55,
+        DBKeys.rpc: Provider.networkModel.rpc,
       },
     )) {
       yield TransactionModel.fromJson(row.items);
@@ -230,13 +230,11 @@ class WalletEngine {
   }
 
   Future<void> addTransaction(TransactionModel transaction) async {
-    await transactionsDB.insert(
-      items: {
-        "address": wallet.address.hexEip55,
-        "rpc": Provider.networkModel.rpc,
-        ...transaction.toJson(),
-      },
-    );
+    transactionsDB.addRow({
+      DBKeys.address: wallet.address.hexEip55,
+      DBKeys.rpc: Provider.networkModel.rpc,
+      ...transaction.toJson(),
+    });
 
     await transactionsDB.dump();
   }
@@ -244,10 +242,10 @@ class WalletEngine {
   Future<bool> removeTransaction(TransactionModel transaction) async {
     bool result = false;
 
-    await for (final RowModel row in transactionsDB.select(
+    await for (final DBRow row in transactionsDB.select(
       items: {
-        "address": wallet.address.hexEip55,
-        "rpc": Provider.networkModel.rpc,
+        DBKeys.address: wallet.address.hexEip55,
+        DBKeys.rpc: Provider.networkModel.rpc,
         ...transaction.toJson(),
       },
     )) {

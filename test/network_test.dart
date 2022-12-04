@@ -18,11 +18,11 @@ void main() async {
   group("Network Storage Group:", () {
     test("Test (addNewNetwork)", () async {
       for (Map<String, dynamic> network in networks) {
-        String rpc = network['rpc'];
-        String name = network['name'];
-        int chainID = network['chainID'];
-        String symbol = network['symbol'];
-        String explorer = network['explorer'];
+        String rpc = network[DBKeys.rpc];
+        String name = network[DBKeys.name];
+        int chainID = network[DBKeys.chainID];
+        String symbol = network[DBKeys.symbol];
+        String explorer = network[DBKeys.explorer];
 
         bool isAdded = await addNewNetwork(
           rpc: rpc,
@@ -62,11 +62,11 @@ symbol: $symbol
 explorer: $explorer
         """);
 
-        expect(rpc, equals(networks[index]['rpc']));
-        expect(name, equals(networks[index]['name']));
-        expect(chainID, equals(networks[index]['chainID']));
-        expect(symbol, equals(networks[index]['symbol']));
-        expect(explorer, equals(networks[index]['explorer']));
+        expect(rpc, equals(networks[index][DBKeys.rpc]));
+        expect(name, equals(networks[index][DBKeys.name]));
+        expect(chainID, equals(networks[index][DBKeys.chainID]));
+        expect(symbol, equals(networks[index][DBKeys.symbol]));
+        expect(explorer, equals(networks[index][DBKeys.explorer]));
       }
 
       expect(allNetworks.length, equals(networks.length));
@@ -83,7 +83,7 @@ explorer: $explorer
 
         bool isRemoved = await removeNetwork(networkModel);
         bool isExists = [
-          await for (RowModel row in networksDB.select(
+          await for (DBRow row in networksDB.select(
             items: networkModel.toJson(),
           ))
             row

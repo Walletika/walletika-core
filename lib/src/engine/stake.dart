@@ -5,7 +5,7 @@ import '../core/core.dart';
 import '../models.dart';
 
 Stream<StakeModel> getAllStakes() async* {
-  await for (final RowModel row in stakeDB.select()) {
+  await for (final DBRow row in stakeDB.select()) {
     yield StakeModel.fromJson(row.items);
   }
 }
@@ -19,10 +19,7 @@ Future<bool> importStakeContracts(String apiURL) async {
     stakeDB.clear();
 
     for (final Map<String, dynamic> data in dataFetched) {
-      await stakeDB.insert(
-        rowIndex: stakeDB.countRow(),
-        items: data,
-      );
+      stakeDB.addRow(data);
     }
 
     await stakeDB.dump();

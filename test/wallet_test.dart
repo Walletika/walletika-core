@@ -32,10 +32,10 @@ void main() async {
   group("Wallet Storage Group:", () {
     test("Test (addNewWallet)", () async {
       for (Map<String, dynamic> wallet in wallets) {
-        String address = wallet['address'];
-        String username = wallet['username'];
-        String password = wallet['password'];
-        String securityPassword = wallet['securityPass'];
+        String address = wallet[DBKeys.address];
+        String username = wallet[DBKeys.username];
+        String password = wallet[DBKeys.password];
+        String securityPassword = wallet[DBKeys.securityPassword];
 
         String otpCode = getOTPCode(username, password, securityPassword);
 
@@ -43,7 +43,6 @@ void main() async {
           username: username,
           password: password,
           securityPassword: securityPassword,
-          otpCode: otpCode,
         );
 
         printDebug("""
@@ -80,8 +79,8 @@ dateCreated: ${dateCreated.toString()}
 isFavorite: $isFavorite
         """);
 
-        expect(address, equals(wallets[index]['address']));
-        expect(username, equals(wallets[index]['username']));
+        expect(address, equals(wallets[index][DBKeys.address]));
+        expect(username, equals(wallets[index][DBKeys.username]));
         expect(isFavorite, isFalse);
       }
 
@@ -100,7 +99,7 @@ isFavorite: $isFavorite
 
         bool isRemoved = await removeWallet(walletModel);
         bool isExists = [
-          await for (RowModel row in walletsDB.select(
+          await for (DBRow row in walletsDB.select(
             items: walletModel.toJson(),
           ))
             row
@@ -120,9 +119,10 @@ isExists: $isExists
 
   group("Wallet Engine Group:", () {
     const int walletIndex = 0;
-    final String walletUsername = wallets[walletIndex]['username'];
-    final String walletPassword = wallets[walletIndex]['password'];
-    final String walletSecurityPassword = wallets[walletIndex]['securityPass'];
+    final String walletUsername = wallets[walletIndex][DBKeys.username];
+    final String walletPassword = wallets[walletIndex][DBKeys.password];
+    final String walletSecurityPassword =
+        wallets[walletIndex][DBKeys.securityPassword];
     final String otpCode = getOTPCode(
       walletUsername,
       walletPassword,
@@ -300,15 +300,17 @@ privateKey: $privateKey
 
     test("Test (addToken)", () async {
       for (Map<String, dynamic> token in tokens) {
-        String contract = token['contract'];
-        String symbol = token['symbol'];
-        int decimals = token['decimals'];
+        String contract = token[DBKeys.contract];
+        String name = token[DBKeys.name];
+        String symbol = token[DBKeys.symbol];
+        int decimals = token[DBKeys.decimals];
 
         TokenModel tokenModel = TokenModel.fromJson(token);
         await walletEngine.addToken(tokenModel);
 
         printDebug("""
 contract: $contract
+name: $name
 symbol: $symbol
 decimals: $decimals
         """);
@@ -325,20 +327,22 @@ decimals: $decimals
       for (int index = 0; index < allTokens.length; index++) {
         TokenModel tokenModel = allTokens[index];
         String contract = tokenModel.contract.hexEip55;
+        String name = tokenModel.name;
         String symbol = tokenModel.symbol;
         int decimals = tokenModel.decimals;
         String website = tokenModel.website;
 
         printDebug("""
 contract: $contract
+name: $name
 symbol: $symbol
 decimals: $decimals
 website: $website
         """);
 
-        expect(contract, equals(tokens[index]['contract']));
-        expect(symbol, equals(tokens[index]['symbol']));
-        expect(decimals, equals(tokens[index]['decimals']));
+        expect(contract, equals(tokens[index][DBKeys.contract]));
+        expect(symbol, equals(tokens[index][DBKeys.symbol]));
+        expect(decimals, equals(tokens[index][DBKeys.decimals]));
         expect(website, isEmpty);
       }
 
@@ -357,7 +361,7 @@ website: $website
 
         bool isRemoved = await walletEngine.removeToken(tokenModel);
         bool isExists = [
-          await for (RowModel row in tokensDB.select(
+          await for (DBRow row in tokensDB.select(
             items: tokenModel.toJson(),
           ))
             row
@@ -377,7 +381,7 @@ isExists: $isExists
 
     test("Test (addTransaction)", () async {
       for (Map<String, dynamic> transaction in transactions) {
-        String txHash = transaction['txHash'];
+        String txHash = transaction[DBKeys.txHash];
 
         TransactionModel transactionModel =
             TransactionModel.fromJson(transaction);
@@ -395,8 +399,6 @@ txHash: $txHash
       List<TransactionModel> allTransactions = [
         await for (TransactionModel item in walletEngine.transactions()) item
       ];
-      List<Map<String, dynamic>> olderTransactions =
-          transactions.reversed.toList();
 
       for (int index = 0; index < allTransactions.length; index++) {
         TransactionModel transactionModel = allTransactions[index];
@@ -420,14 +422,20 @@ dateCreated: $dateCreated
 status: $status
         """);
 
-        expect(txHash, equals(olderTransactions[index]['txHash']));
-        expect(function, equals(olderTransactions[index]['function']));
-        expect(fromAddress, equals(olderTransactions[index]['fromAddress']));
-        expect(toAddress, equals(olderTransactions[index]['toAddress']));
-        expect(amount, equals(olderTransactions[index]['amount']));
-        expect(symbol, equals(olderTransactions[index]['symbol']));
-        expect(dateCreated, equals(olderTransactions[index]['dateCreated']));
-        expect(status, equals(olderTransactions[index]['status']));
+        expect(txHash, equals(transactions[index][DBKeys.txHash]));
+        expect(function, equals(transactions[index][DBKeys.function]));
+        expect(
+          fromAddress,
+          equals(transactions[index][DBKeys.fromAddress]),
+        );
+        expect(toAddress, equals(transactions[index][DBKeys.toAddress]));
+        expect(amount, equals(transactions[index][DBKeys.amount]));
+        expect(symbol, equals(transactions[index][DBKeys.symbol]));
+        expect(
+          dateCreated,
+          equals(transactions[index][DBKeys.dateCreated]),
+        );
+        expect(status, equals(transactions[index][DBKeys.status]));
       }
 
       expect(allTransactions.length, equals(transactions.length));
@@ -444,7 +452,7 @@ status: $status
 
         bool isRemoved = await walletEngine.removeTransaction(transactionModel);
         bool isExists = [
-          await for (RowModel row in transactionsDB.select(
+          await for (DBRow row in transactionsDB.select(
             items: transactionModel.toJson(),
           ))
             row

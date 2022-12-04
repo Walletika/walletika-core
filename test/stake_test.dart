@@ -1,3 +1,4 @@
+import 'package:walletika_sdk/src/core/core.dart';
 import 'package:walletika_sdk/walletika_sdk.dart';
 import 'package:test/test.dart';
 import 'package:web3dart/web3dart.dart';
@@ -36,9 +37,9 @@ void main() async {
     printDebug("${Provider.networkModel.name} connection status: $isConnected");
 
     Map<String, dynamic> wallet = wallets[walletIndex];
-    String username = wallet['username'];
-    String password = wallet['password'];
-    String securityPassword = wallet['securityPass'];
+    String username = wallet[DBKeys.username];
+    String password = wallet[DBKeys.password];
+    String securityPassword = wallet[DBKeys.securityPassword];
     String otpCode = getOTPCode(username, password, securityPassword);
 
     walletEngine = WalletEngine(

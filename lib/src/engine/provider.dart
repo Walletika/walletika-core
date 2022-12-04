@@ -13,7 +13,7 @@ class Provider {
     final http.Client httpClient = http.Client();
     web3 = Web3Client(network.rpc, httpClient);
 
-    return await isConnected();
+    return isConnected();
   }
 
   static Future<bool> isConnected() async {

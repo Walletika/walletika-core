@@ -3,6 +3,8 @@ import 'dart:typed_data';
 
 import 'package:web3dart/web3dart.dart';
 
+import 'core/core.dart';
+
 class WalletModel {
   WalletModel({
     required this.username,
@@ -19,21 +21,21 @@ class WalletModel {
   bool isFavorite;
 
   factory WalletModel.fromJson(Map<String, dynamic> json) => WalletModel(
-        username: json["username"],
-        address: EthereumAddress.fromHex(json["address"]),
+        username: json[DBKeys.username],
+        address: EthereumAddress.fromHex(json[DBKeys.address]),
         securityPassword: Uint8List.fromList(
-          List.from(jsonDecode(json["securityPassword"])),
+          List.from(jsonDecode(json[DBKeys.securityPassword])),
         ),
-        dateCreated: DateTime.parse(json["dateCreated"]),
-        isFavorite: json["isFavorite"],
+        dateCreated: DateTime.parse(json[DBKeys.dateCreated]),
+        isFavorite: json[DBKeys.isFavorite],
       );
 
   Map<String, dynamic> toJson() => {
-        "username": username,
-        "address": address.hexEip55,
-        "securityPassword": jsonEncode(securityPassword),
-        "dateCreated": dateCreated.toString(),
-        "isFavorite": isFavorite,
+        DBKeys.username: username,
+        DBKeys.address: address.hexEip55,
+        DBKeys.securityPassword: jsonEncode(securityPassword),
+        DBKeys.dateCreated: dateCreated.toString(),
+        DBKeys.isFavorite: isFavorite,
       };
 }
 
@@ -48,13 +50,13 @@ class AddressBookModel {
 
   factory AddressBookModel.fromJson(Map<String, dynamic> json) =>
       AddressBookModel(
-        username: json["username"],
-        address: EthereumAddress.fromHex(json["address"]),
+        username: json[DBKeys.username],
+        address: EthereumAddress.fromHex(json[DBKeys.address]),
       );
 
   Map<String, dynamic> toJson() => {
-        "username": username,
-        "address": address.hexEip55,
+        DBKeys.username: username,
+        DBKeys.address: address.hexEip55,
       };
 }
 
@@ -74,19 +76,19 @@ class NetworkModel {
   final String explorer;
 
   factory NetworkModel.fromJson(Map<String, dynamic> json) => NetworkModel(
-        rpc: json["rpc"],
-        name: json["name"],
-        chainID: json["chainID"],
-        symbol: json["symbol"],
-        explorer: json["explorer"],
+        rpc: json[DBKeys.rpc],
+        name: json[DBKeys.name],
+        chainID: json[DBKeys.chainID],
+        symbol: json[DBKeys.symbol],
+        explorer: json[DBKeys.explorer],
       );
 
   Map<String, dynamic> toJson() => {
-        "rpc": rpc,
-        "name": name,
-        "chainID": chainID,
-        "symbol": symbol,
-        "explorer": explorer,
+        DBKeys.rpc: rpc,
+        DBKeys.name: name,
+        DBKeys.chainID: chainID,
+        DBKeys.symbol: symbol,
+        DBKeys.explorer: explorer,
       };
 }
 
@@ -113,25 +115,25 @@ class TransactionModel {
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) =>
       TransactionModel(
-        txHash: json["txHash"],
-        function: json["function"],
-        fromAddress: EthereumAddress.fromHex(json["fromAddress"]),
-        toAddress: EthereumAddress.fromHex(json["toAddress"]),
-        amount: EtherAmount.inWei(BigInt.parse(json["amount"])),
-        symbol: json["symbol"],
-        dateCreated: DateTime.parse(json["dateCreated"]),
-        status: json["status"],
+        txHash: json[DBKeys.txHash],
+        function: json[DBKeys.function],
+        fromAddress: EthereumAddress.fromHex(json[DBKeys.fromAddress]),
+        toAddress: EthereumAddress.fromHex(json[DBKeys.toAddress]),
+        amount: EtherAmount.inWei(BigInt.parse(json[DBKeys.amount])),
+        symbol: json[DBKeys.symbol],
+        dateCreated: DateTime.parse(json[DBKeys.dateCreated]),
+        status: json[DBKeys.status],
       );
 
   Map<String, dynamic> toJson() => {
-        "txHash": txHash,
-        "function": function,
-        "fromAddress": fromAddress.hexEip55,
-        "toAddress": toAddress.hexEip55,
-        "amount": amount.getInWei.toString(),
-        "symbol": symbol,
-        "dateCreated": dateCreated.toString(),
-        "status": status,
+        DBKeys.txHash: txHash,
+        DBKeys.function: function,
+        DBKeys.fromAddress: fromAddress.hexEip55,
+        DBKeys.toAddress: toAddress.hexEip55,
+        DBKeys.amount: amount.getInWei.toString(),
+        DBKeys.symbol: symbol,
+        DBKeys.dateCreated: dateCreated.toString(),
+        DBKeys.status: status,
       };
 }
 
@@ -151,19 +153,19 @@ class TokenModel {
   final String website;
 
   factory TokenModel.fromJson(Map<String, dynamic> json) => TokenModel(
-        contract: EthereumAddress.fromHex(json["contract"]),
-        name: json["name"],
-        symbol: json["symbol"],
-        decimals: json["decimals"],
-        website: json["website"],
+        contract: EthereumAddress.fromHex(json[DBKeys.contract]),
+        name: json[DBKeys.name],
+        symbol: json[DBKeys.symbol],
+        decimals: json[DBKeys.decimals],
+        website: json[DBKeys.website],
       );
 
   Map<String, dynamic> toJson() => {
-        "contract": contract.hexEip55,
-        "name": name,
-        "symbol": symbol,
-        "decimals": decimals,
-        "website": website,
+        DBKeys.contract: contract.hexEip55,
+        DBKeys.name: name,
+        DBKeys.symbol: symbol,
+        DBKeys.decimals: decimals,
+        DBKeys.website: website,
       };
 }
 
@@ -189,25 +191,25 @@ class StakeModel {
   final DateTime endTime;
 
   factory StakeModel.fromJson(Map<String, dynamic> json) => StakeModel(
-        rpc: json["rpc"],
-        contract: EthereumAddress.fromHex(json["contract"]),
-        stakeToken: TokenModel.fromJson(json["stakeToken"]),
-        rewardToken: TokenModel.fromJson(json["rewardToken"]),
-        startBlock: json["startBlock"],
-        endBlock: json["endBlock"],
-        startTime: DateTime.parse(json["startTime"]),
-        endTime: DateTime.parse(json["endTime"]),
+        rpc: json[DBKeys.rpc],
+        contract: EthereumAddress.fromHex(json[DBKeys.contract]),
+        stakeToken: TokenModel.fromJson(json[DBKeys.stakeToken]),
+        rewardToken: TokenModel.fromJson(json[DBKeys.rewardToken]),
+        startBlock: json[DBKeys.startBlock],
+        endBlock: json[DBKeys.endBlock],
+        startTime: DateTime.parse(json[DBKeys.startTime]),
+        endTime: DateTime.parse(json[DBKeys.endTime]),
       );
 
   Map<String, dynamic> toJson() => {
-        "rpc": rpc,
-        "contract": contract.hexEip55,
-        "stakeToken": stakeToken.toJson(),
-        "rewardToken": rewardToken.toJson(),
-        "startBlock": startBlock,
-        "endBlock": endBlock,
-        "startTime": startTime.toString(),
-        "endTime": endTime.toString(),
+        DBKeys.rpc: rpc,
+        DBKeys.contract: contract.hexEip55,
+        DBKeys.stakeToken: stakeToken.toJson(),
+        DBKeys.rewardToken: rewardToken.toJson(),
+        DBKeys.startBlock: startBlock,
+        DBKeys.endBlock: endBlock,
+        DBKeys.startTime: startTime.toString(),
+        DBKeys.endTime: endTime.toString(),
       };
 }
 

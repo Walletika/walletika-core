@@ -22,7 +22,6 @@ void main() async {
     username: username,
     password: password,
     securityPassword: securityPassword,
-    otpCode: otpCode,
   );
 
   // Get all wallets

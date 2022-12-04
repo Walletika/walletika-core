@@ -14,11 +14,11 @@ Future<void> walletikaSDKInitialize({String? encryptionKey}) async {
   walletsDB = await databaseLoader(
     filename: "wallets",
     columnTitles: [
-      "username",
-      "address",
-      "securityPassword",
-      "dateCreated",
-      "isFavorite",
+      DBKeys.username,
+      DBKeys.address,
+      DBKeys.securityPassword,
+      DBKeys.dateCreated,
+      DBKeys.isFavorite,
     ],
     hasBackup: true,
     key: encryptionKey,
@@ -27,8 +27,8 @@ Future<void> walletikaSDKInitialize({String? encryptionKey}) async {
   addressesBookDB = await databaseLoader(
     filename: "addressesbook",
     columnTitles: [
-      "username",
-      "address",
+      DBKeys.username,
+      DBKeys.address,
     ],
     key: encryptionKey,
   );
@@ -36,11 +36,11 @@ Future<void> walletikaSDKInitialize({String? encryptionKey}) async {
   networksDB = await databaseLoader(
     filename: "networks",
     columnTitles: [
-      "rpc",
-      "name",
-      "chainID",
-      "symbol",
-      "explorer",
+      DBKeys.rpc,
+      DBKeys.name,
+      DBKeys.chainID,
+      DBKeys.symbol,
+      DBKeys.explorer,
     ],
     key: encryptionKey,
   );
@@ -48,12 +48,13 @@ Future<void> walletikaSDKInitialize({String? encryptionKey}) async {
   tokensDB = await databaseLoader(
     filename: "tokens",
     columnTitles: [
-      "address",
-      "rpc",
-      "contract",
-      "symbol",
-      "decimals",
-      "website",
+      DBKeys.address,
+      DBKeys.rpc,
+      DBKeys.contract,
+      DBKeys.name,
+      DBKeys.symbol,
+      DBKeys.decimals,
+      DBKeys.website,
     ],
     key: encryptionKey,
   );
@@ -61,16 +62,16 @@ Future<void> walletikaSDKInitialize({String? encryptionKey}) async {
   transactionsDB = await databaseLoader(
     filename: "transactions",
     columnTitles: [
-      "address",
-      "rpc",
-      "txHash",
-      "function",
-      "fromAddress",
-      "toAddress",
-      "amount",
-      "symbol",
-      "dateCreated",
-      "status",
+      DBKeys.address,
+      DBKeys.rpc,
+      DBKeys.txHash,
+      DBKeys.function,
+      DBKeys.fromAddress,
+      DBKeys.toAddress,
+      DBKeys.amount,
+      DBKeys.symbol,
+      DBKeys.dateCreated,
+      DBKeys.status,
     ],
     key: encryptionKey,
   );
@@ -78,14 +79,14 @@ Future<void> walletikaSDKInitialize({String? encryptionKey}) async {
   stakeDB = await databaseLoader(
     filename: "stakecontracts",
     columnTitles: [
-      "rpc",
-      "contract",
-      "stakeToken",
-      "rewardToken",
-      "startBlock",
-      "endBlock",
-      "startTime",
-      "endTime",
+      DBKeys.rpc,
+      DBKeys.contract,
+      DBKeys.stakeToken,
+      DBKeys.rewardToken,
+      DBKeys.startBlock,
+      DBKeys.endBlock,
+      DBKeys.startTime,
+      DBKeys.endTime,
     ],
     key: encryptionKey,
   );

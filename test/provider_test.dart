@@ -1,3 +1,4 @@
+import 'package:walletika_sdk/src/core/core.dart';
 import 'package:walletika_sdk/walletika_sdk.dart';
 import 'package:test/test.dart';
 import 'package:web3dart/web3dart.dart';
@@ -18,11 +19,11 @@ void main() async {
 
   group("Provider View Group:", () {
     test("Test (connect)", () async {
-      String rpc = networks[networkIndex]['rpc'];
-      String name = networks[networkIndex]['name'];
-      int chainID = networks[networkIndex]['chainID'];
-      String symbol = networks[networkIndex]['symbol'];
-      String explorer = networks[networkIndex]['explorer'];
+      String rpc = networks[networkIndex][DBKeys.rpc];
+      String name = networks[networkIndex][DBKeys.name];
+      int chainID = networks[networkIndex][DBKeys.chainID];
+      String symbol = networks[networkIndex][DBKeys.symbol];
+      String explorer = networks[networkIndex][DBKeys.explorer];
       NetworkModel networkModel = NetworkModel(
         rpc: rpc,
         name: name,
@@ -52,8 +53,8 @@ isConnected: $isConnected
 
     test("Test (balanceOf)", () async {
       for (Map<String, dynamic> wallet in wallets) {
-        String address = wallet['address'];
-        String username = wallet['username'];
+        String address = wallet[DBKeys.address];
+        String username = wallet[DBKeys.username];
         EtherAmount balance = await Provider.balanceOf(
           address: EthereumAddress.fromHex(address),
         );
@@ -157,9 +158,9 @@ to: ${tx.to}
 
       for (Map<String, dynamic> wallet in wallets) {
         // Wallet data
-        String username = wallet['username'];
-        String password = wallet['password'];
-        String securityPassword = wallet['securityPass'];
+        String username = wallet[DBKeys.username];
+        String password = wallet[DBKeys.password];
+        String securityPassword = wallet[DBKeys.securityPassword];
 
         // Transaction details
         Transaction tx;

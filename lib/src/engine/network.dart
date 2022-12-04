@@ -4,7 +4,7 @@ import '../core/core.dart';
 import '../models.dart';
 
 Stream<NetworkModel> getAllNetworks() async* {
-  await for (final RowModel row in networksDB.select()) {
+  await for (final DBRow row in networksDB.select()) {
     yield NetworkModel.fromJson(row.items);
   }
 }
@@ -16,17 +16,13 @@ Future<bool> addNewNetwork({
   required String symbol,
   required String explorer,
 }) async {
-  await networksDB.insert(
-    rowIndex: networksDB.countRow(),
-    items: {
-      "rpc": rpc,
-      "name": name,
-      "chainID": chainID,
-      "symbol": symbol,
-      "explorer": explorer,
-    },
-  );
-
+  networksDB.addRow({
+    DBKeys.rpc: rpc,
+    DBKeys.name: name,
+    DBKeys.chainID: chainID,
+    DBKeys.symbol: symbol,
+    DBKeys.explorer: explorer,
+  });
   await networksDB.dump();
 
   return true;
@@ -35,7 +31,9 @@ Future<bool> addNewNetwork({
 Future<bool> removeNetwork(NetworkModel network) async {
   bool result = false;
 
-  await for (final RowModel row in networksDB.select(items: network.toJson())) {
+  await for (final DBRow row in networksDB.select(
+    items: network.toJson(),
+  )) {
     networksDB.removeRow(row.index);
     await networksDB.dump();
     result = true;

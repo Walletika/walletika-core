@@ -19,8 +19,8 @@ void main() async {
   group("AddressBook Storage Group:", () {
     test("Test (addNewAddressBook)", () async {
       for (Map<String, dynamic> wallet in wallets) {
-        String address = wallet['address'];
-        String username = wallet['username'];
+        String address = wallet[DBKeys.address];
+        String username = wallet[DBKeys.username];
 
         bool isAdded = await addNewAddressBook(
           username: username,
@@ -51,8 +51,8 @@ address: $address
 username: $username
         """);
 
-        expect(address, equals(wallets[index]['address']));
-        expect(username, equals(wallets[index]['username']));
+        expect(address, equals(wallets[index][DBKeys.address]));
+        expect(username, equals(wallets[index][DBKeys.username]));
       }
 
       expect(allAddressesBook.length, equals(wallets.length));
@@ -69,7 +69,7 @@ username: $username
 
         bool isRemoved = await removeAddressBook(addressBookModel);
         bool isExists = [
-          await for (RowModel row in addressesBookDB.select(
+          await for (DBRow row in addressesBookDB.select(
             items: addressBookModel.toJson(),
           ))
             row

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:walletika_creator/walletika_creator.dart';
 import 'package:walletika_sdk/src/models.dart';
 
@@ -20,19 +22,17 @@ Future<WalletModel> getWalletModel(
   String password,
   String securityPassword,
 ) async {
-  String otpCode = getOTPCode(username, password, securityPassword);
-
-  WalletInfoModel walletInfo = await walletGenerator(
+  WalletGeneratorInfo? walletInfo = await walletGenerator(
     username: username,
     password: password,
-    securityPassword: securityPassword.codeUnits,
-    otpCode: otpCode,
+    securityPassword: utf8.encoder.convert(securityPassword),
+    createNew: true,
   );
 
   return WalletModel(
     username: username,
-    address: walletInfo.address!,
-    securityPassword: walletInfo.securityPassword!,
+    address: walletInfo!.address,
+    securityPassword: walletInfo.securityPassword,
     dateCreated: DateTime.now(),
     isFavorite: false,
   );
