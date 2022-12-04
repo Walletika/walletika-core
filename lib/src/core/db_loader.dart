@@ -9,16 +9,14 @@ Future<DatabaseEngine> databaseLoader({
   final DriveSetup drive = DriveSetup(hasBackup: hasBackup);
   drive.databaseUpdate(file: filename);
 
-  hasBackup ? drive.backupUpdate(file: 'Walletika') : null;
+  if (hasBackup) drive.backupUpdate(file: 'Walletika');
 
   await drive.create();
 
   final DatabaseEngine db = DatabaseEngine(drive, key ?? 'NoKey');
-  await db.load();
+  db.createTable(columnTitles);
 
-  if (db.countColumn() == 0) {
-    db.createTable(columnTitles);
-  }
+  await db.load();
 
   return db;
 }
