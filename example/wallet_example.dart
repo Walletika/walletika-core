@@ -25,8 +25,8 @@ void main() async {
   );
 
   // Get all wallets
-  List<WalletModel> allWallets = [
-    await for (WalletModel wallet in getAllWallets()) wallet
+  List<WalletData> allWallets = [
+    await for (WalletData wallet in getAllWallets()) wallet
   ];
 
   // Remove a wallet
@@ -45,8 +45,8 @@ void main() async {
   walletEngine.logout();
 
   // Get all tokens
-  List<TokenModel> allTokens = [
-    await for (TokenModel item in walletEngine.tokens()) item
+  List<TokenData> allTokens = [
+    await for (TokenData item in walletEngine.tokens()) item
   ];
 
   // Add token
@@ -56,8 +56,8 @@ void main() async {
   await walletEngine.removeToken(allTokens[0]);
 
   // Get all transactions
-  List<TransactionModel> allTransactions = [
-    await for (TransactionModel item in walletEngine.transactions()) item
+  List<TransactionData> allTransactions = [
+    await for (TransactionData item in walletEngine.transactions()) item
   ];
 
   // Add transaction

@@ -5,8 +5,8 @@ import 'package:web3dart/web3dart.dart';
 
 import 'core/core.dart';
 
-class WalletModel {
-  WalletModel({
+class WalletData {
+  WalletData({
     required this.username,
     required this.address,
     required this.securityPassword,
@@ -20,7 +20,7 @@ class WalletModel {
   final DateTime dateCreated;
   bool isFavorite;
 
-  factory WalletModel.fromJson(Map<String, dynamic> json) => WalletModel(
+  factory WalletData.fromJson(Map<String, dynamic> json) => WalletData(
         username: json[DBKeys.username],
         address: EthereumAddress.fromHex(json[DBKeys.address]),
         securityPassword: Uint8List.fromList(
@@ -39,8 +39,8 @@ class WalletModel {
       };
 }
 
-class AddressBookModel {
-  AddressBookModel({
+class AddressBookData {
+  AddressBookData({
     required this.username,
     required this.address,
   });
@@ -48,8 +48,8 @@ class AddressBookModel {
   final String username;
   final EthereumAddress address;
 
-  factory AddressBookModel.fromJson(Map<String, dynamic> json) =>
-      AddressBookModel(
+  factory AddressBookData.fromJson(Map<String, dynamic> json) =>
+      AddressBookData(
         username: json[DBKeys.username],
         address: EthereumAddress.fromHex(json[DBKeys.address]),
       );
@@ -60,8 +60,8 @@ class AddressBookModel {
       };
 }
 
-class NetworkModel {
-  NetworkModel({
+class NetworkData {
+  NetworkData({
     required this.rpc,
     required this.name,
     required this.chainID,
@@ -75,7 +75,7 @@ class NetworkModel {
   final String symbol;
   final String explorer;
 
-  factory NetworkModel.fromJson(Map<String, dynamic> json) => NetworkModel(
+  factory NetworkData.fromJson(Map<String, dynamic> json) => NetworkData(
         rpc: json[DBKeys.rpc],
         name: json[DBKeys.name],
         chainID: json[DBKeys.chainID],
@@ -92,8 +92,8 @@ class NetworkModel {
       };
 }
 
-class TransactionModel {
-  TransactionModel({
+class TransactionData {
+  TransactionData({
     required this.txHash,
     required this.function,
     required this.fromAddress,
@@ -113,8 +113,8 @@ class TransactionModel {
   final DateTime dateCreated;
   int status;
 
-  factory TransactionModel.fromJson(Map<String, dynamic> json) =>
-      TransactionModel(
+  factory TransactionData.fromJson(Map<String, dynamic> json) =>
+      TransactionData(
         txHash: json[DBKeys.txHash],
         function: json[DBKeys.function],
         fromAddress: EthereumAddress.fromHex(json[DBKeys.fromAddress]),
@@ -137,8 +137,8 @@ class TransactionModel {
       };
 }
 
-class TokenModel {
-  TokenModel({
+class TokenData {
+  TokenData({
     required this.contract,
     required this.name,
     required this.symbol,
@@ -152,7 +152,7 @@ class TokenModel {
   final int decimals;
   final String website;
 
-  factory TokenModel.fromJson(Map<String, dynamic> json) => TokenModel(
+  factory TokenData.fromJson(Map<String, dynamic> json) => TokenData(
         contract: EthereumAddress.fromHex(json[DBKeys.contract]),
         name: json[DBKeys.name],
         symbol: json[DBKeys.symbol],
@@ -169,8 +169,8 @@ class TokenModel {
       };
 }
 
-class StakeModel {
-  StakeModel({
+class StakeData {
+  StakeData({
     required this.rpc,
     required this.contract,
     required this.stakeToken,
@@ -183,18 +183,18 @@ class StakeModel {
 
   final String rpc;
   final EthereumAddress contract;
-  final TokenModel stakeToken;
-  final TokenModel rewardToken;
+  final TokenData stakeToken;
+  final TokenData rewardToken;
   final int startBlock;
   final int endBlock;
   final DateTime startTime;
   final DateTime endTime;
 
-  factory StakeModel.fromJson(Map<String, dynamic> json) => StakeModel(
+  factory StakeData.fromJson(Map<String, dynamic> json) => StakeData(
         rpc: json[DBKeys.rpc],
         contract: EthereumAddress.fromHex(json[DBKeys.contract]),
-        stakeToken: TokenModel.fromJson(json[DBKeys.stakeToken]),
-        rewardToken: TokenModel.fromJson(json[DBKeys.rewardToken]),
+        stakeToken: TokenData.fromJson(json[DBKeys.stakeToken]),
+        rewardToken: TokenData.fromJson(json[DBKeys.rewardToken]),
         startBlock: json[DBKeys.startBlock],
         endBlock: json[DBKeys.endBlock],
         startTime: DateTime.parse(json[DBKeys.startTime]),
@@ -213,8 +213,8 @@ class StakeModel {
       };
 }
 
-class TxDetailsModel {
-  TxDetailsModel({
+class TxDetailsData {
+  TxDetailsData({
     required this.tx,
     required this.abi,
     required this.args,
@@ -227,8 +227,8 @@ class TxDetailsModel {
   final String data;
 }
 
-class TxGasDetailsModel {
-  TxGasDetailsModel({
+class TxGasDetailsData {
+  TxGasDetailsData({
     required this.tx,
     required this.estimateGas,
     required this.maxFee,

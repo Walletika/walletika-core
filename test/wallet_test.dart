@@ -24,9 +24,9 @@ void main() async {
 
   setUpAll(() async {
     bool isConnected = await Provider.connect(
-      NetworkModel.fromJson(networks[networkIndex]),
+      NetworkData.fromJson(networks[networkIndex]),
     );
-    printDebug("${Provider.networkModel.name} connection status: $isConnected");
+    printDebug("${Provider.networkData.name} connection status: $isConnected");
   });
 
   group("Wallet Storage Group:", () {
@@ -59,17 +59,17 @@ isAdded: $isAdded
     });
 
     test("Test (getAllWallets)", () async {
-      List<WalletModel> allWallets = [
-        await for (WalletModel item in getAllWallets()) item
+      List<WalletData> allWallets = [
+        await for (WalletData item in getAllWallets()) item
       ];
 
       for (int index = 0; index < allWallets.length; index++) {
-        WalletModel walletModel = allWallets[index];
-        String address = walletModel.address.hexEip55;
-        String username = walletModel.username;
-        Uint8List securityPassword = walletModel.securityPassword;
-        DateTime dateCreated = walletModel.dateCreated;
-        bool isFavorite = walletModel.isFavorite;
+        WalletData walletData = allWallets[index];
+        String address = walletData.address.hexEip55;
+        String username = walletData.username;
+        Uint8List securityPassword = walletData.securityPassword;
+        DateTime dateCreated = walletData.dateCreated;
+        bool isFavorite = walletData.isFavorite;
 
         printDebug("""
 address: $address
@@ -88,19 +88,19 @@ isFavorite: $isFavorite
     });
 
     test("Test (removeWallet)", () async {
-      List<WalletModel> allWallets = [
-        await for (WalletModel item in getAllWallets()) item
+      List<WalletData> allWallets = [
+        await for (WalletData item in getAllWallets()) item
       ];
 
       // Keep wallet 0 for testing with walletEngine
       for (int index = 1; index < allWallets.length; index++) {
-        WalletModel walletModel = allWallets[index];
-        String username = walletModel.username;
+        WalletData walletData = allWallets[index];
+        String username = walletData.username;
 
-        bool isRemoved = await removeWallet(walletModel);
+        bool isRemoved = await removeWallet(walletData);
         bool isExists = [
           await for (DBRow row in walletsDB.select(
-            items: walletModel.toJson(),
+            items: walletData.toJson(),
           ))
             row
         ].isNotEmpty;
@@ -129,20 +129,20 @@ isExists: $isExists
       walletSecurityPassword,
     );
 
-    late WalletModel walletModel;
+    late WalletData walletData;
     late WalletEngine walletEngine;
 
     setUpAll(() async {
-      List<WalletModel> allWallets = [
-        await for (WalletModel item in getAllWallets()) item
+      List<WalletData> allWallets = [
+        await for (WalletData item in getAllWallets()) item
       ];
-      walletModel = allWallets[walletIndex];
-      walletEngine = WalletEngine(walletModel);
+      walletData = allWallets[walletIndex];
+      walletEngine = WalletEngine(walletData);
     });
 
     tearDownAll(() async {
       // Remove current wallet to clean database
-      bool isRemoved = await removeWallet(walletModel);
+      bool isRemoved = await removeWallet(walletData);
       expect(isRemoved, isTrue);
     });
 
@@ -153,11 +153,11 @@ isExists: $isExists
       DateTime dateCreated = walletEngine.dateCreated();
       bool isFavorite = walletEngine.isFavorite();
       bool isLogged = walletEngine.isLogged();
-      List<TokenModel> tokens = [
-        await for (TokenModel item in walletEngine.tokens()) item
+      List<TokenData> tokens = [
+        await for (TokenData item in walletEngine.tokens()) item
       ];
-      List<TransactionModel> transactions = [
-        await for (TransactionModel item in walletEngine.transactions()) item
+      List<TransactionData> transactions = [
+        await for (TransactionData item in walletEngine.transactions()) item
       ];
 
       printDebug("""
@@ -171,11 +171,11 @@ tokens: $tokens
 transactions: $transactions
         """);
 
-      expect(address, equals(walletModel.address.hexEip55));
-      expect(username, equals(walletModel.username));
-      expect(securityPassword, equals(walletModel.securityPassword));
-      expect(dateCreated, equals(walletModel.dateCreated));
-      expect(isFavorite, equals(walletModel.isFavorite));
+      expect(address, equals(walletData.address.hexEip55));
+      expect(username, equals(walletData.username));
+      expect(securityPassword, equals(walletData.securityPassword));
+      expect(dateCreated, equals(walletData.dateCreated));
+      expect(isFavorite, equals(walletData.isFavorite));
       expect(isLogged, isFalse);
       expect(tokens, isEmpty);
       expect(transactions, isEmpty);
@@ -305,8 +305,8 @@ privateKey: $privateKey
         String symbol = token[DBKeys.symbol];
         int decimals = token[DBKeys.decimals];
 
-        TokenModel tokenModel = TokenModel.fromJson(token);
-        await walletEngine.addToken(tokenModel);
+        TokenData tokenData = TokenData.fromJson(token);
+        await walletEngine.addToken(tokenData);
 
         printDebug("""
 contract: $contract
@@ -320,17 +320,17 @@ decimals: $decimals
     });
 
     test("Test (tokens)", () async {
-      List<TokenModel> allTokens = [
-        await for (TokenModel item in walletEngine.tokens()) item
+      List<TokenData> allTokens = [
+        await for (TokenData item in walletEngine.tokens()) item
       ];
 
       for (int index = 0; index < allTokens.length; index++) {
-        TokenModel tokenModel = allTokens[index];
-        String contract = tokenModel.contract.hexEip55;
-        String name = tokenModel.name;
-        String symbol = tokenModel.symbol;
-        int decimals = tokenModel.decimals;
-        String website = tokenModel.website;
+        TokenData tokenData = allTokens[index];
+        String contract = tokenData.contract.hexEip55;
+        String name = tokenData.name;
+        String symbol = tokenData.symbol;
+        int decimals = tokenData.decimals;
+        String website = tokenData.website;
 
         printDebug("""
 contract: $contract
@@ -350,19 +350,19 @@ website: $website
     });
 
     test("Test (removeToken)", () async {
-      List<TokenModel> allTokens = [
-        await for (TokenModel item in walletEngine.tokens()) item
+      List<TokenData> allTokens = [
+        await for (TokenData item in walletEngine.tokens()) item
       ];
 
       for (int index = 0; index < allTokens.length; index++) {
-        TokenModel tokenModel = allTokens[index];
-        String contract = tokenModel.contract.hexEip55;
-        String symbol = tokenModel.symbol;
+        TokenData tokenData = allTokens[index];
+        String contract = tokenData.contract.hexEip55;
+        String symbol = tokenData.symbol;
 
-        bool isRemoved = await walletEngine.removeToken(tokenModel);
+        bool isRemoved = await walletEngine.removeToken(tokenData);
         bool isExists = [
           await for (DBRow row in tokensDB.select(
-            items: tokenModel.toJson(),
+            items: tokenData.toJson(),
           ))
             row
         ].isNotEmpty;
@@ -383,9 +383,8 @@ isExists: $isExists
       for (Map<String, dynamic> transaction in transactions) {
         String txHash = transaction[DBKeys.txHash];
 
-        TransactionModel transactionModel =
-            TransactionModel.fromJson(transaction);
-        await walletEngine.addTransaction(transactionModel);
+        TransactionData transactionData = TransactionData.fromJson(transaction);
+        await walletEngine.addTransaction(transactionData);
 
         printDebug("""
 txHash: $txHash
@@ -396,20 +395,20 @@ txHash: $txHash
     });
 
     test("Test (transactions)", () async {
-      List<TransactionModel> allTransactions = [
-        await for (TransactionModel item in walletEngine.transactions()) item
+      List<TransactionData> allTransactions = [
+        await for (TransactionData item in walletEngine.transactions()) item
       ];
 
       for (int index = 0; index < allTransactions.length; index++) {
-        TransactionModel transactionModel = allTransactions[index];
-        String txHash = transactionModel.txHash;
-        String function = transactionModel.function;
-        String fromAddress = transactionModel.fromAddress.hexEip55;
-        String toAddress = transactionModel.toAddress.hexEip55;
-        String amount = transactionModel.amount.getInWei.toString();
-        String symbol = transactionModel.symbol;
-        String dateCreated = transactionModel.dateCreated.toString();
-        int status = transactionModel.status;
+        TransactionData transactionData = allTransactions[index];
+        String txHash = transactionData.txHash;
+        String function = transactionData.function;
+        String fromAddress = transactionData.fromAddress.hexEip55;
+        String toAddress = transactionData.toAddress.hexEip55;
+        String amount = transactionData.amount.getInWei.toString();
+        String symbol = transactionData.symbol;
+        String dateCreated = transactionData.dateCreated.toString();
+        int status = transactionData.status;
 
         printDebug("""
 txHash: $txHash
@@ -442,18 +441,18 @@ status: $status
     });
 
     test("Test (removeTransaction)", () async {
-      List<TransactionModel> allTransactions = [
-        await for (TransactionModel item in walletEngine.transactions()) item
+      List<TransactionData> allTransactions = [
+        await for (TransactionData item in walletEngine.transactions()) item
       ];
 
       for (int index = 0; index < allTransactions.length; index++) {
-        TransactionModel transactionModel = allTransactions[index];
-        String txHash = transactionModel.txHash;
+        TransactionData transactionData = allTransactions[index];
+        String txHash = transactionData.txHash;
 
-        bool isRemoved = await walletEngine.removeTransaction(transactionModel);
+        bool isRemoved = await walletEngine.removeTransaction(transactionData);
         bool isExists = [
           await for (DBRow row in transactionsDB.select(
-            items: transactionModel.toJson(),
+            items: transactionData.toJson(),
           ))
             row
         ].isNotEmpty;

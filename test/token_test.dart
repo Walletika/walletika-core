@@ -23,14 +23,14 @@ void main() async {
   late WalletEngine walletEngine;
   late EthPrivateKey? credentials;
 
-  late TokenModel tokenModel;
+  late TokenData tokenData;
   late WalletikaTokenEngine tokenEngine;
 
   setUpAll(() async {
     bool isConnected = await Provider.connect(
-      NetworkModel.fromJson(networks[networkIndex]),
+      NetworkData.fromJson(networks[networkIndex]),
     );
-    printDebug("${Provider.networkModel.name} connection status: $isConnected");
+    printDebug("${Provider.networkData.name} connection status: $isConnected");
 
     Map<String, dynamic> wallet = wallets[walletIndex];
     String username = wallet[DBKeys.username];
@@ -39,14 +39,14 @@ void main() async {
     String otpCode = getOTPCode(username, password, securityPassword);
 
     walletEngine = WalletEngine(
-      await getWalletModel(username, password, securityPassword),
+      await getWalletData(username, password, securityPassword),
     );
     await walletEngine.login(password: password, otpCode: otpCode);
     credentials = await walletEngine.credentials(otpCode);
 
-    tokenModel = TokenModel.fromJson(tokens[tokenIndex]);
+    tokenData = TokenData.fromJson(tokens[tokenIndex]);
     tokenEngine = WalletikaTokenEngine(
-      tokenModel: tokenModel,
+      tokenData: tokenData,
       sender: walletEngine.address(),
     );
   });
@@ -69,7 +69,7 @@ name: $name
 symbol: $symbol
         """);
 
-      expect(symbol, equals(tokenModel.symbol));
+      expect(symbol, equals(tokenData.symbol));
     });
 
     test("Test (decimals)", () async {
@@ -79,14 +79,14 @@ symbol: $symbol
 decimals: $decimals
         """);
 
-      expect(decimals, equals(tokenModel.decimals));
+      expect(decimals, equals(tokenData.decimals));
     });
 
     test("Test (totalSupply)", () async {
       EtherAmount totalSupply = await tokenEngine.totalSupply();
 
       printDebug("""
-totalSupply: ${totalSupply.getValueInDecimals(tokenModel.decimals)}
+totalSupply: ${totalSupply.getValueInDecimals(tokenData.decimals)}
         """);
 
       expect(totalSupply.getInWei, greaterThanOrEqualTo(BigInt.zero));
@@ -98,7 +98,7 @@ totalSupply: ${totalSupply.getValueInDecimals(tokenModel.decimals)}
       );
 
       printDebug("""
-balance: ${balance.getValueInDecimals(tokenModel.decimals)}
+balance: ${balance.getValueInDecimals(tokenData.decimals)}
         """);
 
       expect(balance.getInWei, greaterThanOrEqualTo(BigInt.zero));
@@ -111,7 +111,7 @@ balance: ${balance.getValueInDecimals(tokenModel.decimals)}
       );
 
       printDebug("""
-allowance: ${allowance.getValueInDecimals(tokenModel.decimals)}
+allowance: ${allowance.getValueInDecimals(tokenData.decimals)}
         """);
 
       expect(allowance.getInWei, greaterThanOrEqualTo(BigInt.zero));
@@ -161,7 +161,7 @@ inflationDurationEndDate: ${inflationDurationEndDate.toString()}
 
       printDebug("""
 availableToMintCurrentYear: ${availableToMintCurrentYear.getValueInDecimals(
-        tokenModel.decimals,
+        tokenData.decimals,
       )}
         """);
 
@@ -172,7 +172,7 @@ availableToMintCurrentYear: ${availableToMintCurrentYear.getValueInDecimals(
     });
   });
 
-  Future<void> sendTransaction(TxDetailsModel txDetails) async {
+  Future<void> sendTransaction(TxDetailsData txDetails) async {
     // Transaction details
     Transaction tx = txDetails.tx;
     Map<String, dynamic> abi = txDetails.abi;
@@ -180,7 +180,7 @@ availableToMintCurrentYear: ${availableToMintCurrentYear.getValueInDecimals(
     String data = txDetails.data;
 
     // Add gas fee
-    TxGasDetailsModel txGasDetails = await Provider.addGas(tx: tx);
+    TxGasDetailsData txGasDetails = await Provider.addGas(tx: tx);
     tx = txGasDetails.tx;
     EtherAmount estimateGas = txGasDetails.estimateGas;
     EtherAmount maxFee = txGasDetails.maxFee;
@@ -207,7 +207,7 @@ txURL: ${Provider.getExploreUrl(sendTransaction)}
         """);
 
     expect(tx.from, equals(walletEngine.address()));
-    expect(tx.to, equals(tokenModel.contract));
+    expect(tx.to, equals(tokenData.contract));
     expect(tx.value, equals(EtherAmount.zero()));
     expect(tx.data, isNotNull);
     expect(tx.nonce, greaterThan(0));
@@ -233,10 +233,10 @@ txURL: ${Provider.getExploreUrl(sendTransaction)}
         '0x8AE5368C7F46572236a5B9dA4E0bf3924E16E60C',
       );
       EtherAmount amount = EtherAmount.fromUnitAndValue(
-        EtherAmount.getUintDecimals(tokenModel.decimals),
+        EtherAmount.getUintDecimals(tokenData.decimals),
         0.1,
       );
-      TxDetailsModel txDetails = await tokenEngine.transfer(
+      TxDetailsData txDetails = await tokenEngine.transfer(
         recipient: recipient,
         amount: amount,
       );

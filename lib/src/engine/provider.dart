@@ -5,11 +5,11 @@ import 'package:web3dart/web3dart.dart';
 import '../models.dart';
 
 class Provider {
-  static late NetworkModel networkModel;
+  static late NetworkData networkData;
   static late Web3Client web3;
 
-  static Future<bool> connect(NetworkModel network) async {
-    networkModel = network;
+  static Future<bool> connect(NetworkData network) async {
+    networkData = network;
     final http.Client httpClient = http.Client();
     web3 = Web3Client(network.rpc, httpClient);
 
@@ -38,15 +38,15 @@ class Provider {
   static bool isEIP1559Supported() {
     bool result = false;
 
-    if (networkModel.rpc.contains('.infura.io/v3') &&
-        networkModel.symbol == 'ETH') {
+    if (networkData.rpc.contains('.infura.io/v3') &&
+        networkData.symbol == 'ETH') {
       result = true;
     }
 
     return result;
   }
 
-  static Future<TxDetailsModel> transfer({
+  static Future<TxDetailsData> transfer({
     required EthereumAddress sender,
     required EthereumAddress recipient,
     required EtherAmount amount,
@@ -58,10 +58,10 @@ class Provider {
       nonce: await web3.getTransactionCount(sender),
     );
 
-    return TxDetailsModel(tx: tx, abi: {}, args: {}, data: '');
+    return TxDetailsData(tx: tx, abi: {}, args: {}, data: '');
   }
 
-  static Future<TxGasDetailsModel> addGas({
+  static Future<TxGasDetailsData> addGas({
     required Transaction tx,
     bool amountAdjustment = true,
     bool eip1559Enabled = false,
@@ -127,7 +127,7 @@ class Provider {
       }
     }
 
-    return TxGasDetailsModel(
+    return TxGasDetailsData(
       tx: tx,
       estimateGas: EtherAmount.inWei(estimateGas),
       maxFee: EtherAmount.inWei(maxFee),
@@ -143,7 +143,7 @@ class Provider {
     return web3.sendTransaction(
       credentials,
       tx,
-      chainId: networkModel.chainID,
+      chainId: networkData.chainID,
     );
   }
 
@@ -167,7 +167,7 @@ class Provider {
 
   static String getExploreUrl(String address) {
     return [
-      networkModel.explorer,
+      networkData.explorer,
       address.length <= 42 ? 'address' : 'tx',
       address
     ].join('/');

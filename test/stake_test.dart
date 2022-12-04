@@ -25,16 +25,16 @@ void main() async {
   late WalletEngine walletEngine;
   late EthPrivateKey? credentials;
 
-  late TokenModel tokenModel;
+  late TokenData tokenData;
 
-  late StakeModel stakeModel;
+  late StakeData stakeData;
   late StakeEngine stakeEngine;
 
   setUpAll(() async {
     bool isConnected = await Provider.connect(
-      NetworkModel.fromJson(networks[networkIndex]),
+      NetworkData.fromJson(networks[networkIndex]),
     );
-    printDebug("${Provider.networkModel.name} connection status: $isConnected");
+    printDebug("${Provider.networkData.name} connection status: $isConnected");
 
     Map<String, dynamic> wallet = wallets[walletIndex];
     String username = wallet[DBKeys.username];
@@ -43,16 +43,16 @@ void main() async {
     String otpCode = getOTPCode(username, password, securityPassword);
 
     walletEngine = WalletEngine(
-      await getWalletModel(username, password, securityPassword),
+      await getWalletData(username, password, securityPassword),
     );
     await walletEngine.login(password: password, otpCode: otpCode);
     credentials = await walletEngine.credentials(otpCode);
 
-    tokenModel = TokenModel.fromJson(tokens[tokenIndex]);
+    tokenData = TokenData.fromJson(tokens[tokenIndex]);
 
-    stakeModel = StakeModel.fromJson(stakes[stakeIndex]);
+    stakeData = StakeData.fromJson(stakes[stakeIndex]);
     stakeEngine = StakeEngine(
-      stakeModel: stakeModel,
+      stakeData: stakeData,
       sender: walletEngine.address(),
     );
   });
@@ -141,7 +141,7 @@ lastPauseTime: ${lastPauseTime.toString()}
       EtherAmount accTokenPerShare = await stakeEngine.accTokenPerShare();
 
       printDebug("""
-accTokenPerShare: ${accTokenPerShare.getValueInDecimals(tokenModel.decimals)}
+accTokenPerShare: ${accTokenPerShare.getValueInDecimals(tokenData.decimals)}
         """);
 
       expect(accTokenPerShare.getInWei, greaterThanOrEqualTo(BigInt.zero));
@@ -181,7 +181,7 @@ lastRewardBlock: $lastRewardBlock
       EtherAmount poolLimitPerUser = await stakeEngine.poolLimitPerUser();
 
       printDebug("""
-poolLimitPerUser: ${poolLimitPerUser.getValueInDecimals(tokenModel.decimals)}
+poolLimitPerUser: ${poolLimitPerUser.getValueInDecimals(tokenData.decimals)}
         """);
 
       expect(poolLimitPerUser.getInWei, greaterThanOrEqualTo(BigInt.zero));
@@ -191,7 +191,7 @@ poolLimitPerUser: ${poolLimitPerUser.getValueInDecimals(tokenModel.decimals)}
       EtherAmount rewardPerBlock = await stakeEngine.rewardPerBlock();
 
       printDebug("""
-rewardPerBlock: ${rewardPerBlock.getValueInDecimals(tokenModel.decimals)}
+rewardPerBlock: ${rewardPerBlock.getValueInDecimals(tokenData.decimals)}
         """);
 
       expect(rewardPerBlock.getInWei, greaterThanOrEqualTo(BigInt.zero));
@@ -201,7 +201,7 @@ rewardPerBlock: ${rewardPerBlock.getValueInDecimals(tokenModel.decimals)}
       EtherAmount precisionFactor = await stakeEngine.precisionFactor();
 
       printDebug("""
-precisionFactor: ${precisionFactor.getValueInDecimals(tokenModel.decimals)}
+precisionFactor: ${precisionFactor.getValueInDecimals(tokenData.decimals)}
         """);
 
       expect(precisionFactor.getInWei, greaterThanOrEqualTo(BigInt.zero));
@@ -214,7 +214,7 @@ precisionFactor: ${precisionFactor.getValueInDecimals(tokenModel.decimals)}
 rewardToken: ${rewardToken.hexEip55}
         """);
 
-      expect(rewardToken, equals(tokenModel.contract));
+      expect(rewardToken, equals(tokenData.contract));
     });
 
     test("Test (stakedToken)", () async {
@@ -224,14 +224,14 @@ rewardToken: ${rewardToken.hexEip55}
 stakedToken: ${stakedToken.hexEip55}
         """);
 
-      expect(stakedToken, equals(tokenModel.contract));
+      expect(stakedToken, equals(tokenData.contract));
     });
 
     test("Test (totalSupply)", () async {
       EtherAmount totalSupply = await stakeEngine.totalSupply();
 
       printDebug("""
-totalSupply: ${totalSupply.getValueInDecimals(tokenModel.decimals)}
+totalSupply: ${totalSupply.getValueInDecimals(tokenData.decimals)}
         """);
 
       expect(totalSupply.getInWei, greaterThanOrEqualTo(BigInt.zero));
@@ -241,7 +241,7 @@ totalSupply: ${totalSupply.getValueInDecimals(tokenModel.decimals)}
       EtherAmount rewardSupply = await stakeEngine.rewardSupply();
 
       printDebug("""
-rewardSupply: ${rewardSupply.getValueInDecimals(tokenModel.decimals)}
+rewardSupply: ${rewardSupply.getValueInDecimals(tokenData.decimals)}
         """);
 
       expect(rewardSupply.getInWei, greaterThanOrEqualTo(BigInt.zero));
@@ -253,7 +253,7 @@ rewardSupply: ${rewardSupply.getValueInDecimals(tokenModel.decimals)}
       );
 
       printDebug("""
-balanceOf: ${balanceOf.getValueInDecimals(tokenModel.decimals)}
+balanceOf: ${balanceOf.getValueInDecimals(tokenData.decimals)}
         """);
 
       expect(balanceOf.getInWei, greaterThanOrEqualTo(BigInt.zero));
@@ -265,14 +265,14 @@ balanceOf: ${balanceOf.getValueInDecimals(tokenModel.decimals)}
       );
 
       printDebug("""
-pendingReward: ${pendingReward.getValueInDecimals(tokenModel.decimals)}
+pendingReward: ${pendingReward.getValueInDecimals(tokenData.decimals)}
         """);
 
       expect(pendingReward.getInWei, greaterThanOrEqualTo(BigInt.zero));
     });
   });
 
-  Future<void> sendTransaction(TxDetailsModel txDetails) async {
+  Future<void> sendTransaction(TxDetailsData txDetails) async {
     // Transaction details
     Transaction tx = txDetails.tx;
     Map<String, dynamic> abi = txDetails.abi;
@@ -280,7 +280,7 @@ pendingReward: ${pendingReward.getValueInDecimals(tokenModel.decimals)}
     String data = txDetails.data;
 
     // Add gas fee
-    TxGasDetailsModel txGasDetails = await Provider.addGas(tx: tx);
+    TxGasDetailsData txGasDetails = await Provider.addGas(tx: tx);
     tx = txGasDetails.tx;
     EtherAmount estimateGas = txGasDetails.estimateGas;
     EtherAmount maxFee = txGasDetails.maxFee;
@@ -307,7 +307,7 @@ txURL: ${Provider.getExploreUrl(sendTransaction)}
         """);
 
     expect(tx.from, equals(walletEngine.address()));
-    expect(tx.to, equals(stakeModel.contract));
+    expect(tx.to, equals(stakeData.contract));
     expect(tx.value, equals(EtherAmount.zero()));
     expect(tx.data, isNotNull);
     expect(tx.nonce, greaterThan(0));
@@ -330,10 +330,10 @@ txURL: ${Provider.getExploreUrl(sendTransaction)}
   group("Stake Transaction Group:", () {
     test("Test (deposit)", () async {
       EtherAmount amount = EtherAmount.fromUnitAndValue(
-        EtherAmount.getUintDecimals(tokenModel.decimals),
+        EtherAmount.getUintDecimals(tokenData.decimals),
         2,
       );
-      TxDetailsModel txDetails = await stakeEngine.deposit(
+      TxDetailsData txDetails = await stakeEngine.deposit(
         amount: amount,
       );
 

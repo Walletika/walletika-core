@@ -36,7 +36,7 @@ class ContractEngine {
     return func.decodeReturnValues(encodedResult);
   }
 
-  Future<TxDetailsModel> buildTransaction({
+  Future<TxDetailsData> buildTransaction({
     required String function,
     List<dynamic>? params,
   }) async {
@@ -99,7 +99,7 @@ class ContractEngine {
       nonce: await Provider.web3.getTransactionCount(sender!),
     );
 
-    return TxDetailsModel(
+    return TxDetailsData(
       tx: tx,
       abi: abi,
       args: args,

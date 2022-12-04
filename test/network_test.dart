@@ -42,17 +42,17 @@ isAdded: $isAdded
     });
 
     test("Test (getAllNetworks)", () async {
-      List<NetworkModel> allNetworks = [
-        await for (NetworkModel item in getAllNetworks()) item
+      List<NetworkData> allNetworks = [
+        await for (NetworkData item in getAllNetworks()) item
       ];
 
       for (int index = 0; index < allNetworks.length; index++) {
-        NetworkModel networkModel = allNetworks[index];
-        String rpc = networkModel.rpc;
-        String name = networkModel.name;
-        int chainID = networkModel.chainID;
-        String symbol = networkModel.symbol;
-        String explorer = networkModel.explorer;
+        NetworkData networkData = allNetworks[index];
+        String rpc = networkData.rpc;
+        String name = networkData.name;
+        int chainID = networkData.chainID;
+        String symbol = networkData.symbol;
+        String explorer = networkData.explorer;
 
         printDebug("""
 rpc: $rpc
@@ -73,18 +73,18 @@ explorer: $explorer
     });
 
     test("Test (removeNetwork)", () async {
-      List<NetworkModel> allNetworks = [
-        await for (NetworkModel item in getAllNetworks()) item
+      List<NetworkData> allNetworks = [
+        await for (NetworkData item in getAllNetworks()) item
       ];
 
       for (int index = 0; index < allNetworks.length; index++) {
-        NetworkModel networkModel = allNetworks[index];
-        String name = networkModel.name;
+        NetworkData networkData = allNetworks[index];
+        String name = networkData.name;
 
-        bool isRemoved = await removeNetwork(networkModel);
+        bool isRemoved = await removeNetwork(networkData);
         bool isExists = [
           await for (DBRow row in networksDB.select(
-            items: networkModel.toJson(),
+            items: networkData.toJson(),
           ))
             row
         ].isNotEmpty;

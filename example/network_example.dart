@@ -20,8 +20,8 @@ void main() async {
   );
 
   // Get all networks
-  List<NetworkModel> allNetworks = [
-    await for (NetworkModel item in getAllNetworks()) item
+  List<NetworkData> allNetworks = [
+    await for (NetworkData item in getAllNetworks()) item
   ];
 
   // Remove a network

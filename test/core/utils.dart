@@ -17,7 +17,7 @@ String getOTPCode(
   return currentOTPCode(otpKey);
 }
 
-Future<WalletModel> getWalletModel(
+Future<WalletData> getWalletData(
   String username,
   String password,
   String securityPassword,
@@ -29,7 +29,7 @@ Future<WalletModel> getWalletModel(
     createNew: true,
   );
 
-  return WalletModel(
+  return WalletData(
     username: username,
     address: walletInfo!.address,
     securityPassword: walletInfo.securityPassword,

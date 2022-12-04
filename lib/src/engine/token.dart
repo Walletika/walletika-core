@@ -4,11 +4,11 @@ import '../core/core.dart';
 import '../models.dart';
 
 class TokenEngine extends ContractEngine {
-  final TokenModel tokenModel;
+  final TokenData tokenData;
 
-  TokenEngine({required this.tokenModel, super.sender})
+  TokenEngine({required this.tokenData, super.sender})
       : super(
-          address: tokenModel.contract,
+          address: tokenData.contract,
           abi: tokenABI,
           name: 'tokenERC20',
         );
@@ -76,7 +76,7 @@ class TokenEngine extends ContractEngine {
     );
   }
 
-  Future<TxDetailsModel> approve({
+  Future<TxDetailsData> approve({
     required EthereumAddress spender,
     required EtherAmount amount,
   }) {
@@ -86,7 +86,7 @@ class TokenEngine extends ContractEngine {
     );
   }
 
-  Future<TxDetailsModel> transfer({
+  Future<TxDetailsData> transfer({
     required EthereumAddress recipient,
     required EtherAmount amount,
   }) {
@@ -96,7 +96,7 @@ class TokenEngine extends ContractEngine {
     );
   }
 
-  Future<TxDetailsModel> transferFrom({
+  Future<TxDetailsData> transferFrom({
     required EthereumAddress sender,
     required EthereumAddress recipient,
     required EtherAmount amount,
@@ -107,7 +107,7 @@ class TokenEngine extends ContractEngine {
     );
   }
 
-  Future<TxDetailsModel> increaseAllowance({
+  Future<TxDetailsData> increaseAllowance({
     required EthereumAddress spender,
     required EtherAmount amount,
   }) {
@@ -117,7 +117,7 @@ class TokenEngine extends ContractEngine {
     );
   }
 
-  Future<TxDetailsModel> decreaseAllowance({
+  Future<TxDetailsData> decreaseAllowance({
     required EthereumAddress spender,
     required EtherAmount amount,
   }) {
@@ -129,7 +129,7 @@ class TokenEngine extends ContractEngine {
 }
 
 class WalletikaTokenEngine extends TokenEngine {
-  WalletikaTokenEngine({required super.tokenModel, super.sender});
+  WalletikaTokenEngine({required super.tokenData, super.sender});
 
   Future<EthereumAddress> owner({BlockNum? atBlock}) {
     return functionCall(
@@ -169,7 +169,7 @@ class WalletikaTokenEngine extends TokenEngine {
     );
   }
 
-  Future<TxDetailsModel> transferMultiple({
+  Future<TxDetailsData> transferMultiple({
     required List<EthereumAddress> addresses,
     required List<EtherAmount> amounts,
   }) {
@@ -181,14 +181,14 @@ class WalletikaTokenEngine extends TokenEngine {
     );
   }
 
-  Future<TxDetailsModel> burn({required EtherAmount amount}) {
+  Future<TxDetailsData> burn({required EtherAmount amount}) {
     return buildTransaction(
       function: 'burn',
       params: [amount.getInWei],
     );
   }
 
-  Future<TxDetailsModel> burnFrom({
+  Future<TxDetailsData> burnFrom({
     required EthereumAddress sender,
     required EtherAmount amount,
   }) {
@@ -198,14 +198,14 @@ class WalletikaTokenEngine extends TokenEngine {
     );
   }
 
-  Future<TxDetailsModel> mint({required EtherAmount amount}) {
+  Future<TxDetailsData> mint({required EtherAmount amount}) {
     return buildTransaction(
       function: 'mint',
       params: [amount.getInWei],
     );
   }
 
-  Future<TxDetailsModel> recoverToken({
+  Future<TxDetailsData> recoverToken({
     required EthereumAddress token,
     required EtherAmount amount,
   }) {
@@ -215,13 +215,13 @@ class WalletikaTokenEngine extends TokenEngine {
     );
   }
 
-  Future<TxDetailsModel> renounceOwnership() {
+  Future<TxDetailsData> renounceOwnership() {
     return buildTransaction(
       function: 'renounceOwnership',
     );
   }
 
-  Future<TxDetailsModel> transferOwnership({
+  Future<TxDetailsData> transferOwnership({
     required EthereumAddress newOwner,
   }) {
     return buildTransaction(

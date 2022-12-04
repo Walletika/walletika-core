@@ -10,9 +10,9 @@ import '../core/core.dart';
 import '../models.dart';
 import 'provider.dart';
 
-Stream<WalletModel> getAllWallets() async* {
+Stream<WalletData> getAllWallets() async* {
   await for (final DBRow row in walletsDB.select()) {
-    yield WalletModel.fromJson(row.items);
+    yield WalletData.fromJson(row.items);
   }
 }
 
@@ -44,7 +44,7 @@ Future<bool> addNewWallet({
   return false;
 }
 
-Future<bool> removeWallet(WalletModel wallet) async {
+Future<bool> removeWallet(WalletData wallet) async {
   bool result = false;
 
   await for (final DBRow row in walletsDB.select(
@@ -90,7 +90,7 @@ Future<void> importWallets({
 }
 
 class WalletEngine {
-  final WalletModel wallet;
+  final WalletData wallet;
 
   String? _password;
   bool _isLogged = false;
@@ -178,34 +178,34 @@ class WalletEngine {
     _isLogged = false;
   }
 
-  Stream<TokenModel> tokens() async* {
+  Stream<TokenData> tokens() async* {
     await for (final DBRow row in tokensDB.select(
       items: {
         DBKeys.address: wallet.address.hexEip55,
-        DBKeys.rpc: Provider.networkModel.rpc,
+        DBKeys.rpc: Provider.networkData.rpc,
       },
     )) {
-      yield TokenModel.fromJson(row.items);
+      yield TokenData.fromJson(row.items);
     }
   }
 
-  Future<void> addToken(TokenModel token) async {
+  Future<void> addToken(TokenData token) async {
     tokensDB.addRow({
       DBKeys.address: wallet.address.hexEip55,
-      DBKeys.rpc: Provider.networkModel.rpc,
+      DBKeys.rpc: Provider.networkData.rpc,
       ...token.toJson(),
     });
 
     await tokensDB.dump();
   }
 
-  Future<bool> removeToken(TokenModel token) async {
+  Future<bool> removeToken(TokenData token) async {
     bool result = false;
 
     await for (final DBRow row in tokensDB.select(
       items: {
         DBKeys.address: wallet.address.hexEip55,
-        DBKeys.rpc: Provider.networkModel.rpc,
+        DBKeys.rpc: Provider.networkData.rpc,
         ...token.toJson(),
       },
     )) {
@@ -218,34 +218,34 @@ class WalletEngine {
     return result;
   }
 
-  Stream<TransactionModel> transactions() async* {
+  Stream<TransactionData> transactions() async* {
     await for (final DBRow row in transactionsDB.select(
       items: {
         DBKeys.address: wallet.address.hexEip55,
-        DBKeys.rpc: Provider.networkModel.rpc,
+        DBKeys.rpc: Provider.networkData.rpc,
       },
     )) {
-      yield TransactionModel.fromJson(row.items);
+      yield TransactionData.fromJson(row.items);
     }
   }
 
-  Future<void> addTransaction(TransactionModel transaction) async {
+  Future<void> addTransaction(TransactionData transaction) async {
     transactionsDB.addRow({
       DBKeys.address: wallet.address.hexEip55,
-      DBKeys.rpc: Provider.networkModel.rpc,
+      DBKeys.rpc: Provider.networkData.rpc,
       ...transaction.toJson(),
     });
 
     await transactionsDB.dump();
   }
 
-  Future<bool> removeTransaction(TransactionModel transaction) async {
+  Future<bool> removeTransaction(TransactionData transaction) async {
     bool result = false;
 
     await for (final DBRow row in transactionsDB.select(
       items: {
         DBKeys.address: wallet.address.hexEip55,
-        DBKeys.rpc: Provider.networkModel.rpc,
+        DBKeys.rpc: Provider.networkData.rpc,
         ...transaction.toJson(),
       },
     )) {

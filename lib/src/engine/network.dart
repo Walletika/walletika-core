@@ -3,9 +3,9 @@ import 'package:aesdatabase/aesdatabase.dart';
 import '../core/core.dart';
 import '../models.dart';
 
-Stream<NetworkModel> getAllNetworks() async* {
+Stream<NetworkData> getAllNetworks() async* {
   await for (final DBRow row in networksDB.select()) {
-    yield NetworkModel.fromJson(row.items);
+    yield NetworkData.fromJson(row.items);
   }
 }
 
@@ -28,7 +28,7 @@ Future<bool> addNewNetwork({
   return true;
 }
 
-Future<bool> removeNetwork(NetworkModel network) async {
+Future<bool> removeNetwork(NetworkData network) async {
   bool result = false;
 
   await for (final DBRow row in networksDB.select(

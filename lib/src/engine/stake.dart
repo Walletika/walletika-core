@@ -4,9 +4,9 @@ import 'package:web3dart/web3dart.dart';
 import '../core/core.dart';
 import '../models.dart';
 
-Stream<StakeModel> getAllStakes() async* {
+Stream<StakeData> getAllStakes() async* {
   await for (final DBRow row in stakeDB.select()) {
-    yield StakeModel.fromJson(row.items);
+    yield StakeData.fromJson(row.items);
   }
 }
 
@@ -30,11 +30,11 @@ Future<bool> importStakeContracts(String apiURL) async {
 }
 
 class StakeEngine extends ContractEngine {
-  final StakeModel stakeModel;
+  final StakeData stakeData;
 
-  StakeEngine({required this.stakeModel, super.sender})
+  StakeEngine({required this.stakeData, super.sender})
       : super(
-          address: stakeModel.contract,
+          address: stakeData.contract,
           abi: stakeABI,
           name: 'stakeContract',
         );
@@ -229,7 +229,7 @@ class StakeEngine extends ContractEngine {
     );
   }
 
-  Future<TxDetailsModel> initialize({
+  Future<TxDetailsData> initialize({
     required EthereumAddress stakedToken,
     required EthereumAddress rewardToken,
     required EtherAmount rewardPerBlock,
@@ -254,27 +254,27 @@ class StakeEngine extends ContractEngine {
     );
   }
 
-  Future<TxDetailsModel> deposit({required EtherAmount amount}) {
+  Future<TxDetailsData> deposit({required EtherAmount amount}) {
     return buildTransaction(
       function: 'deposit',
       params: [amount.getInWei],
     );
   }
 
-  Future<TxDetailsModel> withdraw({required EtherAmount amount}) {
+  Future<TxDetailsData> withdraw({required EtherAmount amount}) {
     return buildTransaction(
       function: 'withdraw',
       params: [amount.getInWei],
     );
   }
 
-  Future<TxDetailsModel> getReward() {
+  Future<TxDetailsData> getReward() {
     return buildTransaction(
       function: 'getReward',
     );
   }
 
-  Future<TxDetailsModel> emergencyRewardWithdraw({
+  Future<TxDetailsData> emergencyRewardWithdraw({
     required EtherAmount amount,
   }) {
     return buildTransaction(
@@ -283,7 +283,7 @@ class StakeEngine extends ContractEngine {
     );
   }
 
-  Future<TxDetailsModel> recoverWrongTokens({
+  Future<TxDetailsData> recoverWrongTokens({
     required EthereumAddress token,
     required EtherAmount amount,
   }) {
@@ -293,20 +293,20 @@ class StakeEngine extends ContractEngine {
     );
   }
 
-  Future<TxDetailsModel> stopReward() {
+  Future<TxDetailsData> stopReward() {
     return buildTransaction(
       function: 'stopReward',
     );
   }
 
-  Future<TxDetailsModel> setPaused({required bool paused}) {
+  Future<TxDetailsData> setPaused({required bool paused}) {
     return buildTransaction(
       function: 'setPaused',
       params: [paused],
     );
   }
 
-  Future<TxDetailsModel> updatePoolLimitPerUser({
+  Future<TxDetailsData> updatePoolLimitPerUser({
     required bool hasUserLimit,
     required EtherAmount poolLimitPerUser,
   }) {
@@ -316,14 +316,14 @@ class StakeEngine extends ContractEngine {
     );
   }
 
-  Future<TxDetailsModel> updateRewardPerBlock({required EtherAmount amount}) {
+  Future<TxDetailsData> updateRewardPerBlock({required EtherAmount amount}) {
     return buildTransaction(
       function: 'updateRewardPerBlock',
       params: [amount.getInWei],
     );
   }
 
-  Future<TxDetailsModel> updateStartAndEndBlocks({
+  Future<TxDetailsData> updateStartAndEndBlocks({
     required int startBlock,
     required int bonusEndBlock,
   }) {
@@ -333,13 +333,13 @@ class StakeEngine extends ContractEngine {
     );
   }
 
-  Future<TxDetailsModel> renounceOwnership() {
+  Future<TxDetailsData> renounceOwnership() {
     return buildTransaction(
       function: 'renounceOwnership',
     );
   }
 
-  Future<TxDetailsModel> transferOwnership({
+  Future<TxDetailsData> transferOwnership({
     required EthereumAddress newOwner,
   }) {
     return buildTransaction(

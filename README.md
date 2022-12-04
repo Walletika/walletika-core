@@ -14,7 +14,7 @@ await walletikaSDKInitialize();
 
 ### Provider engine to connect with ethereum or any network of layer2
 ```dart
-NetworkModel networkModel = NetworkModel(
+NetworkData networkData = NetworkData(
     rpc: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
     name: 'Ethereum',
     chainID: 1,
@@ -23,7 +23,7 @@ NetworkModel networkModel = NetworkModel(
 );
 
 // Connect with RPC
-bool isConnected = await Provider.connect(networkModel);
+bool isConnected = await Provider.connect(networkData);
 
 // Check balance
 EtherAmount balance = await Provider.balanceOf(
@@ -31,7 +31,7 @@ EtherAmount balance = await Provider.balanceOf(
 );
 
 // Transfer coin
-TxDetailsModel txDetails = await Provider.transfer(
+TxDetailsData txDetails = await Provider.transfer(
     sender: EthereumAddress.fromHex('0xC94EA8D9694cfe25b94D977eEd4D60d7c0985BD3'),
     recipient: EthereumAddress.fromHex('0xC94EA8D9694cfe25b94D977eEd4D60d7c0985BD3'),
     amount: EtherAmount.fromUnitAndValue(EtherUnit.ether, 1.5),
@@ -42,7 +42,7 @@ Map<String, dynamic> args = txDetails.args;
 String data = txDetails.data;
 
 // Add gas fee
-TxGasDetailsModel txGasDetails = await Provider.addGas(tx: tx, eip1559Enabled: true);
+TxGasDetailsData txGasDetails = await Provider.addGas(tx: tx, eip1559Enabled: true);
 tx = txGasDetails.tx;
 EtherAmount estimateGas = txGasDetails.estimateGas;
 EtherAmount maxFee = txGasDetails.maxFee;
@@ -84,7 +84,7 @@ Uint8List securityPasswordBytes = wallet!.securityPassword;
 ### Wallet engine for wallet management
 ```dart
 // Wallet engine
-WalletEngine walletEngine = WalletEngine(walletModel);
+WalletEngine walletEngine = WalletEngine(walletData);
 
 // Login
 await walletEngine.login(password: password, otpCode: otpCode);
@@ -93,8 +93,8 @@ await walletEngine.login(password: password, otpCode: otpCode);
 await walletEngine.privateKey(otpCode);
 
 // Get all tokens
-List<TokenModel> allTokens = await walletEngine.tokens();
+List<TokenData> allTokens = await walletEngine.tokens();
 
 // Get all transactions
-List<TransactionModel> allTransactions = await walletEngine.transactions();
+List<TransactionData> allTransactions = await walletEngine.transactions();
 ```

@@ -9,7 +9,7 @@ void main() async {
   // initialize walletika SDK
   await walletikaSDKInitialize();
 
-  NetworkModel networkModel = NetworkModel(
+  NetworkData networkData = NetworkData(
     rpc: 'https://data-seed-prebsc-1-s1.binance.org:8545',
     name: 'Binance Smart Chain (Testnet)',
     chainID: 97,
@@ -18,7 +18,7 @@ void main() async {
   );
 
   // Connect with RPC
-  bool isConnected = await Provider.connect(networkModel);
+  bool isConnected = await Provider.connect(networkData);
 
   // Check balance
   EtherAmount balance = await Provider.balanceOf(address: address);
@@ -43,7 +43,7 @@ void main() async {
   );
 
   // Transfer coin
-  TxDetailsModel txDetails = await Provider.transfer(
+  TxDetailsData txDetails = await Provider.transfer(
     sender: address,
     recipient: address,
     amount: balance,
@@ -54,7 +54,7 @@ void main() async {
   String data = txDetails.data;
 
   // Add gas fee
-  TxGasDetailsModel txGasDetails = await Provider.addGas(tx: tx);
+  TxGasDetailsData txGasDetails = await Provider.addGas(tx: tx);
   tx = txGasDetails.tx;
   EtherAmount estimateGas = txGasDetails.estimateGas;
   EtherAmount maxFee = txGasDetails.maxFee;

@@ -37,14 +37,14 @@ isAdded: $isAdded
     });
 
     test("Test (getAllAddressesBook)", () async {
-      List<AddressBookModel> allAddressesBook = [
-        await for (AddressBookModel item in getAllAddressesBook()) item
+      List<AddressBookData> allAddressesBook = [
+        await for (AddressBookData item in getAllAddressesBook()) item
       ];
 
       for (int index = 0; index < allAddressesBook.length; index++) {
-        AddressBookModel addressBookModel = allAddressesBook[index];
-        String address = addressBookModel.address.hexEip55;
-        String username = addressBookModel.username;
+        AddressBookData addressBookData = allAddressesBook[index];
+        String address = addressBookData.address.hexEip55;
+        String username = addressBookData.username;
 
         printDebug("""
 address: $address
@@ -59,18 +59,18 @@ username: $username
     });
 
     test("Test (removeAddressBook)", () async {
-      List<AddressBookModel> allAddressesBook = [
-        await for (AddressBookModel item in getAllAddressesBook()) item
+      List<AddressBookData> allAddressesBook = [
+        await for (AddressBookData item in getAllAddressesBook()) item
       ];
 
       for (int index = 0; index < allAddressesBook.length; index++) {
-        AddressBookModel addressBookModel = allAddressesBook[index];
-        String username = addressBookModel.username;
+        AddressBookData addressBookData = allAddressesBook[index];
+        String username = addressBookData.username;
 
-        bool isRemoved = await removeAddressBook(addressBookModel);
+        bool isRemoved = await removeAddressBook(addressBookData);
         bool isExists = [
           await for (DBRow row in addressesBookDB.select(
-            items: addressBookModel.toJson(),
+            items: addressBookData.toJson(),
           ))
             row
         ].isNotEmpty;

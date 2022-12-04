@@ -9,7 +9,7 @@ void main() async {
   // initialize walletika SDK
   await walletikaSDKInitialize();
 
-  NetworkModel networkModel = NetworkModel(
+  NetworkData networkData = NetworkData(
     rpc: 'https://data-seed-prebsc-1-s1.binance.org:8545',
     name: 'Binance Smart Chain (Testnet)',
     chainID: 97,
@@ -18,9 +18,9 @@ void main() async {
   );
 
   // Connect with RPC
-  bool isConnected = await Provider.connect(networkModel);
+  bool isConnected = await Provider.connect(networkData);
 
-  TokenModel tokenModel = TokenModel(
+  TokenData tokenData = TokenData(
     contract: EthereumAddress.fromHex(
       '0xc4d3716B65b9c4c6b69e4E260b37e0e476e28d87',
     ),
@@ -30,13 +30,13 @@ void main() async {
     website: '',
   );
 
-  StakeModel stakeModel = StakeModel(
+  StakeData stakeData = StakeData(
     rpc: 'https://data-seed-prebsc-1-s1.binance.org:8545',
     contract: EthereumAddress.fromHex(
       '0xbfAa034b854703f31B34eCC1c68C356feeb19268',
     ),
-    stakeToken: tokenModel,
-    rewardToken: tokenModel,
+    stakeToken: tokenData,
+    rewardToken: tokenData,
     startBlock: 23545120,
     endBlock: 128636320,
     startTime: DateTime.parse('1970-01-01 02:00:00.000'),
@@ -45,7 +45,7 @@ void main() async {
 
   // Token engine
   StakeEngine stakeEngine = StakeEngine(
-    stakeModel: stakeModel,
+    stakeData: stakeData,
     sender: address,
   );
 
@@ -59,7 +59,7 @@ void main() async {
   EtherAmount balance = await stakeEngine.balanceOf(address: address);
 
   // Despoit token
-  TxDetailsModel txDetails = await stakeEngine.deposit(
+  TxDetailsData txDetails = await stakeEngine.deposit(
     amount: balance,
   );
   Transaction tx = txDetails.tx;
@@ -68,7 +68,7 @@ void main() async {
   String data = txDetails.data;
 
   // Add gas fee
-  TxGasDetailsModel txGasDetails = await Provider.addGas(tx: tx);
+  TxGasDetailsData txGasDetails = await Provider.addGas(tx: tx);
   tx = txGasDetails.tx;
   EtherAmount estimateGas = txGasDetails.estimateGas;
   EtherAmount maxFee = txGasDetails.maxFee;

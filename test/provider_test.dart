@@ -24,7 +24,7 @@ void main() async {
       int chainID = networks[networkIndex][DBKeys.chainID];
       String symbol = networks[networkIndex][DBKeys.symbol];
       String explorer = networks[networkIndex][DBKeys.explorer];
-      NetworkModel networkModel = NetworkModel(
+      NetworkData networkData = NetworkData(
         rpc: rpc,
         name: name,
         chainID: chainID,
@@ -32,7 +32,7 @@ void main() async {
         explorer: explorer,
       );
 
-      bool isConnected = await Provider.connect(networkModel);
+      bool isConnected = await Provider.connect(networkData);
 
       printDebug("""
 rpc: $rpc
@@ -43,11 +43,11 @@ explorer: $explorer
 isConnected: $isConnected
         """);
 
-      expect(Provider.networkModel.rpc, equals(rpc));
-      expect(Provider.networkModel.name, equals(name));
-      expect(Provider.networkModel.chainID, equals(chainID));
-      expect(Provider.networkModel.symbol, equals(symbol));
-      expect(Provider.networkModel.explorer, equals(explorer));
+      expect(Provider.networkData.rpc, equals(rpc));
+      expect(Provider.networkData.name, equals(name));
+      expect(Provider.networkData.chainID, equals(chainID));
+      expect(Provider.networkData.symbol, equals(symbol));
+      expect(Provider.networkData.explorer, equals(explorer));
       expect(isConnected, isTrue);
     });
 
@@ -89,7 +89,7 @@ isEIP1559Supported: $isEIP1559Supported
 
       expect(
         isEIP1559Supported,
-        Provider.networkModel.symbol == 'ETH' ? isTrue : isFalse,
+        Provider.networkData.symbol == 'ETH' ? isTrue : isFalse,
       );
     });
 
@@ -110,9 +110,9 @@ txURL: $txURL
 
       expect(
         addressURL,
-        equals('${Provider.networkModel.explorer}/address/$address'),
+        equals('${Provider.networkData.explorer}/address/$address'),
       );
-      expect(txURL, equals('${Provider.networkModel.explorer}/tx/$txHash'));
+      expect(txURL, equals('${Provider.networkData.explorer}/tx/$txHash'));
     });
 
     test("Test (getTransaction)", () async {
@@ -173,16 +173,16 @@ to: ${tx.to}
         EtherAmount maxAmount;
 
         // Wallet engine
-        WalletModel walletModel = await getWalletModel(
+        WalletData walletData = await getWalletData(
           username,
           password,
           securityPassword,
         );
-        WalletEngine walletEngine = WalletEngine(walletModel);
+        WalletEngine walletEngine = WalletEngine(walletData);
 
         // Check balance and skip if not enough
         EtherAmount balance = await Provider.balanceOf(
-          address: walletModel.address,
+          address: walletData.address,
         );
         if (balance.getInWei <= amount.getInWei) continue;
 
@@ -192,8 +192,8 @@ to: ${tx.to}
         EthPrivateKey? credentials = await walletEngine.credentials(otpCode);
 
         // Build transaction
-        TxDetailsModel txDetails = await Provider.transfer(
-          sender: walletModel.address,
+        TxDetailsData txDetails = await Provider.transfer(
+          sender: walletData.address,
           recipient: recipient,
           amount: amount,
         );
@@ -203,7 +203,7 @@ to: ${tx.to}
         data = txDetails.data;
 
         // Add gas fee
-        TxGasDetailsModel txGasDetails = await Provider.addGas(tx: tx);
+        TxGasDetailsData txGasDetails = await Provider.addGas(tx: tx);
         tx = txGasDetails.tx;
         estimateGas = txGasDetails.estimateGas;
         maxFee = txGasDetails.maxFee;

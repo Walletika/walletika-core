@@ -4,9 +4,9 @@ import 'package:web3dart/web3dart.dart';
 import '../core/core.dart';
 import '../models.dart';
 
-Stream<AddressBookModel> getAllAddressesBook() async* {
+Stream<AddressBookData> getAllAddressesBook() async* {
   await for (final DBRow row in addressesBookDB.select()) {
-    yield AddressBookModel.fromJson(row.items);
+    yield AddressBookData.fromJson(row.items);
   }
 }
 
@@ -23,7 +23,7 @@ Future<bool> addNewAddressBook({
   return true;
 }
 
-Future<bool> removeAddressBook(AddressBookModel addressBook) async {
+Future<bool> removeAddressBook(AddressBookData addressBook) async {
   bool result = false;
 
   await for (final DBRow row in addressesBookDB.select(
