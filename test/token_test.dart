@@ -1,7 +1,6 @@
 import 'package:walletika_sdk/src/core/core.dart';
 import 'package:walletika_sdk/walletika_sdk.dart';
 import 'package:test/test.dart';
-import 'package:web3dart/web3dart.dart';
 
 import 'core/core.dart';
 
