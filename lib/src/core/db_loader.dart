@@ -1,15 +1,17 @@
 import 'package:aesdatabase/aesdatabase.dart';
 
 Future<DatabaseEngine> databaseLoader({
+  required String directory,
   required String filename,
   required List<String> columnTitles,
   bool hasBackup = false,
   String? key,
 }) async {
   final DriveSetup drive = DriveSetup(hasBackup: hasBackup);
-  drive.databaseUpdate(file: filename);
+  drive.tempUpdate(main: directory);
+  drive.databaseUpdate(main: directory, file: filename);
 
-  if (hasBackup) drive.backupUpdate(file: 'Walletika');
+  if (hasBackup) drive.backupUpdate(main: directory, file: 'Walletika');
 
   await drive.create();
 

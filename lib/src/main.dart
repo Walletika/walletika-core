@@ -1,17 +1,14 @@
-import 'dart:io';
-
 import 'package:walletika_sdk/src/engine/stake.dart';
 
 import 'core/core.dart';
 
-Future<void> walletikaSDKInitialize({String? encryptionKey}) async {
-  // ABIs loading
-  tokenABI = await File(tokenABIPath).readAsString();
-  stakeABI = await File(stakeABIPath).readAsString();
-  // wnsABI = await File(wnsABIPath).readAsString();
-
+Future<void> walletikaSDKInitialize({
+  String? encryptionKey,
+  String directory = "assets",
+}) async {
   // Database loading
   walletsDB = await databaseLoader(
+    directory: directory,
     filename: "wallets",
     columnTitles: [
       DBKeys.username,
@@ -25,6 +22,7 @@ Future<void> walletikaSDKInitialize({String? encryptionKey}) async {
   );
 
   addressesBookDB = await databaseLoader(
+    directory: directory,
     filename: "addressesbook",
     columnTitles: [
       DBKeys.username,
@@ -34,6 +32,7 @@ Future<void> walletikaSDKInitialize({String? encryptionKey}) async {
   );
 
   networksDB = await databaseLoader(
+    directory: directory,
     filename: "networks",
     columnTitles: [
       DBKeys.rpc,
@@ -46,6 +45,7 @@ Future<void> walletikaSDKInitialize({String? encryptionKey}) async {
   );
 
   tokensDB = await databaseLoader(
+    directory: directory,
     filename: "tokens",
     columnTitles: [
       DBKeys.address,
@@ -60,6 +60,7 @@ Future<void> walletikaSDKInitialize({String? encryptionKey}) async {
   );
 
   transactionsDB = await databaseLoader(
+    directory: directory,
     filename: "transactions",
     columnTitles: [
       DBKeys.address,
@@ -77,6 +78,7 @@ Future<void> walletikaSDKInitialize({String? encryptionKey}) async {
   );
 
   stakeDB = await databaseLoader(
+    directory: directory,
     filename: "stakecontracts",
     columnTitles: [
       DBKeys.rpc,
