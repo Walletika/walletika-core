@@ -1,5 +1,6 @@
 import 'package:web3dart/web3dart.dart';
 
+import '../abi/token.dart';
 import '../core/core.dart';
 import '../models.dart';
 

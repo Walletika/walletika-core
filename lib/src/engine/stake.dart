@@ -1,6 +1,7 @@
 import 'package:aesdatabase/aesdatabase.dart';
 import 'package:web3dart/web3dart.dart';
 
+import '../abi/stake.dart';
 import '../core/core.dart';
 import '../models.dart';
 
