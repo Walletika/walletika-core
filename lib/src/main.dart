@@ -78,7 +78,7 @@ Future<void> walletikaSDKInitialize({
 
   stakeDB = await databaseLoader(
     directory: directory,
-    filename: "stakecontracts",
+    filename: "stakes",
     columnTitles: [
       DBKeys.rpc,
       DBKeys.contract,
@@ -88,6 +88,7 @@ Future<void> walletikaSDKInitialize({
       DBKeys.endBlock,
       DBKeys.startTime,
       DBKeys.endTime,
+      DBKeys.isLocked,
     ],
     key: encryptionKey,
   );

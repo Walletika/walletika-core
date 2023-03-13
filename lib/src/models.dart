@@ -179,6 +179,7 @@ class StakeData {
     required this.endBlock,
     required this.startTime,
     required this.endTime,
+    required this.isLocked,
   });
 
   final String rpc;
@@ -189,6 +190,7 @@ class StakeData {
   final int endBlock;
   final DateTime startTime;
   final DateTime endTime;
+  final bool isLocked;
 
   factory StakeData.fromJson(Map<String, dynamic> json) => StakeData(
         rpc: json[DBKeys.rpc],
@@ -199,6 +201,7 @@ class StakeData {
         endBlock: json[DBKeys.endBlock],
         startTime: DateTime.parse(json[DBKeys.startTime]),
         endTime: DateTime.parse(json[DBKeys.endTime]),
+        isLocked: json[DBKeys.isLocked],
       );
 
   Map<String, dynamic> toJson() => {
@@ -210,6 +213,7 @@ class StakeData {
         DBKeys.endBlock: endBlock,
         DBKeys.startTime: startTime.toString(),
         DBKeys.endTime: endTime.toString(),
+        DBKeys.isLocked: isLocked,
       };
 }
 

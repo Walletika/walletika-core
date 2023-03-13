@@ -111,6 +111,7 @@ List<Map<String, dynamic>> stakesBSCTestnetDataTest() {
       DBKeys.endBlock: 128636320,
       DBKeys.startTime: '2022-10-09 09:00:00',
       DBKeys.endTime: '2032-10-09 09:00:00',
+      DBKeys.isLocked: false,
     },
   ];
 }
