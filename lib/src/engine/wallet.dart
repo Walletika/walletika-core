@@ -59,7 +59,7 @@ Future<bool> removeWallet(WalletData wallet) async {
   return result;
 }
 
-Future<String> exportpWallets({
+Future<String> exportWallets({
   String? outputDir,
   List<int>? walletIndexes,
   String? password,
@@ -176,46 +176,6 @@ class WalletEngine {
   void logout() {
     _password = null;
     _isLogged = false;
-  }
-
-  Stream<TokenData> tokens() async* {
-    await for (final DBRow row in tokensDB.select(
-      items: {
-        DBKeys.address: wallet.address.hexEip55,
-        DBKeys.rpc: Provider.networkData.rpc,
-      },
-    )) {
-      yield TokenData.fromJson(row.items);
-    }
-  }
-
-  Future<void> addToken(TokenData token) async {
-    tokensDB.addRow({
-      DBKeys.address: wallet.address.hexEip55,
-      DBKeys.rpc: Provider.networkData.rpc,
-      ...token.toJson(),
-    });
-
-    await tokensDB.dump();
-  }
-
-  Future<bool> removeToken(TokenData token) async {
-    bool result = false;
-
-    await for (final DBRow row in tokensDB.select(
-      items: {
-        DBKeys.address: wallet.address.hexEip55,
-        DBKeys.rpc: Provider.networkData.rpc,
-        ...token.toJson(),
-      },
-    )) {
-      tokensDB.removeRow(row.index);
-      await tokensDB.dump();
-      result = true;
-      break;
-    }
-
-    return result;
   }
 
   Stream<TransactionData> transactions() async* {

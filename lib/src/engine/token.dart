@@ -1,8 +1,47 @@
+import 'package:aesdatabase/aesdatabase.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../abi/token.dart';
 import '../core/core.dart';
 import '../models.dart';
+import 'provider.dart';
+
+Stream<TokenData> getAllTokens() async* {
+  await for (final DBRow row in tokensDB.select(
+    items: {
+      DBKeys.rpc: Provider.networkData.rpc,
+    },
+  )) {
+    yield TokenData.fromJson(row.items);
+  }
+}
+
+Future<void> addNewToken(TokenData token) async {
+  tokensDB.addRow({
+    DBKeys.rpc: Provider.networkData.rpc,
+    ...token.toJson(),
+  });
+
+  await tokensDB.dump();
+}
+
+Future<bool> removeToken(TokenData token) async {
+  bool result = false;
+
+  await for (final DBRow row in tokensDB.select(
+    items: {
+      DBKeys.rpc: Provider.networkData.rpc,
+      ...token.toJson(),
+    },
+  )) {
+    tokensDB.removeRow(row.index);
+    await tokensDB.dump();
+    result = true;
+    break;
+  }
+
+  return result;
+}
 
 class TokenEngine extends ContractEngine {
   final TokenData tokenData;

@@ -1,3 +1,4 @@
+import 'package:aesdatabase/aesdatabase.dart';
 import 'package:walletika_sdk/src/core/core.dart';
 import 'package:walletika_sdk/walletika_sdk.dart';
 import 'package:test/test.dart';
@@ -48,6 +49,89 @@ void main() async {
       tokenData: tokenData,
       sender: walletEngine.address(),
     );
+  });
+
+  group("Token Management Group", () {
+    test("Test (addToken)", () async {
+      for (Map<String, dynamic> token in tokens) {
+        String contract = token[DBKeys.contract];
+        String name = token[DBKeys.name];
+        String symbol = token[DBKeys.symbol];
+        int decimals = token[DBKeys.decimals];
+
+        TokenData tokenData = TokenData.fromJson(token);
+        await addNewToken(tokenData);
+
+        printDebug("""
+contract: $contract
+name: $name
+symbol: $symbol
+decimals: $decimals
+        """);
+      }
+
+      expect(tokensDB.countRow(), equals(tokens.length));
+    });
+
+    test("Test (tokens)", () async {
+      List<TokenData> allTokens = [
+        await for (TokenData item in getAllTokens()) item
+      ];
+
+      for (int index = 0; index < allTokens.length; index++) {
+        TokenData tokenData = allTokens[index];
+        String contract = tokenData.contract.hexEip55;
+        String name = tokenData.name;
+        String symbol = tokenData.symbol;
+        int decimals = tokenData.decimals;
+        String website = tokenData.website;
+
+        printDebug("""
+contract: $contract
+name: $name
+symbol: $symbol
+decimals: $decimals
+website: $website
+        """);
+
+        expect(contract, equals(tokens[index][DBKeys.contract]));
+        expect(symbol, equals(tokens[index][DBKeys.symbol]));
+        expect(decimals, equals(tokens[index][DBKeys.decimals]));
+        expect(website, isEmpty);
+      }
+
+      expect(allTokens.length, equals(tokens.length));
+    });
+
+    test("Test (removeToken)", () async {
+      List<TokenData> allTokens = [
+        await for (TokenData item in getAllTokens()) item
+      ];
+
+      for (int index = 0; index < allTokens.length; index++) {
+        TokenData tokenData = allTokens[index];
+        String contract = tokenData.contract.hexEip55;
+        String symbol = tokenData.symbol;
+
+        bool isRemoved = await removeToken(tokenData);
+        bool isExists = [
+          await for (DBRow row in tokensDB.select(
+            items: tokenData.toJson(),
+          ))
+            row
+        ].isNotEmpty;
+
+        printDebug("""
+contract: $contract
+symbol: $symbol
+isRemoved: $isRemoved
+isExists: $isExists
+        """);
+
+        expect(isRemoved, isTrue);
+        expect(isExists, isFalse);
+      }
+    });
   });
 
   group("Token View Group:", () {

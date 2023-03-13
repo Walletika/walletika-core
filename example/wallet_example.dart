@@ -1,4 +1,3 @@
-import 'package:walletika_creator/walletika_creator.dart';
 import 'package:walletika_sdk/walletika_sdk.dart';
 
 void main() async {
@@ -43,17 +42,6 @@ void main() async {
 
   // Logout
   walletEngine.logout();
-
-  // Get all tokens
-  List<TokenData> allTokens = [
-    await for (TokenData item in walletEngine.tokens()) item
-  ];
-
-  // Add token
-  await walletEngine.addToken(allTokens[0]);
-
-  // Remove token
-  await walletEngine.removeToken(allTokens[0]);
 
   // Get all transactions
   List<TransactionData> allTransactions = [

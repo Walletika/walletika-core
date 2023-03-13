@@ -1,5 +1,4 @@
 import 'package:walletika_sdk/walletika_sdk.dart';
-import 'package:web3dart/web3dart.dart';
 
 void main() async {
   EthereumAddress address = EthereumAddress.fromHex(
@@ -29,6 +28,17 @@ void main() async {
     decimals: 6,
     website: '',
   );
+
+  // Get all tokens
+  List<TokenData> allTokens = [
+    await for (TokenData item in getAllTokens()) item
+  ];
+
+  // Add token
+  await addNewToken(tokenData);
+
+  // Remove token
+  bool isRemoved = await removeToken(tokenData);
 
   // Token engine
   TokenEngine tokenEngine = TokenEngine(

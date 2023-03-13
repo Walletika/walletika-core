@@ -48,7 +48,6 @@ Future<void> walletikaSDKInitialize({
     directory: directory,
     filename: "tokens",
     columnTitles: [
-      DBKeys.address,
       DBKeys.rpc,
       DBKeys.contract,
       DBKeys.name,

@@ -16,7 +16,6 @@ void main() async {
   await walletikaSDKInitialize();
 
   final List<Map<String, dynamic>> wallets = walletsDataTest();
-  final List<Map<String, dynamic>> tokens = tokensBSCTestnetDataTest();
   final List<Map<String, dynamic>> transactions =
       transactionsBSCTestnetDataTest();
   final List<Map<String, dynamic>> networks = networksDataTest();
@@ -153,9 +152,6 @@ isExists: $isExists
       DateTime dateCreated = walletEngine.dateCreated();
       bool isFavorite = walletEngine.isFavorite();
       bool isLogged = walletEngine.isLogged();
-      List<TokenData> tokens = [
-        await for (TokenData item in walletEngine.tokens()) item
-      ];
       List<TransactionData> transactions = [
         await for (TransactionData item in walletEngine.transactions()) item
       ];
@@ -167,7 +163,6 @@ securityPassword: $securityPassword
 dateCreated: ${dateCreated.toString()}
 isFavorite: $isFavorite
 isLogged: $isLogged
-tokens: $tokens
 transactions: $transactions
         """);
 
@@ -177,7 +172,6 @@ transactions: $transactions
       expect(dateCreated, equals(walletData.dateCreated));
       expect(isFavorite, equals(walletData.isFavorite));
       expect(isLogged, isFalse);
-      expect(tokens, isEmpty);
       expect(transactions, isEmpty);
     });
 
@@ -296,87 +290,6 @@ privateKey: $privateKey
         """);
 
       expect(privateKey, isNull);
-    });
-
-    test("Test (addToken)", () async {
-      for (Map<String, dynamic> token in tokens) {
-        String contract = token[DBKeys.contract];
-        String name = token[DBKeys.name];
-        String symbol = token[DBKeys.symbol];
-        int decimals = token[DBKeys.decimals];
-
-        TokenData tokenData = TokenData.fromJson(token);
-        await walletEngine.addToken(tokenData);
-
-        printDebug("""
-contract: $contract
-name: $name
-symbol: $symbol
-decimals: $decimals
-        """);
-      }
-
-      expect(tokensDB.countRow(), tokens.length);
-    });
-
-    test("Test (tokens)", () async {
-      List<TokenData> allTokens = [
-        await for (TokenData item in walletEngine.tokens()) item
-      ];
-
-      for (int index = 0; index < allTokens.length; index++) {
-        TokenData tokenData = allTokens[index];
-        String contract = tokenData.contract.hexEip55;
-        String name = tokenData.name;
-        String symbol = tokenData.symbol;
-        int decimals = tokenData.decimals;
-        String website = tokenData.website;
-
-        printDebug("""
-contract: $contract
-name: $name
-symbol: $symbol
-decimals: $decimals
-website: $website
-        """);
-
-        expect(contract, equals(tokens[index][DBKeys.contract]));
-        expect(symbol, equals(tokens[index][DBKeys.symbol]));
-        expect(decimals, equals(tokens[index][DBKeys.decimals]));
-        expect(website, isEmpty);
-      }
-
-      expect(allTokens.length, equals(tokens.length));
-    });
-
-    test("Test (removeToken)", () async {
-      List<TokenData> allTokens = [
-        await for (TokenData item in walletEngine.tokens()) item
-      ];
-
-      for (int index = 0; index < allTokens.length; index++) {
-        TokenData tokenData = allTokens[index];
-        String contract = tokenData.contract.hexEip55;
-        String symbol = tokenData.symbol;
-
-        bool isRemoved = await walletEngine.removeToken(tokenData);
-        bool isExists = [
-          await for (DBRow row in tokensDB.select(
-            items: tokenData.toJson(),
-          ))
-            row
-        ].isNotEmpty;
-
-        printDebug("""
-contract: $contract
-symbol: $symbol
-isRemoved: $isRemoved
-isExists: $isExists
-        """);
-
-        expect(isRemoved, isTrue);
-        expect(isExists, isFalse);
-      }
     });
 
     test("Test (addTransaction)", () async {
