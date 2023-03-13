@@ -8,7 +8,6 @@ import 'package:web3dart/crypto.dart';
 
 import '../core/core.dart';
 import '../models.dart';
-import 'provider.dart';
 
 Stream<WalletData> getAllWallets() async* {
   await for (final DBRow row in walletsDB.select()) {
@@ -176,45 +175,5 @@ class WalletEngine {
   void logout() {
     _password = null;
     _isLogged = false;
-  }
-
-  Stream<TransactionData> transactions() async* {
-    await for (final DBRow row in transactionsDB.select(
-      items: {
-        DBKeys.address: wallet.address.hexEip55,
-        DBKeys.rpc: Provider.networkData.rpc,
-      },
-    )) {
-      yield TransactionData.fromJson(row.items);
-    }
-  }
-
-  Future<void> addTransaction(TransactionData transaction) async {
-    transactionsDB.addRow({
-      DBKeys.address: wallet.address.hexEip55,
-      DBKeys.rpc: Provider.networkData.rpc,
-      ...transaction.toJson(),
-    });
-
-    await transactionsDB.dump();
-  }
-
-  Future<bool> removeTransaction(TransactionData transaction) async {
-    bool result = false;
-
-    await for (final DBRow row in transactionsDB.select(
-      items: {
-        DBKeys.address: wallet.address.hexEip55,
-        DBKeys.rpc: Provider.networkData.rpc,
-        ...transaction.toJson(),
-      },
-    )) {
-      transactionsDB.removeRow(row.index);
-      await transactionsDB.dump();
-      result = true;
-      break;
-    }
-
-    return result;
   }
 }

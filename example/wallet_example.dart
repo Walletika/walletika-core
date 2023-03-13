@@ -42,15 +42,4 @@ void main() async {
 
   // Logout
   walletEngine.logout();
-
-  // Get all transactions
-  List<TransactionData> allTransactions = [
-    await for (TransactionData item in walletEngine.transactions()) item
-  ];
-
-  // Add transaction
-  await walletEngine.addTransaction(allTransactions[0]);
-
-  // Remove transaction
-  await walletEngine.removeTransaction(allTransactions[0]);
 }

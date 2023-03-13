@@ -16,8 +16,6 @@ void main() async {
   await walletikaSDKInitialize();
 
   final List<Map<String, dynamic>> wallets = walletsDataTest();
-  final List<Map<String, dynamic>> transactions =
-      transactionsBSCTestnetDataTest();
   final List<Map<String, dynamic>> networks = networksDataTest();
   const int networkIndex = 1;
 
@@ -152,9 +150,6 @@ isExists: $isExists
       DateTime dateCreated = walletEngine.dateCreated();
       bool isFavorite = walletEngine.isFavorite();
       bool isLogged = walletEngine.isLogged();
-      List<TransactionData> transactions = [
-        await for (TransactionData item in walletEngine.transactions()) item
-      ];
 
       printDebug("""
 address: $address
@@ -163,7 +158,6 @@ securityPassword: $securityPassword
 dateCreated: ${dateCreated.toString()}
 isFavorite: $isFavorite
 isLogged: $isLogged
-transactions: $transactions
         """);
 
       expect(address, equals(walletData.address.hexEip55));
@@ -172,7 +166,6 @@ transactions: $transactions
       expect(dateCreated, equals(walletData.dateCreated));
       expect(isFavorite, equals(walletData.isFavorite));
       expect(isLogged, isFalse);
-      expect(transactions, isEmpty);
     });
 
     test("Test (setFavorite)", () async {
@@ -290,95 +283,6 @@ privateKey: $privateKey
         """);
 
       expect(privateKey, isNull);
-    });
-
-    test("Test (addTransaction)", () async {
-      for (Map<String, dynamic> transaction in transactions) {
-        String txHash = transaction[DBKeys.txHash];
-
-        TransactionData transactionData = TransactionData.fromJson(transaction);
-        await walletEngine.addTransaction(transactionData);
-
-        printDebug("""
-txHash: $txHash
-        """);
-      }
-
-      expect(transactionsDB.countRow(), transactions.length);
-    });
-
-    test("Test (transactions)", () async {
-      List<TransactionData> allTransactions = [
-        await for (TransactionData item in walletEngine.transactions()) item
-      ];
-
-      for (int index = 0; index < allTransactions.length; index++) {
-        TransactionData transactionData = allTransactions[index];
-        String txHash = transactionData.txHash;
-        String function = transactionData.function;
-        String fromAddress = transactionData.fromAddress.hexEip55;
-        String toAddress = transactionData.toAddress.hexEip55;
-        String amount = transactionData.amount.getInWei.toString();
-        String symbol = transactionData.symbol;
-        String dateCreated = transactionData.dateCreated.toString();
-        int status = transactionData.status;
-
-        printDebug("""
-txHash: $txHash
-function: $function
-fromAddress: $fromAddress
-toAddress: $toAddress
-amount: $amount
-symbol: $symbol
-dateCreated: $dateCreated
-status: $status
-        """);
-
-        expect(txHash, equals(transactions[index][DBKeys.txHash]));
-        expect(function, equals(transactions[index][DBKeys.function]));
-        expect(
-          fromAddress,
-          equals(transactions[index][DBKeys.fromAddress]),
-        );
-        expect(toAddress, equals(transactions[index][DBKeys.toAddress]));
-        expect(amount, equals(transactions[index][DBKeys.amount]));
-        expect(symbol, equals(transactions[index][DBKeys.symbol]));
-        expect(
-          dateCreated,
-          equals(transactions[index][DBKeys.dateCreated]),
-        );
-        expect(status, equals(transactions[index][DBKeys.status]));
-      }
-
-      expect(allTransactions.length, equals(transactions.length));
-    });
-
-    test("Test (removeTransaction)", () async {
-      List<TransactionData> allTransactions = [
-        await for (TransactionData item in walletEngine.transactions()) item
-      ];
-
-      for (int index = 0; index < allTransactions.length; index++) {
-        TransactionData transactionData = allTransactions[index];
-        String txHash = transactionData.txHash;
-
-        bool isRemoved = await walletEngine.removeTransaction(transactionData);
-        bool isExists = [
-          await for (DBRow row in transactionsDB.select(
-            items: transactionData.toJson(),
-          ))
-            row
-        ].isNotEmpty;
-
-        printDebug("""
-txHash: $txHash
-isRemoved: $isRemoved
-isExists: $isExists
-        """);
-
-        expect(isRemoved, isTrue);
-        expect(isExists, isFalse);
-      }
     });
   });
 }

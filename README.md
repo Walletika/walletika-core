@@ -91,7 +91,4 @@ await walletEngine.login(password: password, otpCode: otpCode);
 
 // Get privateKey (Must be login)
 await walletEngine.privateKey(otpCode);
-
-// Get all transactions
-List<TransactionData> allTransactions = await walletEngine.transactions();
 ```
