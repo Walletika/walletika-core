@@ -51,8 +51,8 @@ void main() async {
     );
   });
 
-  group("Token Management Group", () {
-    test("Test (addToken)", () async {
+  group("Token Storage Group", () {
+    test("Test (addNewToken)", () async {
       for (Map<String, dynamic> token in tokens) {
         String contract = token[DBKeys.contract];
         String name = token[DBKeys.name];
@@ -73,7 +73,7 @@ decimals: $decimals
       expect(tokensDB.countRow(), equals(tokens.length));
     });
 
-    test("Test (tokens)", () async {
+    test("Test (getAllTokens)", () async {
       List<TokenData> allTokens = [
         await for (TokenData item in getAllTokens()) item
       ];
