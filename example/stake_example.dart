@@ -1,5 +1,4 @@
 import 'package:walletika_sdk/walletika_sdk.dart';
-import 'package:web3dart/web3dart.dart';
 
 void main() async {
   EthereumAddress address = EthereumAddress.fromHex(

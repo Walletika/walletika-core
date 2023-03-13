@@ -1,5 +1,4 @@
 import 'package:walletika_sdk/walletika_sdk.dart';
-import 'package:web3dart/credentials.dart';
 
 void main() async {
   String username = 'username';
