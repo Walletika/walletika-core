@@ -22,7 +22,7 @@ void main() async {
   // Check balance
   EtherAmount balance = await Provider.balanceOf(address: address);
 
-  // Get current block nubmber
+  // Get current block number
   int blockNumber = await Provider.blockNumber();
 
   // Check is current network supported EIP1559
@@ -48,9 +48,8 @@ void main() async {
     amount: balance,
   );
   Transaction tx = txDetails.tx;
-  Map<String, dynamic> abi = txDetails.abi;
-  Map<String, dynamic> args = txDetails.args;
-  String data = txDetails.data;
+  Map<String, dynamic>? abi = txDetails.abi;
+  Map<String, dynamic>? args = txDetails.args;
 
   // Add gas fee
   TxGasDetailsData txGasDetails = await Provider.addGas(tx: tx);

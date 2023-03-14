@@ -163,9 +163,9 @@ to: ${tx.to}
 
         // Transaction details
         Transaction tx;
-        Map<String, dynamic> abi;
-        Map<String, dynamic> args;
-        String data;
+        Map<String, dynamic> txJson;
+        Map<String, dynamic>? abi;
+        Map<String, dynamic>? args;
         EtherAmount estimateGas;
         EtherAmount maxFee;
         EtherAmount total;
@@ -199,11 +199,11 @@ to: ${tx.to}
         tx = txDetails.tx;
         abi = txDetails.abi;
         args = txDetails.args;
-        data = txDetails.data;
 
         // Add gas fee
         TxGasDetailsData txGasDetails = await Provider.addGas(tx: tx);
         tx = txGasDetails.tx;
+        txJson = txGasDetails.tx.toJson();
         estimateGas = txGasDetails.estimateGas;
         maxFee = txGasDetails.maxFee;
         total = txGasDetails.total;
@@ -222,7 +222,7 @@ recipient: ${recipient.hexEip55}
 amount: ${amount.getValueInUnit(EtherUnit.ether)}
 abi: $abi
 args: $args
-data: $data
+txJson: $txJson
 estimateGas: ${estimateGas.getValueInUnit(EtherUnit.ether)}
 maxFee: ${maxFee.getValueInUnit(EtherUnit.ether)}
 total: ${total.getValueInUnit(EtherUnit.ether)}
@@ -242,9 +242,9 @@ txURL: ${Provider.getExploreUrl(sendTransaction)}
         } else {
           expect(tx.gasPrice!.getInWei, greaterThan(BigInt.zero));
         }
-        expect(abi, isEmpty);
-        expect(args, isEmpty);
-        expect(data, isEmpty);
+        expect(abi, isNull);
+        expect(args, isNull);
+        expect(txJson.length, equals(9));
         expect(estimateGas.getInWei, greaterThan(BigInt.zero));
         expect(maxFee.getInWei, greaterThanOrEqualTo(estimateGas.getInWei));
         expect(total.getInWei, greaterThan(amount.getInWei));

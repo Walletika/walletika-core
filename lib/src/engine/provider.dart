@@ -58,7 +58,7 @@ class Provider {
       nonce: await web3.getTransactionCount(sender),
     );
 
-    return TxDetailsData(tx: tx, abi: {}, args: {}, data: '');
+    return TxDetailsData(tx: tx);
   }
 
   static Future<TxGasDetailsData> addGas({

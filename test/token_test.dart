@@ -258,13 +258,13 @@ availableToMintCurrentYear: ${availableToMintCurrentYear.getValueInDecimals(
   Future<void> sendTransaction(TxDetailsData txDetails) async {
     // Transaction details
     Transaction tx = txDetails.tx;
-    Map<String, dynamic> abi = txDetails.abi;
-    Map<String, dynamic> args = txDetails.args;
-    String data = txDetails.data;
+    Map<String, dynamic>? abi = txDetails.abi;
+    Map<String, dynamic>? args = txDetails.args;
 
     // Add gas fee
     TxGasDetailsData txGasDetails = await Provider.addGas(tx: tx);
     tx = txGasDetails.tx;
+    Map<String, dynamic> txJson = txGasDetails.tx.toJson();
     EtherAmount estimateGas = txGasDetails.estimateGas;
     EtherAmount maxFee = txGasDetails.maxFee;
     EtherAmount total = txGasDetails.total;
@@ -281,7 +281,7 @@ username: ${walletEngine.username()}
 address: ${walletEngine.address()}
 abi: $abi
 args: $args
-data: $data
+txJson: $txJson
 estimateGas: ${estimateGas.getValueInUnit(EtherUnit.ether)}
 maxFee: ${maxFee.getValueInUnit(EtherUnit.ether)}
 total: ${total.getValueInUnit(EtherUnit.ether)}
@@ -301,9 +301,9 @@ txURL: ${Provider.getExploreUrl(sendTransaction)}
     } else {
       expect(tx.gasPrice!.getInWei, greaterThan(BigInt.zero));
     }
-    expect(abi, isNotEmpty);
-    expect(args, isNotEmpty);
-    expect(data, isNotEmpty);
+    expect(abi, isNotNull);
+    expect(args, isNotNull);
+    expect(txJson.length, equals(9));
     expect(estimateGas.getInWei, greaterThan(BigInt.zero));
     expect(maxFee.getInWei, greaterThanOrEqualTo(estimateGas.getInWei));
     expect(total.getInWei, greaterThan(BigInt.zero));
@@ -324,8 +324,8 @@ txURL: ${Provider.getExploreUrl(sendTransaction)}
         amount: amount,
       );
 
-      expect(txDetails.args['recipient'], equals(recipient.hexEip55));
-      expect(txDetails.args['amount'], equals(amount.getInWei.toString()));
+      expect(txDetails.args?['recipient'], equals(recipient.hexEip55));
+      expect(txDetails.args?['amount'], equals(amount.getInWei.toString()));
 
       await sendTransaction(txDetails);
     });

@@ -5,4 +5,5 @@ export 'package:web3dart/web3dart.dart';
 
 export 'src/main.dart';
 export 'src/models.dart';
+export 'src/extensions.dart';
 export 'src/engine/engine.dart';

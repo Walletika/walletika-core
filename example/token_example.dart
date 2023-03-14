@@ -67,9 +67,8 @@ void main() async {
     amount: balance,
   );
   Transaction tx = txDetails.tx;
-  Map<String, dynamic> abi = txDetails.abi;
-  Map<String, dynamic> args = txDetails.args;
-  String data = txDetails.data;
+  Map<String, dynamic>? abi = txDetails.abi;
+  Map<String, dynamic>? args = txDetails.args;
 
   // Add gas fee
   TxGasDetailsData txGasDetails = await Provider.addGas(tx: tx);

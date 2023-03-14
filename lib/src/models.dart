@@ -220,15 +220,13 @@ class StakeData {
 class TxDetailsData {
   TxDetailsData({
     required this.tx,
-    required this.abi,
-    required this.args,
-    required this.data,
+    this.abi,
+    this.args,
   });
 
   final Transaction tx;
-  final Map<String, dynamic> abi;
-  final Map<String, dynamic> args;
-  final String data;
+  final Map<String, dynamic>? abi;
+  final Map<String, dynamic>? args;
 }
 
 class TxGasDetailsData {
