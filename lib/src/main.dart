@@ -23,7 +23,7 @@ Future<void> walletikaSDKInitialize({
 
   addressesBookDB = await databaseLoader(
     directory: directory,
-    filename: "addressesbook",
+    filename: "addresses",
     columnTitles: [
       DBKeys.username,
       DBKeys.address,
