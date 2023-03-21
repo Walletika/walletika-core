@@ -11,6 +11,7 @@ void printDebug(String message) {
 
 void main() async {
   await walletikaSDKInitialize();
+  printDebug("Is Initialized: $walletikaSDKInitialized");
 
   final List<Map<String, dynamic>> wallets = walletsDataTest();
   final List<Map<String, dynamic>> tokens = tokensBSCTestnetDataTest();
@@ -73,7 +74,8 @@ owner: ${owner.hexEip55}
     test("Test (smartChefFactory)", () async {
       EthereumAddress smartChefFactory = await stakeEngine.smartChefFactory();
 
-      printDebug("""
+      printDebug(
+          """
 smartChefFactory: ${smartChefFactory.hexEip55}
         """);
 
@@ -139,7 +141,8 @@ lastPauseTime: ${lastPauseTime.toString()}
     test("Test (accTokenPerShare)", () async {
       EtherAmount accTokenPerShare = await stakeEngine.accTokenPerShare();
 
-      printDebug("""
+      printDebug(
+          """
 accTokenPerShare: ${accTokenPerShare.getValueInDecimals(tokenData.decimals)}
         """);
 
@@ -179,7 +182,8 @@ lastRewardBlock: $lastRewardBlock
     test("Test (poolLimitPerUser)", () async {
       EtherAmount poolLimitPerUser = await stakeEngine.poolLimitPerUser();
 
-      printDebug("""
+      printDebug(
+          """
 poolLimitPerUser: ${poolLimitPerUser.getValueInDecimals(tokenData.decimals)}
         """);
 
@@ -189,7 +193,8 @@ poolLimitPerUser: ${poolLimitPerUser.getValueInDecimals(tokenData.decimals)}
     test("Test (rewardPerBlock)", () async {
       EtherAmount rewardPerBlock = await stakeEngine.rewardPerBlock();
 
-      printDebug("""
+      printDebug(
+          """
 rewardPerBlock: ${rewardPerBlock.getValueInDecimals(tokenData.decimals)}
         """);
 
@@ -199,7 +204,8 @@ rewardPerBlock: ${rewardPerBlock.getValueInDecimals(tokenData.decimals)}
     test("Test (precisionFactor)", () async {
       EtherAmount precisionFactor = await stakeEngine.precisionFactor();
 
-      printDebug("""
+      printDebug(
+          """
 precisionFactor: ${precisionFactor.getValueInDecimals(tokenData.decimals)}
         """);
 
@@ -229,7 +235,8 @@ stakedToken: ${stakedToken.hexEip55}
     test("Test (totalSupply)", () async {
       EtherAmount totalSupply = await stakeEngine.totalSupply();
 
-      printDebug("""
+      printDebug(
+          """
 totalSupply: ${totalSupply.getValueInDecimals(tokenData.decimals)}
         """);
 
@@ -239,7 +246,8 @@ totalSupply: ${totalSupply.getValueInDecimals(tokenData.decimals)}
     test("Test (rewardSupply)", () async {
       EtherAmount rewardSupply = await stakeEngine.rewardSupply();
 
-      printDebug("""
+      printDebug(
+          """
 rewardSupply: ${rewardSupply.getValueInDecimals(tokenData.decimals)}
         """);
 
@@ -251,7 +259,8 @@ rewardSupply: ${rewardSupply.getValueInDecimals(tokenData.decimals)}
         address: walletEngine.address(),
       );
 
-      printDebug("""
+      printDebug(
+          """
 balanceOf: ${balanceOf.getValueInDecimals(tokenData.decimals)}
         """);
 
@@ -263,7 +272,8 @@ balanceOf: ${balanceOf.getValueInDecimals(tokenData.decimals)}
         address: walletEngine.address(),
       );
 
-      printDebug("""
+      printDebug(
+          """
 pendingReward: ${pendingReward.getValueInDecimals(tokenData.decimals)}
         """);
 
@@ -292,7 +302,8 @@ pendingReward: ${pendingReward.getValueInDecimals(tokenData.decimals)}
       tx: tx,
     );
 
-    printDebug("""
+    printDebug(
+        """
 username: ${walletEngine.username()}
 address: ${walletEngine.address()}
 abi: $abi

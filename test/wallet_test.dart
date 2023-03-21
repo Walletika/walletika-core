@@ -14,6 +14,7 @@ void printDebug(String message) {
 
 void main() async {
   await walletikaSDKInitialize();
+  printDebug("Is Initialized: $walletikaSDKInitialized");
 
   final List<Map<String, dynamic>> wallets = walletsDataTest();
   final List<Map<String, dynamic>> networks = networksDataTest();
@@ -42,7 +43,8 @@ void main() async {
           securityPassword: securityPassword,
         );
 
-        printDebug("""
+        printDebug(
+            """
 address: $address
 username: $username
 password: $password
@@ -68,7 +70,8 @@ isAdded: $isAdded
         DateTime dateCreated = walletData.dateCreated;
         bool isFavorite = walletData.isFavorite;
 
-        printDebug("""
+        printDebug(
+            """
 address: $address
 username: $username
 securityPassword: $securityPassword
@@ -102,7 +105,8 @@ isFavorite: $isFavorite
             row
         ].isNotEmpty;
 
-        printDebug("""
+        printDebug(
+            """
 username: $username
 isRemoved: $isRemoved
 isExists: $isExists
@@ -151,7 +155,8 @@ isExists: $isExists
       bool isFavorite = walletEngine.isFavorite();
       bool isLogged = walletEngine.isLogged();
 
-      printDebug("""
+      printDebug(
+          """
 address: $address
 username: $username
 securityPassword: $securityPassword
@@ -173,7 +178,8 @@ isLogged: $isLogged
       await walletEngine.setFavorite(true);
       bool isFavoriteAfter = walletEngine.isFavorite();
 
-      printDebug("""
+      printDebug(
+          """
 isFavoriteBefore: $isFavoriteBefore
 isFavoriteAfter: $isFavoriteAfter
         """);
@@ -189,7 +195,8 @@ isFavoriteAfter: $isFavoriteAfter
       );
       bool isLogged = walletEngine.isLogged();
 
-      printDebug("""
+      printDebug(
+          """
 otpCode: $otpCode
 isLogin: $isLogin
 isLogged: $isLogged
@@ -207,7 +214,8 @@ isLogged: $isLogged
       );
       bool isLogged = walletEngine.isLogged();
 
-      printDebug("""
+      printDebug(
+          """
 otpCode: $otpCode
 isLogin: $isLogin
 isLogged: $isLogged
@@ -224,7 +232,8 @@ isLogged: $isLogged
       );
       bool isLogged = walletEngine.isLogged();
 
-      printDebug("""
+      printDebug(
+          """
 otpCode: $otpCode
 isLogin: $isLogin
 isLogged: $isLogged
@@ -265,7 +274,8 @@ privateKey: $privateKey
       walletEngine.logout();
       bool isLoggedAfter = walletEngine.isLogged();
 
-      printDebug("""
+      printDebug(
+          """
 isLoggedBefore: $isLoggedBefore
 isLoggedAfter: $isLoggedAfter
         """);

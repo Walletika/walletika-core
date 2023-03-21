@@ -12,6 +12,7 @@ void printDebug(String message) {
 
 void main() async {
   await walletikaSDKInitialize();
+  printDebug("Is Initialized: $walletikaSDKInitialized");
 
   final List<Map<String, dynamic>> wallets = walletsDataTest();
   final List<Map<String, dynamic>> tokens = tokensBSCTestnetDataTest();
@@ -62,7 +63,8 @@ void main() async {
         TokenData tokenData = TokenData.fromJson(token);
         await addNewToken(tokenData);
 
-        printDebug("""
+        printDebug(
+            """
 contract: $contract
 name: $name
 symbol: $symbol
@@ -86,7 +88,8 @@ decimals: $decimals
         int decimals = tokenData.decimals;
         String website = tokenData.website;
 
-        printDebug("""
+        printDebug(
+            """
 contract: $contract
 name: $name
 symbol: $symbol
@@ -121,7 +124,8 @@ website: $website
             row
         ].isNotEmpty;
 
-        printDebug("""
+        printDebug(
+            """
 contract: $contract
 symbol: $symbol
 isRemoved: $isRemoved
@@ -168,7 +172,8 @@ decimals: $decimals
     test("Test (totalSupply)", () async {
       EtherAmount totalSupply = await tokenEngine.totalSupply();
 
-      printDebug("""
+      printDebug(
+          """
 totalSupply: ${totalSupply.getValueInDecimals(tokenData.decimals)}
         """);
 
@@ -180,7 +185,8 @@ totalSupply: ${totalSupply.getValueInDecimals(tokenData.decimals)}
         address: walletEngine.address(),
       );
 
-      printDebug("""
+      printDebug(
+          """
 balance: ${balance.getValueInDecimals(tokenData.decimals)}
         """);
 
@@ -193,7 +199,8 @@ balance: ${balance.getValueInDecimals(tokenData.decimals)}
         spender: walletEngine.address(),
       );
 
-      printDebug("""
+      printDebug(
+          """
 allowance: ${allowance.getValueInDecimals(tokenData.decimals)}
         """);
 
@@ -228,7 +235,8 @@ inflationRateAnnually: $inflationRateAnnually
       DateTime inflationDurationEndDate =
           await tokenEngine.inflationDurationEndDate();
 
-      printDebug("""
+      printDebug(
+          """
 inflationDurationEndDate: ${inflationDurationEndDate.toString()}
         """);
 
@@ -242,7 +250,8 @@ inflationDurationEndDate: ${inflationDurationEndDate.toString()}
       EtherAmount availableToMintCurrentYear =
           await tokenEngine.availableToMintCurrentYear();
 
-      printDebug("""
+      printDebug(
+          """
 availableToMintCurrentYear: ${availableToMintCurrentYear.getValueInDecimals(
         tokenData.decimals,
       )}
@@ -276,7 +285,8 @@ availableToMintCurrentYear: ${availableToMintCurrentYear.getValueInDecimals(
       tx: tx,
     );
 
-    printDebug("""
+    printDebug(
+        """
 username: ${walletEngine.username()}
 address: ${walletEngine.address()}
 abi: $abi

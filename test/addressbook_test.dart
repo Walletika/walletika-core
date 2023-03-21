@@ -12,6 +12,7 @@ void printDebug(String message) {
 
 void main() async {
   await walletikaSDKInitialize();
+  printDebug("Is Initialized: $walletikaSDKInitialized");
 
   final List<Map<String, dynamic>> wallets = walletsDataTest();
 
@@ -74,7 +75,8 @@ username: $username
             row
         ].isNotEmpty;
 
-        printDebug("""
+        printDebug(
+            """
 username: $username
 isRemoved: $isRemoved
 isExists: $isExists

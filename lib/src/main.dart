@@ -2,10 +2,18 @@ import 'package:walletika_sdk/src/engine/stake.dart';
 
 import 'core/core.dart';
 
+bool _isInitialized = false;
+
+bool get walletikaSDKInitialized => _isInitialized;
+
 Future<void> walletikaSDKInitialize({
   String? encryptionKey,
   String directory = "assets",
 }) async {
+  if (_isInitialized) {
+    throw Exception("Walletika API already initialized");
+  }
+
   // Database loading
   walletsDB = await databaseLoader(
     directory: directory,
@@ -97,4 +105,6 @@ Future<void> walletikaSDKInitialize({
   await importStakeContracts(
     'https://raw.githubusercontent.com/Walletika/metadata/main/stake-contracts.json',
   );
+
+  _isInitialized = true;
 }

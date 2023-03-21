@@ -11,6 +11,7 @@ void printDebug(String message) {
 
 void main() async {
   await walletikaSDKInitialize();
+  printDebug("Is Initialized: $walletikaSDKInitialized");
 
   final List<Map<String, dynamic>> wallets = walletsDataTest();
   final List<Map<String, dynamic>> networks = networksDataTest();
@@ -33,7 +34,8 @@ void main() async {
 
       bool isConnected = await Provider.connect(networkData);
 
-      printDebug("""
+      printDebug(
+          """
 rpc: $rpc
 name: $name
 chainID: $chainID
@@ -59,7 +61,8 @@ isConnected: $isConnected
         );
         double amount = balance.getValueInUnit(EtherUnit.ether);
 
-        printDebug("""
+        printDebug(
+            """
 address: $address
 username: $username
 balance: $amount
@@ -100,7 +103,8 @@ isEIP1559Supported: $isEIP1559Supported
       String addressURL = Provider.getExploreUrl(address);
       String txURL = Provider.getExploreUrl(txHash);
 
-      printDebug("""
+      printDebug(
+          """
 address: $address
 addressURL: $addressURL
 txHash: $txHash
@@ -120,7 +124,8 @@ txURL: $txURL
 
       TransactionInformation? tx = await Provider.getTransaction(txHash);
 
-      printDebug("""
+      printDebug(
+          """
 txHash: $txHash
 hash: ${tx!.hash}
 from: ${tx.from}
@@ -137,7 +142,8 @@ value: ${tx.value}
 
       TransactionReceipt? tx = await Provider.getTransactionReceipt(txHash);
 
-      printDebug("""
+      printDebug(
+          """
 txHash: $txHash
 hash: ${Provider.fromBytesToHex(tx!.transactionHash)}
 from: ${tx.from}
@@ -215,7 +221,8 @@ to: ${tx.to}
           tx: tx,
         );
 
-        printDebug("""
+        printDebug(
+            """
 username: ${walletEngine.username()}
 address: ${walletEngine.address()}
 recipient: ${recipient.hexEip55}
