@@ -188,16 +188,31 @@ isFavoriteAfter: $isFavoriteAfter
       expect(isFavoriteAfter, isTrue);
     });
 
+    test("Test (verified) with wrong password", () async {
+      bool isValid = await walletEngine.verified('wrongPassword');
+
+      printDebug("""
+isValid: $isValid
+        """);
+
+      expect(isValid, isFalse);
+    });
+
+    test("Test (verified) with correct password", () async {
+      bool isValid = await walletEngine.verified(walletPassword);
+
+      printDebug("""
+isValid: $isValid
+        """);
+
+      expect(isValid, isTrue);
+    });
+
     test("Test (login) with wrong password", () async {
-      bool isLogin = await walletEngine.login(
-        password: 'wrongPassword',
-        otpCode: otpCode,
-      );
+      bool isLogin = await walletEngine.login('wrongPassword');
       bool isLogged = walletEngine.isLogged();
 
-      printDebug(
-          """
-otpCode: $otpCode
+      printDebug("""
 isLogin: $isLogin
 isLogged: $isLogged
         """);
@@ -206,35 +221,11 @@ isLogged: $isLogged
       expect(isLogged, isFalse);
     });
 
-    test("Test (login) with wrong OTP code", () async {
-      String otpCode = '111111';
-      bool isLogin = await walletEngine.login(
-        password: walletPassword,
-        otpCode: otpCode,
-      );
+    test("Test (login) with the correct password", () async {
+      bool isLogin = await walletEngine.login(walletPassword);
       bool isLogged = walletEngine.isLogged();
 
-      printDebug(
-          """
-otpCode: $otpCode
-isLogin: $isLogin
-isLogged: $isLogged
-        """);
-
-      expect(isLogin, isFalse);
-      expect(isLogged, isFalse);
-    });
-
-    test("Test (login) with the correct data", () async {
-      bool isLogin = await walletEngine.login(
-        password: walletPassword,
-        otpCode: otpCode,
-      );
-      bool isLogged = walletEngine.isLogged();
-
-      printDebug(
-          """
-otpCode: $otpCode
+      printDebug("""
 isLogin: $isLogin
 isLogged: $isLogged
         """);

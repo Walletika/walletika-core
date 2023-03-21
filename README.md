@@ -86,7 +86,7 @@ Uint8List securityPasswordBytes = wallet!.securityPassword;
 WalletEngine walletEngine = WalletEngine(walletData);
 
 // Login
-await walletEngine.login(password: password, otpCode: otpCode);
+await walletEngine.login(password);
 
 // Get privateKey (Must be login)
 await walletEngine.privateKey(otpCode);

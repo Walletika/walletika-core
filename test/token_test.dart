@@ -42,7 +42,7 @@ void main() async {
     walletEngine = WalletEngine(
       await getWalletData(username, password, securityPassword),
     );
-    await walletEngine.login(password: password, otpCode: otpCode);
+    await walletEngine.login(password);
     credentials = await walletEngine.credentials(otpCode);
 
     tokenData = TokenData.fromJson(tokens[tokenIndex]);

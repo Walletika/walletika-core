@@ -35,10 +35,10 @@ void main() async {
   WalletEngine walletEngine = WalletEngine(allWallets[0]);
 
   // Login
-  await walletEngine.login(password: password, otpCode: otpCode);
+  bool isLogin = await walletEngine.login(password);
 
   // Get privateKey (Must be login)
-  await walletEngine.privateKey(otpCode);
+  String? privateKey = await walletEngine.privateKey(otpCode);
 
   // Logout
   walletEngine.logout();

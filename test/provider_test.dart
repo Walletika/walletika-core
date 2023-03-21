@@ -193,7 +193,7 @@ to: ${tx.to}
 
         // Get credentials
         String otpCode = getOTPCode(username, password, securityPassword);
-        await walletEngine.login(password: password, otpCode: otpCode);
+        await walletEngine.login(password);
         EthPrivateKey? credentials = await walletEngine.credentials(otpCode);
 
         // Build transaction
