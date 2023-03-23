@@ -55,8 +55,7 @@ isAdded: $isAdded
         String symbol = networkData.symbol;
         String explorer = networkData.explorer;
 
-        printDebug(
-            """
+        printDebug("""
 rpc: $rpc
 name: $name
 chainID: $chainID
@@ -91,8 +90,7 @@ explorer: $explorer
             row
         ].isNotEmpty;
 
-        printDebug(
-            """
+        printDebug("""
 name: $name
 isRemoved: $isRemoved
 isExists: $isExists

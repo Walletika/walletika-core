@@ -75,8 +75,7 @@ username: $username
             row
         ].isNotEmpty;
 
-        printDebug(
-            """
+        printDebug("""
 username: $username
 isRemoved: $isRemoved
 isExists: $isExists
