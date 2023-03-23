@@ -14,7 +14,7 @@ String getOTPCode(
     securityPassword: securityPassword,
   );
 
-  return currentOTPCode(otpKey);
+  return getOTPCodePlugin(otpKey);
 }
 
 Future<WalletData> getWalletData(

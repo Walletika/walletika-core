@@ -151,7 +151,7 @@ class WalletEngine {
   }
 
   Future<bool> verified(String password) async {
-    final String otpCode = currentOTPCode(
+    final String otpCode = getOTPCodePlugin(
       otpKeyGenerator(
         username: wallet.username,
         password: password,

@@ -11,7 +11,7 @@ void main() async {
     securityPassword: securityPassword,
   );
 
-  String otpCode = currentOTPCode(otpKey);
+  String otpCode = getOTPCodePlugin(otpKey);
 
   // initialize walletika SDK
   await walletikaSDKInitialize();
