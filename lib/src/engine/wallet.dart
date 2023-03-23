@@ -150,29 +150,14 @@ class WalletEngine {
     }
   }
 
-  Future<bool> verified(String password) async {
-    final String otpCode = getOTPCodePlugin(
-      otpKeyGenerator(
-        username: wallet.username,
-        password: password,
-        securityPassword: '',
-      ),
-    );
-
-    final WalletGeneratorInfo? walletInfo = await walletGenerator(
-      username: wallet.username,
-      password: password,
-      securityPassword: wallet.securityPassword,
-      otpCode: otpCode,
-      createNew: false,
-    );
-
-    return walletInfo == null;
-  }
-
   Future<bool> login(String password) async {
     if (!_isLogged) {
-      if (await verified(password)) {
+      if (await passwordTestPlugin(
+        address: wallet.address.hexEip55,
+        username: wallet.username,
+        password: password,
+        securityPassword: wallet.securityPassword,
+      )) {
         _password = password;
         _isLogged = true;
       }

@@ -43,8 +43,7 @@ void main() async {
           securityPassword: securityPassword,
         );
 
-        printDebug(
-            """
+        printDebug("""
 address: $address
 username: $username
 password: $password
@@ -70,8 +69,7 @@ isAdded: $isAdded
         DateTime dateCreated = walletData.dateCreated;
         bool isFavorite = walletData.isFavorite;
 
-        printDebug(
-            """
+        printDebug("""
 address: $address
 username: $username
 securityPassword: $securityPassword
@@ -105,8 +103,7 @@ isFavorite: $isFavorite
             row
         ].isNotEmpty;
 
-        printDebug(
-            """
+        printDebug("""
 username: $username
 isRemoved: $isRemoved
 isExists: $isExists
@@ -155,8 +152,7 @@ isExists: $isExists
       bool isFavorite = walletEngine.isFavorite();
       bool isLogged = walletEngine.isLogged();
 
-      printDebug(
-          """
+      printDebug("""
 address: $address
 username: $username
 securityPassword: $securityPassword
@@ -178,34 +174,13 @@ isLogged: $isLogged
       await walletEngine.setFavorite(true);
       bool isFavoriteAfter = walletEngine.isFavorite();
 
-      printDebug(
-          """
+      printDebug("""
 isFavoriteBefore: $isFavoriteBefore
 isFavoriteAfter: $isFavoriteAfter
         """);
 
       expect(isFavoriteBefore, isFalse);
       expect(isFavoriteAfter, isTrue);
-    });
-
-    test("Test (verified) with wrong password", () async {
-      bool isValid = await walletEngine.verified('wrongPassword');
-
-      printDebug("""
-isValid: $isValid
-        """);
-
-      expect(isValid, isFalse);
-    });
-
-    test("Test (verified) with correct password", () async {
-      bool isValid = await walletEngine.verified(walletPassword);
-
-      printDebug("""
-isValid: $isValid
-        """);
-
-      expect(isValid, isTrue);
     });
 
     test("Test (login) with wrong password", () async {
@@ -265,8 +240,7 @@ privateKey: $privateKey
       walletEngine.logout();
       bool isLoggedAfter = walletEngine.isLogged();
 
-      printDebug(
-          """
+      printDebug("""
 isLoggedBefore: $isLoggedBefore
 isLoggedAfter: $isLoggedAfter
         """);
