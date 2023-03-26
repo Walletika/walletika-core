@@ -78,6 +78,7 @@ Future<void> walletikaSDKInitialize({
       DBKeys.toAddress,
       DBKeys.amount,
       DBKeys.symbol,
+      DBKeys.decimals,
       DBKeys.dateCreated,
       DBKeys.status,
     ],

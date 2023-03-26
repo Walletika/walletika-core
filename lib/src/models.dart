@@ -100,6 +100,7 @@ class TransactionData {
     required this.toAddress,
     required this.amount,
     required this.symbol,
+    required this.decimals,
     required this.dateCreated,
     required this.status,
   });
@@ -110,6 +111,7 @@ class TransactionData {
   final EthereumAddress toAddress;
   final EtherAmount amount;
   final String symbol;
+  final int decimals;
   final DateTime dateCreated;
   int status;
 
@@ -121,6 +123,7 @@ class TransactionData {
         toAddress: EthereumAddress.fromHex(json[DBKeys.toAddress]),
         amount: EtherAmount.inWei(BigInt.parse(json[DBKeys.amount])),
         symbol: json[DBKeys.symbol],
+        decimals: json[DBKeys.decimals],
         dateCreated: DateTime.parse(json[DBKeys.dateCreated]),
         status: json[DBKeys.status],
       );
@@ -132,6 +135,7 @@ class TransactionData {
         DBKeys.toAddress: toAddress.hexEip55,
         DBKeys.amount: amount.getInWei.toString(),
         DBKeys.symbol: symbol,
+        DBKeys.decimals: decimals,
         DBKeys.dateCreated: dateCreated.toString(),
         DBKeys.status: status,
       };
