@@ -7,12 +7,12 @@ extension TransactionExtension on Transaction {
       'from': from?.hexEip55,
       'to': to?.hexEip55,
       'maxGas': maxGas,
-      'gasPrice': gasPrice?.getInWei,
-      'value': value?.getInWei,
+      'gasPrice': gasPrice?.getInWei.toString(),
+      'value': value?.getInWei.toString(),
       'data': data == null ? null : bytesToHex(data!, include0x: true),
       'nonce': nonce,
-      'maxFeePerGas': maxFeePerGas?.getInWei,
-      'maxPriorityFeePerGas': maxPriorityFeePerGas?.getInWei,
+      'maxFeePerGas': maxFeePerGas?.getInWei.toString(),
+      'maxPriorityFeePerGas': maxPriorityFeePerGas?.getInWei.toString(),
     };
   }
 }
