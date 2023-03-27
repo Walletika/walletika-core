@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:http/http.dart' as http;
 import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
@@ -175,6 +177,10 @@ class Provider {
 
   static String fromBytesToHex(List<int> bytes) {
     return bytesToHex(bytes, include0x: true);
+  }
+
+  static Uint8List fromHexToBytes(String hex) {
+    return hexToBytes(hex);
   }
 
   static BigInt fromBytesToInt(List<int> bytes) {
