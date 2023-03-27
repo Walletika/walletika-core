@@ -16,3 +16,32 @@ extension TransactionExtension on Transaction {
     };
   }
 }
+
+Transaction createTransactionFromJson(Map<String, dynamic> json) {
+  final String? from = json['from'];
+  final String? to = json['to'];
+  final int? maxGas = json['maxGas'];
+  final String? gasPrice = json['gasPrice'];
+  final String? value = json['value'];
+  final String? data = json['data'];
+  final int? nonce = json['nonce'];
+  final String? maxFeePerGas = json['maxFeePerGas'];
+  final String? maxPriorityFeePerGas = json['maxPriorityFeePerGas'];
+
+  return Transaction(
+    from: from == null ? null : EthereumAddress.fromHex(from),
+    to: to == null ? null : EthereumAddress.fromHex(to),
+    maxGas: maxGas,
+    gasPrice:
+        gasPrice == null ? null : EtherAmount.inWei(BigInt.parse(gasPrice)),
+    value: value == null ? null : EtherAmount.inWei(BigInt.parse(value)),
+    data: data == null ? null : hexToBytes(data),
+    nonce: nonce,
+    maxFeePerGas: maxFeePerGas == null
+        ? null
+        : EtherAmount.inWei(BigInt.parse(maxFeePerGas)),
+    maxPriorityFeePerGas: maxPriorityFeePerGas == null
+        ? null
+        : EtherAmount.inWei(BigInt.parse(maxPriorityFeePerGas)),
+  );
+}
