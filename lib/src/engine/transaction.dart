@@ -6,8 +6,11 @@ import '../models.dart';
 import 'provider.dart';
 
 Stream<TransactionData> getAllTransactions(
-  EthereumAddress walletAddress,
-) async* {
+  EthereumAddress walletAddress, {
+  int? count,
+}) async* {
+  int counter = 0;
+
   await for (final DBRow row in transactionsDB.select(
     items: {
       DBKeys.address: walletAddress.hexEip55,
@@ -15,6 +18,12 @@ Stream<TransactionData> getAllTransactions(
     },
   )) {
     yield TransactionData.fromJson(row.items);
+
+    if (count != null) {
+      counter++;
+
+      if (counter >= count) break;
+    }
   }
 }
 
