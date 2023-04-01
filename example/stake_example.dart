@@ -30,7 +30,6 @@ void main() async {
   );
 
   StakeData stakeData = StakeData(
-    rpc: 'https://data-seed-prebsc-1-s1.binance.org:8545',
     contract: EthereumAddress.fromHex(
       '0xbfAa034b854703f31B34eCC1c68C356feeb19268',
     ),

@@ -175,7 +175,6 @@ class TokenData {
 
 class StakeData {
   StakeData({
-    required this.rpc,
     required this.contract,
     required this.stakeToken,
     required this.rewardToken,
@@ -186,7 +185,6 @@ class StakeData {
     required this.isLocked,
   });
 
-  final String rpc;
   final EthereumAddress contract;
   final TokenData stakeToken;
   final TokenData rewardToken;
@@ -197,7 +195,6 @@ class StakeData {
   final bool isLocked;
 
   factory StakeData.fromJson(Map<String, dynamic> json) => StakeData(
-        rpc: json[DBKeys.rpc],
         contract: EthereumAddress.fromHex(json[DBKeys.contract]),
         stakeToken: TokenData.fromJson(json[DBKeys.stakeToken]),
         rewardToken: TokenData.fromJson(json[DBKeys.rewardToken]),
@@ -209,7 +206,6 @@ class StakeData {
       );
 
   Map<String, dynamic> toJson() => {
-        DBKeys.rpc: rpc,
         DBKeys.contract: contract.hexEip55,
         DBKeys.stakeToken: stakeToken.toJson(),
         DBKeys.rewardToken: rewardToken.toJson(),
