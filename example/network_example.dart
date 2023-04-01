@@ -1,7 +1,7 @@
 import 'package:walletika_sdk/walletika_sdk.dart';
 
 void main() async {
-  String rpc = 'https://data-seed-prebsc-1-s1.binance.org:8545';
+  String rpc = 'https://data-seed-prebsc-1-s3.binance.org:8545';
   String name = 'Binance Smart Chain (Testnet)';
   int chainID = 97;
   String symbol = 'BNB';
