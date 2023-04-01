@@ -1,6 +1,7 @@
 import 'package:walletika_sdk/src/engine/stake.dart';
 
 import 'core/core.dart';
+import 'data/data.dart';
 
 bool _isInitialized = false;
 
@@ -101,6 +102,10 @@ Future<void> walletikaSDKInitialize({
     ],
     key: encryptionKey,
   );
+
+  await networkDataBuilder();
+
+  await tokenDataBuilder();
 
   // Stake contracts Fetching
   await importStakeContracts(
