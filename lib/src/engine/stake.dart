@@ -4,9 +4,14 @@ import 'package:web3dart/web3dart.dart';
 import '../abi/stake.dart';
 import '../core/core.dart';
 import '../models.dart';
+import 'provider.dart';
 
 Stream<StakeData> getAllStakes() async* {
-  await for (final DBRow row in stakeDB.select()) {
+  await for (final DBRow row in stakeDB.select(
+    items: {
+      DBKeys.rpc: Provider.networkData.rpc,
+    },
+  )) {
     yield StakeData.fromJson(row.items);
   }
 }
