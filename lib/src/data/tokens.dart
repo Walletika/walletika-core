@@ -3,27 +3,11 @@ import '../core/core.dart';
 final List<Map<String, dynamic>> defaultTokensData = [
   {
     DBKeys.rpc: "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-    DBKeys.contract: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
-    DBKeys.name: "Wrapped BTC",
-    DBKeys.symbol: "WBTC",
-    DBKeys.decimals: 8,
-    DBKeys.website: "https://wbtc.network",
-  },
-  {
-    DBKeys.rpc: "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
     DBKeys.contract: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
     DBKeys.name: "Tether USD",
     DBKeys.symbol: "USDT",
     DBKeys.decimals: 6,
     DBKeys.website: "https://tether.to",
-  },
-  {
-    DBKeys.rpc: "https://bsc-dataseed1.binance.org",
-    DBKeys.contract: "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
-    DBKeys.name: "BTCB Token",
-    DBKeys.symbol: "BTCB",
-    DBKeys.decimals: 18,
-    DBKeys.website: "https://bitcoin.org",
   },
   {
     DBKeys.rpc: "https://bsc-dataseed1.binance.org",
