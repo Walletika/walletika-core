@@ -1,4 +1,6 @@
 import 'package:aesdatabase/aesdatabase.dart';
+import 'package:http/http.dart' as http;
+import 'package:web3dart/web3dart.dart';
 
 import '../core/core.dart';
 import '../models.dart';
@@ -16,16 +18,22 @@ Future<bool> addNewNetwork({
   required String symbol,
   required String explorer,
 }) async {
-  networksDB.addRow({
-    DBKeys.rpc: rpc,
-    DBKeys.name: name,
-    DBKeys.chainID: chainID,
-    DBKeys.symbol: symbol,
-    DBKeys.explorer: explorer,
-  });
-  await networksDB.dump();
+  final bool isValid = await Web3Client(rpc, http.Client())
+      .isListeningForNetwork()
+      .catchError((_) => false);
 
-  return true;
+  if (isValid) {
+    networksDB.addRow({
+      DBKeys.rpc: rpc,
+      DBKeys.name: name,
+      DBKeys.chainID: chainID,
+      DBKeys.symbol: symbol,
+      DBKeys.explorer: explorer,
+    });
+    await networksDB.dump();
+  }
+
+  return isValid;
 }
 
 Future<bool> removeNetwork(NetworkData network) async {
