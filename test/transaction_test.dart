@@ -19,6 +19,7 @@ void main() async {
       transactionsBSCTestnetDataTest();
   final List<Map<String, dynamic>> networks = networksDataTest();
   const int networkIndex = 1;
+  const int maximumCount = 2;
 
   setUpAll(() async {
     bool isConnected = await Provider.connect(
@@ -38,14 +39,18 @@ void main() async {
         String txHash = transaction[DBKeys.txHash];
 
         TransactionData transactionData = TransactionData.fromJson(transaction);
-        await addNewTransaction(transactionData);
+        await addNewTransaction(
+          walletAddress: walletAddress,
+          transaction: transactionData,
+          autoRemoveOlderCount: maximumCount,
+        );
 
         printDebug("""
 txHash: $txHash
         """);
       }
 
-      expect(transactionsDB.countRow(), equals(transactions.length));
+      expect(transactionsDB.countRow(), equals(maximumCount));
     });
 
     test("Test (getAllTransactions)", () async {
@@ -76,23 +81,19 @@ dateCreated: $dateCreated
 status: $status
         """);
 
-        expect(txHash, equals(transactions[index][DBKeys.txHash]));
-        expect(function, equals(transactions[index][DBKeys.function]));
-        expect(
-          fromAddress,
-          equals(transactions[index][DBKeys.fromAddress]),
-        );
-        expect(toAddress, equals(transactions[index][DBKeys.toAddress]));
-        expect(amount, equals(transactions[index][DBKeys.amount]));
-        expect(symbol, equals(transactions[index][DBKeys.symbol]));
-        expect(
-          dateCreated,
-          equals(transactions[index][DBKeys.dateCreated]),
-        );
-        expect(status, equals(transactions[index][DBKeys.status]));
+        final Map<String, dynamic> originalTx =
+            transactions[transactions.length - maximumCount + index];
+        expect(txHash, equals(originalTx[DBKeys.txHash]));
+        expect(function, equals(originalTx[DBKeys.function]));
+        expect(fromAddress, equals(originalTx[DBKeys.fromAddress]));
+        expect(toAddress, equals(originalTx[DBKeys.toAddress]));
+        expect(amount, equals(originalTx[DBKeys.amount]));
+        expect(symbol, equals(originalTx[DBKeys.symbol]));
+        expect(dateCreated, equals(originalTx[DBKeys.dateCreated]));
+        expect(status, equals(originalTx[DBKeys.status]));
       }
 
-      expect(allTransactions.length, equals(transactions.length));
+      expect(allTransactions.length, equals(maximumCount));
     });
 
     test("Test (removeTransaction)", () async {

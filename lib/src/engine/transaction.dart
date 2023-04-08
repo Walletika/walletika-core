@@ -6,11 +6,8 @@ import '../models.dart';
 import 'provider.dart';
 
 Stream<TransactionData> getAllTransactions(
-  EthereumAddress walletAddress, {
-  int? count,
-}) async* {
-  int counter = 0;
-
+  EthereumAddress walletAddress,
+) async* {
   await for (final DBRow row in transactionsDB.select(
     items: {
       DBKeys.address: walletAddress.hexEip55,
@@ -18,18 +15,34 @@ Stream<TransactionData> getAllTransactions(
     },
   )) {
     yield TransactionData.fromJson(row.items);
-
-    if (count != null) {
-      counter++;
-
-      if (counter >= count) break;
-    }
   }
 }
 
-Future<void> addNewTransaction(TransactionData transaction) async {
+Future<void> addNewTransaction({
+  required EthereumAddress walletAddress,
+  required TransactionData transaction,
+  int? autoRemoveOlderCount,
+}) async {
+  if (autoRemoveOlderCount != null) {
+    final List<DBRow> transactions = await transactionsDB.select(
+      items: {
+        DBKeys.address: walletAddress.hexEip55,
+        DBKeys.rpc: Provider.networkData.rpc,
+      },
+    ).toList();
+
+    while (transactions.length >= autoRemoveOlderCount) {
+      await for (final DBRow row in transactionsDB.select(
+        items: transactions.removeAt(0).items,
+      )) {
+        transactionsDB.removeRow(row.index);
+        break;
+      }
+    }
+  }
+
   transactionsDB.addRow({
-    DBKeys.address: transaction.fromAddress.hexEip55,
+    DBKeys.address: walletAddress.hexEip55,
     DBKeys.rpc: Provider.networkData.rpc,
     ...transaction.toJson(),
   });

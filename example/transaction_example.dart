@@ -18,7 +18,10 @@ void main() async {
   await walletikaSDKInitialize();
 
   // Add transaction
-  await addNewTransaction(transaction);
+  await addNewTransaction(
+    walletAddress: transaction.fromAddress,
+    transaction: transaction,
+  );
 
   // Get all transactions
   List<TransactionData> allTransactions = [
