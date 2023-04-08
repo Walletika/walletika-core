@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:aescrypto/aescrypto.dart';
 import 'package:aesdatabase/aesdatabase.dart';
 import 'package:walletika_creator/walletika_creator.dart';
 import 'package:web3dart/credentials.dart';
@@ -72,20 +73,30 @@ Future<String> exportWallets({
   );
 }
 
-Future<void> importWallets({
+Future<bool> importWallets({
   required String path,
   List<int>? walletIndexes,
   String? password,
   void Function(int value)? progressCallback,
 }) async {
-  await walletsDB.importBackup(
-    path: path,
-    rowIndexes: walletIndexes,
-    key: password,
-    progressCallback: progressCallback,
-  );
+  bool isValid = false;
 
-  await walletsDB.dump();
+  try {
+    await walletsDB.importBackup(
+      path: path,
+      rowIndexes: walletIndexes,
+      key: password,
+      progressCallback: progressCallback,
+    );
+
+    await walletsDB.dump();
+
+    isValid = true;
+  } on InvalidKeyError {
+    // Nothing to do
+  }
+
+  return isValid;
 }
 
 class WalletEngine {
