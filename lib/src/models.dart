@@ -43,20 +43,28 @@ class AddressBookData {
   AddressBookData({
     required this.username,
     required this.address,
+    required this.dateCreated,
+    required this.salt,
   });
 
   final String username;
   final EthereumAddress address;
+  final DateTime dateCreated;
+  final String salt;
 
   factory AddressBookData.fromJson(Map<String, dynamic> json) =>
       AddressBookData(
         username: json[DBKeys.username],
         address: EthereumAddress.fromHex(json[DBKeys.address]),
+        dateCreated: DateTime.parse(json[DBKeys.dateCreated]),
+        salt: json[DBKeys.salt],
       );
 
   Map<String, dynamic> toJson() => {
         DBKeys.username: username,
         DBKeys.address: address.hexEip55,
+        DBKeys.dateCreated: dateCreated.toString(),
+        DBKeys.salt: salt,
       };
 }
 

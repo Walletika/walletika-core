@@ -36,6 +36,8 @@ Future<void> walletikaSDKInitialize({
     columnTitles: [
       DBKeys.username,
       DBKeys.address,
+      DBKeys.dateCreated,
+      DBKeys.salt,
     ],
     key: encryptionKey,
   );

@@ -15,6 +15,7 @@ void main() async {
   printDebug("Is Initialized: $walletikaSDKInitialized");
 
   final List<Map<String, dynamic>> wallets = walletsDataTest();
+  final String saltValue = 'saltValue';
 
   group("AddressBook Storage Group:", () {
     test("Test (addNewAddressBook)", () async {
@@ -25,6 +26,7 @@ void main() async {
         bool isAdded = await addNewAddressBook(
           username: username,
           address: EthereumAddress.fromHex(address),
+          salt: saltValue,
         );
 
         printDebug("""
@@ -45,14 +47,20 @@ isAdded: $isAdded
         AddressBookData addressBookData = allAddressesBook[index];
         String address = addressBookData.address.hexEip55;
         String username = addressBookData.username;
+        DateTime dateCreated = addressBookData.dateCreated;
+        String salt = addressBookData.salt;
 
         printDebug("""
 address: $address
 username: $username
+dateCreated: ${dateCreated.toString()}
+salt: $salt
         """);
 
         expect(address, equals(wallets[index][DBKeys.address]));
         expect(username, equals(wallets[index][DBKeys.username]));
+        expect(dateCreated.isBefore(DateTime.now()), isTrue);
+        expect(salt, equals(saltValue));
       }
 
       expect(allAddressesBook.length, equals(wallets.length));

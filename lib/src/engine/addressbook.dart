@@ -13,10 +13,13 @@ Stream<AddressBookData> getAllAddressesBook() async* {
 Future<bool> addNewAddressBook({
   required String username,
   required EthereumAddress address,
+  required String salt,
 }) async {
   addressesBookDB.addRow({
     DBKeys.username: username,
     DBKeys.address: address.hexEip55,
+    DBKeys.dateCreated: DateTime.now().toString(),
+    DBKeys.salt: salt,
   });
   await addressesBookDB.dump();
 
