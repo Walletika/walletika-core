@@ -15,9 +15,8 @@ Future<DatabaseEngine> databaseLoader({
 
   await drive.create();
 
-  final DatabaseEngine db = DatabaseEngine(drive, key ?? 'NoKey');
+  final DatabaseEngine db = DatabaseEngine(drive, key: key ?? 'NoKey');
   db.createTable(columnTitles);
-
   await db.load();
 
   return db;

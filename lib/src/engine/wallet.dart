@@ -50,6 +50,7 @@ Future<bool> removeWallet(WalletData wallet) async {
   await for (final DBRow row in walletsDB.select(
     items: wallet.toJson(),
   )) {
+    SecretStringStorage.instance.remove(wallet.address.hex);
     walletsDB.removeRow(row.index);
     await walletsDB.dump();
     result = true;
@@ -102,7 +103,6 @@ Future<bool> importWallets({
 class WalletEngine {
   final WalletData wallet;
 
-  String? _password;
   bool _isLogged = false;
 
   WalletEngine(this.wallet);
@@ -125,7 +125,7 @@ class WalletEngine {
     if (_isLogged) {
       final WalletGeneratorInfo? walletInfo = await walletGenerator(
         username: wallet.username,
-        password: _password!,
+        password: SecretStringStorage.instance.read(wallet.address.hex)!,
         securityPassword: wallet.securityPassword,
         otpCode: otpCode,
         createNew: false,
@@ -169,7 +169,10 @@ class WalletEngine {
         password: password,
         securityPassword: wallet.securityPassword,
       )) {
-        _password = password;
+        SecretStringStorage.instance.write(
+          key: wallet.address.hex,
+          value: password,
+        );
         _isLogged = true;
       }
     }
@@ -178,7 +181,7 @@ class WalletEngine {
   }
 
   void logout() {
-    _password = null;
+    SecretStringStorage.instance.remove(wallet.address.hex);
     _isLogged = false;
   }
 }
