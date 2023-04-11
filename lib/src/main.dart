@@ -9,6 +9,7 @@ bool get walletikaSDKInitialized => _isInitialized;
 
 Future<void> walletikaSDKInitialize({
   String? encryptionKey,
+  String? stakeAPI,
   String directory = "assets",
 }) async {
   if (_isInitialized) {
@@ -110,9 +111,9 @@ Future<void> walletikaSDKInitialize({
   await tokenDataBuilder();
 
   // Stake contracts Fetching
-  await importStakeContracts(
-    'https://raw.githubusercontent.com/Walletika/metadata/main/stake-contracts.json',
-  );
+  if (stakeAPI != null) {
+    await importStakeContracts(stakeAPI);
+  }
 
   _isInitialized = true;
 }
