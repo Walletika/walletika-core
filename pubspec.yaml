@@ -1,6 +1,6 @@
 name: walletika_sdk
 description: Software development kit of walletika.
-version: 3.2.2
+version: 3.3.0
 homepage: https://github.com/walletika
 repository: https://github.com/walletika/walletika-sdk
 issue_tracker: https://github.com/walletika/walletika-sdk/issues
@@ -16,6 +16,10 @@ environment:
   sdk: '>=2.18.0 <3.0.0'
 
 dependencies:
+  aescrypto:
+    git:
+      url: https://github.com/MahmoudKhalid/aescrypto-dart.git
+      ref: main
   aesdatabase:
     git:
       url: https://github.com/MahmoudKhalid/aesdatabase-dart.git
