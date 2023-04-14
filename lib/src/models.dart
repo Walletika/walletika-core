@@ -208,8 +208,12 @@ class StakeData {
         rewardToken: TokenData.fromJson(json[DBKeys.rewardToken]),
         startBlock: json[DBKeys.startBlock],
         endBlock: json[DBKeys.endBlock],
-        startTime: DateTime.parse(json[DBKeys.startTime]),
-        endTime: DateTime.parse(json[DBKeys.endTime]),
+        startTime: DateTime.fromMillisecondsSinceEpoch(
+          json[DBKeys.startTime],
+        ).toUtc(),
+        endTime: DateTime.fromMillisecondsSinceEpoch(
+          json[DBKeys.endTime],
+        ).toUtc(),
         isLocked: json[DBKeys.isLocked],
       );
 
@@ -219,8 +223,8 @@ class StakeData {
         DBKeys.rewardToken: rewardToken.toJson(),
         DBKeys.startBlock: startBlock,
         DBKeys.endBlock: endBlock,
-        DBKeys.startTime: startTime.toString(),
-        DBKeys.endTime: endTime.toString(),
+        DBKeys.startTime: startTime.millisecondsSinceEpoch,
+        DBKeys.endTime: endTime.millisecondsSinceEpoch,
         DBKeys.isLocked: isLocked,
       };
 }

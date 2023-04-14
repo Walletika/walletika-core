@@ -10,7 +10,9 @@ void printDebug(String message) {
 }
 
 void main() async {
-  await walletikaSDKInitialize();
+  final String api =
+      'https://raw.githubusercontent.com/Walletika/metadata/main/stake-contracts.json';
+  await walletikaSDKInitialize(stakeAPI: api);
   printDebug("Is Initialized: $walletikaSDKInitialized");
 
   final List<Map<String, dynamic>> wallets = walletsDataTest();
