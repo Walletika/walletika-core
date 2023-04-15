@@ -70,11 +70,12 @@ class Provider {
     String rate = 'medium',
   }) async {
     // Gas reset
-    tx = tx.copyWith(
-      gasPrice: null,
-      maxGas: null,
-      maxFeePerGas: null,
-      maxPriorityFeePerGas: null,
+    tx = Transaction(
+      from: tx.from,
+      to: tx.to,
+      value: tx.value,
+      data: tx.data,
+      nonce: tx.nonce,
     );
 
     // Gas limit
