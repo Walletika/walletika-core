@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:aesdatabase/aesdatabase.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -8,13 +10,40 @@ import 'provider.dart';
 Stream<TransactionData> getAllTransactions(
   EthereumAddress walletAddress,
 ) async* {
+  bool saveRequired = false;
+
   await for (final DBRow row in transactionsDB.select(
     items: {
       DBKeys.address: walletAddress.hexEip55,
       DBKeys.rpc: Provider.networkData.rpc,
     },
   )) {
+    if (row.items[DBKeys.status] == TransactionData.pendingStatus) {
+      try {
+        await Provider.getTransactionReceipt(row.items[DBKeys.txHash])
+            .then((tx) {
+          if (tx == null) return;
+
+          final Map<String, int> status = {
+            DBKeys.status: tx.status!
+                ? TransactionData.successStatus
+                : TransactionData.failedStatus
+          };
+
+          transactionsDB.edit(rowIndex: row.index, items: status);
+          row.items.addAll(status);
+          saveRequired = true;
+        });
+      } on SocketException {
+        // Nothing to do
+      }
+    }
+
     yield TransactionData.fromJson(row.items);
+  }
+
+  if (saveRequired) {
+    await transactionsDB.dump();
   }
 }
 

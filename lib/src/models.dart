@@ -123,6 +123,10 @@ class TransactionData {
   final DateTime dateCreated;
   int status;
 
+  static const int pendingStatus = -1;
+  static const int failedStatus = 0;
+  static const int successStatus = 1;
+
   factory TransactionData.fromJson(Map<String, dynamic> json) =>
       TransactionData(
         txHash: json[DBKeys.txHash],
