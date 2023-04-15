@@ -132,7 +132,7 @@ List<Map<String, dynamic>> transactionsBSCTestnetDataTest() {
     },
     {
       DBKeys.txHash:
-          '0x4071ff1b7601ab547599fe059bfced11e7e00dff684bd99b146156e69da50b1d',
+          '0xd44e4b40e905b0565d21674cef080db8f91828e5ee372db88143ae0c3be4aaac',
       DBKeys.function: 'transfer',
       DBKeys.fromAddress: '0xC94EA8D9694cfe25b94D977eEd4D60d7c0985BD3',
       DBKeys.toAddress: '0x8f7af74A269aD76cbd3B278A7E7080295819f161',
@@ -144,7 +144,7 @@ List<Map<String, dynamic>> transactionsBSCTestnetDataTest() {
     },
     {
       DBKeys.txHash:
-          '0x49158a8a258d9a6b264746f02e1387de6c4df4694b1f3637d6624de15844ee0b',
+          '0x49158a8a258d9a6b264746f02e1387de6c4df4694b1f3637d6624de15844ee00',
       DBKeys.function: 'transfer',
       DBKeys.fromAddress: '0xC94EA8D9694cfe25b94D977eEd4D60d7c0985BD3',
       DBKeys.toAddress: '0xD99D1c33F9fC3444f8101754aBC46c52416550D1',
@@ -152,11 +152,11 @@ List<Map<String, dynamic>> transactionsBSCTestnetDataTest() {
       DBKeys.symbol: 'BNB',
       DBKeys.decimals: 18,
       DBKeys.dateCreated: '2022-10-04 14:10:16.648948',
-      DBKeys.status: 1,
+      DBKeys.status: -1,
     },
     {
       DBKeys.txHash:
-          '0x4b30e31aeced2c7e3ee65c02fc929bec5790d84d6d94077edce9bcd4d3a84b40',
+          '0x06c37c03de55eac28e2b159a6bcbcd8ce8ff8a92c9ad4880185e77f8d411fa05',
       DBKeys.function: 'transfer',
       DBKeys.fromAddress: '0xC94EA8D9694cfe25b94D977eEd4D60d7c0985BD3',
       DBKeys.toAddress: '0x9027A1A724ffa5bcB1478E3AC994a706AFa7C2DE',
@@ -164,7 +164,7 @@ List<Map<String, dynamic>> transactionsBSCTestnetDataTest() {
       DBKeys.symbol: 'BNB',
       DBKeys.decimals: 18,
       DBKeys.dateCreated: '2022-10-04 14:10:16.648948',
-      DBKeys.status: 1,
+      DBKeys.status: 0,
     },
   ];
 }

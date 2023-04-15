@@ -19,7 +19,7 @@ void main() async {
       transactionsBSCTestnetDataTest();
   final List<Map<String, dynamic>> networks = networksDataTest();
   const int networkIndex = 1;
-  const int maximumCount = 2;
+  const int maximumCount = 3;
 
   setUpAll(() async {
     bool isConnected = await Provider.connect(
