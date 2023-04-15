@@ -150,21 +150,13 @@ class Provider {
   }
 
   static Future<TransactionInformation?> getTransaction(String txHash) async {
-    try {
-      return await web3.getTransactionByHash(txHash);
-    } catch (e) {
-      return null;
-    }
+    return web3.getTransactionByHash(txHash);
   }
 
   static Future<TransactionReceipt?> getTransactionReceipt(
     String txHash,
   ) async {
-    try {
-      return await web3.getTransactionReceipt(txHash);
-    } catch (e) {
-      return null;
-    }
+    return web3.getTransactionReceipt(txHash);
   }
 
   static String getExploreUrl(String address) {
