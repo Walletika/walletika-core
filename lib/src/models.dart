@@ -214,10 +214,12 @@ class StakeData {
         endBlock: json[DBKeys.endBlock],
         startTime: DateTime.fromMillisecondsSinceEpoch(
           json[DBKeys.startTime],
-        ).toUtc(),
+          isUtc: true,
+        ),
         endTime: DateTime.fromMillisecondsSinceEpoch(
           json[DBKeys.endTime],
-        ).toUtc(),
+          isUtc: true,
+        ),
         isLocked: json[DBKeys.isLocked],
       );
 
