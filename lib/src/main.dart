@@ -10,6 +10,7 @@ bool get walletikaSDKInitialized => _isInitialized;
 Future<void> walletikaSDKInitialize({
   String? encryptionKey,
   String? stakeAPI,
+  String? stakeKey,
   String directory = "assets",
 }) async {
   if (_isInitialized) {
@@ -112,7 +113,7 @@ Future<void> walletikaSDKInitialize({
 
   // Stake contracts Fetching
   if (stakeAPI != null) {
-    await importStakeContracts(stakeAPI);
+    await importStakeContracts(apiURL: stakeAPI, encryptionKey: stakeKey);
   }
 
   _isInitialized = true;

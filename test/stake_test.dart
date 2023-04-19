@@ -11,8 +11,8 @@ void printDebug(String message) {
 
 void main() async {
   final String api =
-      'https://raw.githubusercontent.com/Walletika/metadata/main/stake-contracts.json';
-  await walletikaSDKInitialize(stakeAPI: api);
+      'https://raw.githubusercontent.com/Walletika/metadata/main/stake-contracts-test.json';
+  await walletikaSDKInitialize(stakeAPI: api, stakeKey: 'key');
   printDebug("Is Initialized: $walletikaSDKInitialized");
 
   final List<Map<String, dynamic>> wallets = walletsDataTest();

@@ -16,10 +16,16 @@ Stream<StakeData> getAllStakes() async* {
   }
 }
 
-Future<bool> importStakeContracts(String apiURL) async {
+Future<bool> importStakeContracts({
+  required String apiURL,
+  String? encryptionKey,
+}) async {
   bool result = false;
 
-  final List<dynamic> dataFetched = await fetcher(apiURL);
+  final List<dynamic> dataFetched = await fetcher(
+    apiURL: apiURL,
+    encryptionKey: encryptionKey,
+  );
 
   if (dataFetched.isNotEmpty) {
     stakeDB.clear();
