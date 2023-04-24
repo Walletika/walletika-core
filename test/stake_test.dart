@@ -10,9 +10,7 @@ void printDebug(String message) {
 }
 
 void main() async {
-  final String api =
-      'https://raw.githubusercontent.com/Walletika/metadata/main/stake-contracts-test.json';
-  await walletikaSDKInitialize(stakeAPI: api, stakeKey: 'key');
+  await walletikaSDKInitialize();
   printDebug("Is Initialized: $walletikaSDKInitialized");
 
   final List<Map<String, dynamic>> wallets = walletsDataTest();
@@ -57,6 +55,54 @@ void main() async {
       stakeData: stakeData,
       sender: walletEngine.address(),
     );
+  });
+
+  group("Stake Storage Group", () {
+    test("Test (importStakeContracts)", () async {
+      await importStakeContracts(stakes);
+
+      expect(stakeDB.countRow(), equals(stakes.length));
+    });
+
+    test("Test (getAllStakes)", () async {
+      List<StakeData> allStakes = [
+        await for (StakeData item in getAllStakes()) item
+      ];
+
+      for (int index = 0; index < allStakes.length; index++) {
+        StakeData stakeData = allStakes[index];
+        String contract = stakeData.contract.hexEip55;
+        Map<String, dynamic> stakeToken = stakeData.stakeToken.toJson();
+        Map<String, dynamic> rewardToken = stakeData.rewardToken.toJson();
+        int startBlock = stakeData.startBlock;
+        int endBlock = stakeData.endBlock;
+        int startTime = stakeData.startTime.millisecondsSinceEpoch;
+        int endTime = stakeData.endTime.millisecondsSinceEpoch;
+        bool isLocked = stakeData.isLocked;
+
+        printDebug("""
+contract: $contract
+stakeToken: $stakeToken
+rewardToken: $rewardToken
+startBlock: $startBlock
+endBlock: $endBlock
+startTime: $startTime
+endTime: $endTime
+isLocked: $isLocked
+        """);
+
+        expect(contract, equals(stakes[index][DBKeys.contract]));
+        expect(stakeToken, equals(stakes[index][DBKeys.stakeToken]));
+        expect(rewardToken, equals(stakes[index][DBKeys.rewardToken]));
+        expect(startBlock, equals(stakes[index][DBKeys.startBlock]));
+        expect(endBlock, equals(stakes[index][DBKeys.endBlock]));
+        expect(startTime, equals(stakes[index][DBKeys.startTime]));
+        expect(endTime, equals(stakes[index][DBKeys.endTime]));
+        expect(isLocked, equals(stakes[index][DBKeys.isLocked]));
+      }
+
+      expect(allStakes.length, equals(stakes.length));
+    });
   });
 
   group("Stake View Group:", () {
