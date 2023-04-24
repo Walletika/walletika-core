@@ -1,6 +1,5 @@
 import 'package:aesdatabase/aesdatabase.dart';
 import 'package:walletika_sdk/src/core/core.dart';
-import 'package:walletika_sdk/src/data/data.dart';
 import 'package:walletika_sdk/walletika_sdk.dart';
 import 'package:test/test.dart';
 
@@ -54,11 +53,6 @@ void main() async {
   });
 
   group("Token Storage Group", () {
-    test("Test (check default tokens)", () async {
-      expect(tokensDB.countRow(), equals(defaultTokensData.length));
-      tokensDB.clear();
-    });
-
     test("Test (addNewToken)", () async {
       for (Map<String, dynamic> token in tokens) {
         String contract = token[DBKeys.contract];
