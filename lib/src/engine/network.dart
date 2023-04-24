@@ -27,11 +27,9 @@ Future<bool> addNewNetwork({
         .getChainId()
         .then((value) => value.toInt());
 
-    if (chainID_ != chainID) {
-      throw ArgumentError("addNewNetwork: ChainID incorrect");
+    if (chainID_ == chainID) {
+      isValid = true;
     }
-
-    isValid = true;
   } on SocketException {
     // Nothing to do
   }
