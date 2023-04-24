@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:aesdatabase/aesdatabase.dart';
 import 'package:http/http.dart' as http;
 import 'package:web3dart/web3dart.dart';
@@ -18,9 +20,21 @@ Future<bool> addNewNetwork({
   required String symbol,
   required String explorer,
 }) async {
-  final bool isValid = await Web3Client(rpc, http.Client())
-      .isListeningForNetwork()
-      .catchError((_) => false);
+  bool isValid = false;
+
+  try {
+    final int chainID_ = await Web3Client(rpc, http.Client())
+        .getChainId()
+        .then((value) => value.toInt());
+
+    if (chainID_ != chainID) {
+      throw ArgumentError("addNewNetwork: ChainID incorrect");
+    }
+
+    isValid = true;
+  } on SocketException {
+    // Nothing to do
+  }
 
   if (isValid) {
     networksDB.addRow({
