@@ -1,4 +1,5 @@
 import 'core/core.dart';
+import 'engine/stake.dart';
 
 bool _isInitialized = false;
 
@@ -6,6 +7,9 @@ bool get walletikaSDKInitialized => _isInitialized;
 
 Future<void> walletikaSDKInitialize({
   String? encryptionKey,
+  List<Map<String, dynamic>>? initialNetworks,
+  List<Map<String, dynamic>>? initialTokens,
+  List<Map<String, dynamic>>? initialStakeContracts,
   String directory = "assets",
 }) async {
   if (_isInitialized) {
@@ -101,6 +105,14 @@ Future<void> walletikaSDKInitialize({
     ],
     key: encryptionKey,
   );
+
+  await networksDataBuilder(initialNetworks);
+
+  await tokensDataBuilder(initialTokens);
+
+  if (initialStakeContracts != null) {
+    await importStakeContracts(initialStakeContracts);
+  }
 
   _isInitialized = true;
 }
