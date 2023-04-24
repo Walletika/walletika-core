@@ -16,29 +16,14 @@ Stream<StakeData> getAllStakes() async* {
   }
 }
 
-Future<bool> importStakeContracts({
-  required String apiURL,
-  String? encryptionKey,
-}) async {
-  bool result = false;
+Future<void> importStakeContracts(List<Map<String, dynamic>> data) async {
+  stakeDB.clear();
 
-  final List<dynamic> dataFetched = await fetcher(
-    apiURL: apiURL,
-    encryptionKey: encryptionKey,
-  );
-
-  if (dataFetched.isNotEmpty) {
-    stakeDB.clear();
-
-    for (final Map<String, dynamic> data in dataFetched) {
-      stakeDB.addRow(data);
-    }
-
-    await stakeDB.dump();
-    result = true;
+  for (final Map<String, dynamic> item in data) {
+    stakeDB.addRow(item);
   }
 
-  return result;
+  await stakeDB.dump();
 }
 
 class StakeEngine extends ContractEngine {
