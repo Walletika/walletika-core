@@ -1,7 +1,4 @@
-import 'package:walletika_sdk/src/engine/stake.dart';
-
 import 'core/core.dart';
-import 'data/data.dart';
 
 bool _isInitialized = false;
 
@@ -9,12 +6,10 @@ bool get walletikaSDKInitialized => _isInitialized;
 
 Future<void> walletikaSDKInitialize({
   String? encryptionKey,
-  String? stakeAPI,
-  String? stakeKey,
   String directory = "assets",
 }) async {
   if (_isInitialized) {
-    throw Exception("Walletika API already initialized");
+    throw Exception("Walletika SDK already initialized");
   }
 
   // Database loading
@@ -106,15 +101,6 @@ Future<void> walletikaSDKInitialize({
     ],
     key: encryptionKey,
   );
-
-  await networkDataBuilder();
-
-  await tokenDataBuilder();
-
-  // Stake contracts Fetching
-  if (stakeAPI != null) {
-    await importStakeContracts(apiURL: stakeAPI, encryptionKey: stakeKey);
-  }
 
   _isInitialized = true;
 }
