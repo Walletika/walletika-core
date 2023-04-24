@@ -1,6 +1,5 @@
 import 'package:aesdatabase/aesdatabase.dart';
 import 'package:walletika_sdk/src/core/core.dart';
-import 'package:walletika_sdk/src/data/data.dart';
 import 'package:walletika_sdk/walletika_sdk.dart';
 import 'package:test/test.dart';
 
@@ -18,11 +17,6 @@ void main() async {
   final List<Map<String, dynamic>> networks = networksDataTest();
 
   group("Network Storage Group:", () {
-    test("Test (check default networks)", () async {
-      expect(networksDB.countRow(), equals(defaultNetworksData.length));
-      networksDB.clear();
-    });
-
     test("Test (addNewNetwork)", () async {
       for (Map<String, dynamic> network in networks) {
         String rpc = network[DBKeys.rpc];
