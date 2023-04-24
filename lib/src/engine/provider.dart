@@ -19,11 +19,16 @@ class Provider {
   }
 
   static Future<bool> isConnected() async {
+    bool isConnected = false;
+
     try {
-      return await web3.isListeningForNetwork();
-    } catch (e) {
-      return false;
+      await web3.getClientVersion();
+      isConnected = true;
+    } catch (_) {
+      // Nothing to do
     }
+
+    return isConnected;
   }
 
   static Future<EtherAmount> balanceOf({
