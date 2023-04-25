@@ -87,7 +87,6 @@ class Provider {
     final BigInt gasLimit = await web3.estimateGas(
       sender: tx.from,
       to: tx.to,
-      value: tx.value,
       data: tx.data,
     );
 
