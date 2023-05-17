@@ -17,7 +17,7 @@ void main() async {
   );
 
   // Connect with RPC
-  bool isConnected = await Provider.connect(networkData);
+  await Provider.connect(networkData);
 
   TokenData tokenData = TokenData(
     contract: EthereumAddress.fromHex(
@@ -30,15 +30,15 @@ void main() async {
   );
 
   // Get all tokens
-  List<TokenData> allTokens = [
-    await for (TokenData item in getAllTokens()) item
-  ];
+  await for (TokenData item in getAllTokens()) {
+    item;
+  }
 
   // Add token
   await addNewToken(tokenData);
 
   // Remove token
-  bool isRemoved = await removeToken(tokenData);
+  await removeToken(tokenData);
 
   // Token engine
   TokenEngine tokenEngine = TokenEngine(
@@ -47,16 +47,16 @@ void main() async {
   );
 
   // Get token name
-  String name = await tokenEngine.name();
+  await tokenEngine.name();
 
   // Get symbol name
-  String symbol = await tokenEngine.symbol();
+  await tokenEngine.symbol();
 
   // Get decimals name
-  int decimals = await tokenEngine.decimals();
+  await tokenEngine.decimals();
 
   // Get totalSupply
-  EtherAmount totalSupply = await tokenEngine.totalSupply();
+  await tokenEngine.totalSupply();
 
   // Check balance
   EtherAmount balance = await tokenEngine.balanceOf(address: address);
@@ -67,19 +67,19 @@ void main() async {
     amount: balance,
   );
   Transaction tx = txDetails.tx;
-  Map<String, dynamic>? abi = txDetails.abi;
-  Map<String, dynamic>? args = txDetails.args;
+  txDetails.abi;
+  txDetails.args;
 
   // Add gas fee
   TxGasDetailsData txGasDetails = await Provider.addGas(tx: tx);
   tx = txGasDetails.tx;
-  EtherAmount estimateGas = txGasDetails.estimateGas;
-  EtherAmount maxFee = txGasDetails.maxFee;
-  EtherAmount total = txGasDetails.total;
-  EtherAmount maxAmount = txGasDetails.maxAmount;
+  txGasDetails.estimateGas;
+  txGasDetails.maxFee;
+  txGasDetails.total;
+  txGasDetails.maxAmount;
 
   // Send transaction
-  String sendTransaction = await Provider.sendTransaction(
+  await Provider.sendTransaction(
     credentials: EthPrivateKey.fromHex(
       '0xe394b45f8ab120fbf238e356de30c14fdfa6ddf87b2c19253e161a850bfd03f7',
     ),

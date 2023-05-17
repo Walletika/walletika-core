@@ -17,7 +17,7 @@ void main() async {
   );
 
   // Connect with RPC
-  bool isConnected = await Provider.connect(networkData);
+  await Provider.connect(networkData);
 
   TokenData tokenData = TokenData(
     contract: EthereumAddress.fromHex(
@@ -49,10 +49,10 @@ void main() async {
   );
 
   // Get totalSupply
-  EtherAmount totalSupply = await stakeEngine.totalSupply();
+  await stakeEngine.totalSupply();
 
   // Get rewardSupply
-  EtherAmount rewardSupply = await stakeEngine.rewardSupply();
+  await stakeEngine.rewardSupply();
 
   // Check balance
   EtherAmount balance = await stakeEngine.balanceOf(address: address);
@@ -62,19 +62,19 @@ void main() async {
     amount: balance,
   );
   Transaction tx = txDetails.tx;
-  Map<String, dynamic>? abi = txDetails.abi;
-  Map<String, dynamic>? args = txDetails.args;
+  txDetails.abi;
+  txDetails.args;
 
   // Add gas fee
   TxGasDetailsData txGasDetails = await Provider.addGas(tx: tx);
   tx = txGasDetails.tx;
-  EtherAmount estimateGas = txGasDetails.estimateGas;
-  EtherAmount maxFee = txGasDetails.maxFee;
-  EtherAmount total = txGasDetails.total;
-  EtherAmount maxAmount = txGasDetails.maxAmount;
+  txGasDetails.estimateGas;
+  txGasDetails.maxFee;
+  txGasDetails.total;
+  txGasDetails.maxAmount;
 
   // Send transaction
-  String sendTransaction = await Provider.sendTransaction(
+  await Provider.sendTransaction(
     credentials: EthPrivateKey.fromHex(
       '0xe394b45f8ab120fbf238e356de30c14fdfa6ddf87b2c19253e161a850bfd03f7',
     ),

@@ -11,7 +11,7 @@ void main() async {
   await walletikaSDKInitialize();
 
   // Add new network
-  bool isAdded = await addNewNetwork(
+  await addNewNetwork(
     rpc: rpc,
     name: name,
     chainID: chainID,
@@ -25,5 +25,5 @@ void main() async {
   ];
 
   // Remove a network
-  bool isRemoved = await removeNetwork(allNetworks[0]);
+  await removeNetwork(allNetworks[0]);
 }

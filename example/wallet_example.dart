@@ -17,7 +17,7 @@ void main() async {
   await walletikaSDKInitialize();
 
   // Add new wallet
-  bool isAdded = await addNewWallet(
+  await addNewWallet(
     username: username,
     password: password,
     securityPassword: securityPassword,
@@ -29,16 +29,16 @@ void main() async {
   ];
 
   // Remove a wallet
-  bool isRemoved = await removeWallet(allWallets[0]);
+  await removeWallet(allWallets[0]);
 
   // Wallet engine
   WalletEngine walletEngine = WalletEngine(allWallets[0]);
 
   // Login
-  bool isLogin = await walletEngine.login(password);
+  await walletEngine.login(password);
 
   // Get privateKey (Must be login)
-  String? privateKey = await walletEngine.privateKey(otpCode);
+  await walletEngine.privateKey(otpCode);
 
   // Logout
   walletEngine.logout();

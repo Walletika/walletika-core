@@ -24,13 +24,13 @@ void main() async {
   );
 
   // Get all transactions
-  List<TransactionData> allTransactions = [
-    await for (TransactionData item in getAllTransactions(
-      transaction.fromAddress,
-    ))
-      item
-  ];
+
+  await for (TransactionData item in getAllTransactions(
+    transaction.fromAddress,
+  )) {
+    item;
+  }
 
   // Remove transaction
-  bool isRemoved = await removeTransaction(transaction);
+  await removeTransaction(transaction);
 }

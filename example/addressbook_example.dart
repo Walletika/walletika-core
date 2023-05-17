@@ -10,7 +10,7 @@ void main() async {
   await walletikaSDKInitialize();
 
   // Add new address book
-  bool isAdded = await addNewAddressBook(
+  await addNewAddressBook(
     username: username,
     address: address,
     salt: 'Enter unique salt value for verification',
@@ -22,5 +22,5 @@ void main() async {
   ];
 
   // Remove a address book
-  bool isRemoved = await removeAddressBook(allAddressesBook[0]);
+  await removeAddressBook(allAddressesBook[0]);
 }
