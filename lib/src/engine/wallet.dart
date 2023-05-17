@@ -90,6 +90,25 @@ Future<bool> importWallets({
       progressCallback: progressCallback,
     );
 
+    // Remove duplicate wallets
+    final List<String> addresses = [];
+
+    for (final DBRow row in await walletsDB.select().toList()) {
+      final String address = row.items[DBKeys.address];
+
+      if (addresses.contains(address)) {
+        walletsDB.removeRow(
+          await walletsDB
+              .select(items: row.items)
+              .first
+              .then<int>((row) => row.index),
+        );
+        continue;
+      }
+
+      addresses.add(address);
+    }
+
     await walletsDB.dump();
 
     isValid = true;
