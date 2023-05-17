@@ -53,7 +53,7 @@ List<Map<String, dynamic>> networksDataTest() {
       DBKeys.explorer: "https://bscscan.com",
     },
     {
-      DBKeys.rpc: "https://data-seed-prebsc-1-s3.binance.org:8545",
+      DBKeys.rpc: "https://data-seed-prebsc-1-s1.binance.org:8545",
       DBKeys.name: "Binance Smart Chain (Testnet)",
       DBKeys.chainID: 97,
       DBKeys.symbol: "BNB",
@@ -91,7 +91,7 @@ List<Map<String, dynamic>> tokensBSCTestnetDataTest() {
 List<Map<String, dynamic>> stakesBSCTestnetDataTest() {
   return [
     {
-      DBKeys.rpc: 'https://data-seed-prebsc-1-s3.binance.org:8545',
+      DBKeys.rpc: 'https://data-seed-prebsc-1-s1.binance.org:8545',
       DBKeys.contract: '0xbfAa034b854703f31B34eCC1c68C356feeb19268',
       DBKeys.stakeToken: {
         DBKeys.contract: '0xc4d3716B65b9c4c6b69e4E260b37e0e476e28d87',
