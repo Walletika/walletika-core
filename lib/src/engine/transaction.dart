@@ -61,12 +61,12 @@ Future<void> addNewTransaction({
     ).toList();
 
     while (transactions.length >= autoRemoveOlderCount) {
-      await for (final DBRow row in transactionsDB.select(
-        items: transactions.removeAt(0).items,
-      )) {
-        transactionsDB.removeRow(row.index);
-        break;
-      }
+      transactionsDB.removeRow(
+        await transactionsDB
+            .select(items: transactions.removeAt(0).items)
+            .first
+            .then<int>((row) => row.index),
+      );
     }
   }
 
