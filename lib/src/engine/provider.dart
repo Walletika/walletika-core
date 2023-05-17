@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
@@ -9,6 +10,7 @@ import '../models.dart';
 class Provider {
   static late NetworkData networkData;
   static late Web3Client web3;
+  static late bool _isConnected;
 
   static Future<bool> connect(NetworkData network) async {
     networkData = network;
@@ -19,26 +21,28 @@ class Provider {
   }
 
   static Future<bool> isConnected() async {
-    bool isConnected = false;
+    _isConnected = false;
 
     try {
       await web3.getClientVersion();
-      isConnected = true;
+      _isConnected = true;
     } catch (_) {
       // Nothing to do
     }
 
-    return isConnected;
+    return _isConnected;
   }
 
   static Future<EtherAmount> balanceOf({
     required EthereumAddress address,
     BlockNum? atBlock,
   }) {
+    connectionValidator();
     return web3.getBalance(address, atBlock: atBlock);
   }
 
   static Future<int> blockNumber() {
+    connectionValidator();
     return web3.getBlockNumber();
   }
 
@@ -58,6 +62,8 @@ class Provider {
     required EthereumAddress recipient,
     required EtherAmount amount,
   }) async {
+    connectionValidator();
+
     final Transaction tx = Transaction(
       from: sender,
       to: recipient,
@@ -74,6 +80,8 @@ class Provider {
     bool eip1559Enabled = false,
     String rate = 'medium',
   }) async {
+    connectionValidator();
+
     // Gas reset
     tx = Transaction(
       from: tx.from,
@@ -147,6 +155,7 @@ class Provider {
     required Transaction tx,
     required EthPrivateKey credentials,
   }) {
+    connectionValidator();
     return web3.sendTransaction(
       credentials,
       tx,
@@ -155,12 +164,14 @@ class Provider {
   }
 
   static Future<TransactionInformation?> getTransaction(String txHash) async {
+    connectionValidator();
     return web3.getTransactionByHash(txHash);
   }
 
   static Future<TransactionReceipt?> getTransactionReceipt(
     String txHash,
   ) async {
+    connectionValidator();
     return web3.getTransactionReceipt(txHash);
   }
 
@@ -182,5 +193,13 @@ class Provider {
 
   static BigInt fromBytesToInt(List<int> bytes) {
     return bytesToInt(bytes);
+  }
+
+  static connectionValidator() {
+    if (_isConnected) return;
+
+    throw SocketException(
+      "Make sure you are connected to the internet and blockchain network.",
+    );
   }
 }
