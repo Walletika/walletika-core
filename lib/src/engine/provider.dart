@@ -21,13 +21,11 @@ class Provider {
   }
 
   static Future<bool> isConnected() async {
-    _isConnected = false;
-
     try {
       await web3.getClientVersion();
       _isConnected = true;
     } catch (_) {
-      // Nothing to do
+      _isConnected = false;
     }
 
     return _isConnected;
@@ -195,7 +193,7 @@ class Provider {
     return bytesToInt(bytes);
   }
 
-  static connectionValidator() {
+  static void connectionValidator() {
     if (_isConnected) return;
 
     throw SocketException(
