@@ -69,21 +69,18 @@ List<Map<String, dynamic>> tokensBSCTestnetDataTest() {
       DBKeys.name: 'Tether',
       DBKeys.symbol: 'USDT',
       DBKeys.decimals: 6,
-      DBKeys.website: '',
     },
     {
       DBKeys.contract: '0xCc0710d99467BE543e5d85f67A31cA674125659C',
       DBKeys.name: 'USD Coin',
       DBKeys.symbol: 'USDC',
       DBKeys.decimals: 18,
-      DBKeys.website: '',
     },
     {
       DBKeys.contract: '0xc4d3716B65b9c4c6b69e4E260b37e0e476e28d87',
       DBKeys.name: 'Walletika',
       DBKeys.symbol: 'WTK',
       DBKeys.decimals: 18,
-      DBKeys.website: '',
     },
   ];
 }

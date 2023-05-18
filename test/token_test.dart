@@ -85,7 +85,7 @@ decimals: $decimals
         String name = tokenData.name;
         String symbol = tokenData.symbol;
         int decimals = tokenData.decimals;
-        String website = tokenData.website;
+        String? website = tokenData.website;
 
         printDebug("""
 contract: $contract

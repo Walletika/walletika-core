@@ -1,3 +1,4 @@
+import '../models.dart';
 import 'constants.dart';
 import 'db_loader.dart';
 
@@ -21,14 +22,8 @@ Future<void> tokensDataBuilder(List<Map<String, dynamic>>? data) async {
   if (data == null || tokensDB.countRow() > 0) return;
 
   for (final Map<String, dynamic> token in data) {
-    tokensDB.addRow({
-      DBKeys.rpc: token[DBKeys.rpc],
-      DBKeys.contract: token[DBKeys.contract],
-      DBKeys.name: token[DBKeys.name],
-      DBKeys.symbol: token[DBKeys.symbol],
-      DBKeys.decimals: token[DBKeys.decimals],
-      DBKeys.website: token[DBKeys.website],
-    });
+    final TokenData tokenData = TokenData.fromJson(token);
+    tokensDB.addRow(tokenData.toJson());
   }
 
   await tokensDB.dump();

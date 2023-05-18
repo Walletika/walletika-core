@@ -159,21 +159,21 @@ class TokenData {
     required this.name,
     required this.symbol,
     required this.decimals,
-    required this.website,
+    this.website,
   });
 
   final EthereumAddress contract;
   final String name;
   final String symbol;
   final int decimals;
-  final String website;
+  final String? website;
 
   factory TokenData.fromJson(Map<String, dynamic> json) => TokenData(
         contract: EthereumAddress.fromHex(json[DBKeys.contract]),
         name: json[DBKeys.name],
         symbol: json[DBKeys.symbol],
         decimals: json[DBKeys.decimals],
-        website: json[DBKeys.website],
+        website: json[DBKeys.website] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -181,7 +181,7 @@ class TokenData {
         DBKeys.name: name,
         DBKeys.symbol: symbol,
         DBKeys.decimals: decimals,
-        DBKeys.website: website,
+        DBKeys.website: website ?? '',
       };
 }
 

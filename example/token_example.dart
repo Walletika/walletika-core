@@ -26,7 +26,6 @@ void main() async {
     name: 'Tether',
     symbol: 'USDT',
     decimals: 6,
-    website: '',
   );
 
   // Get all tokens

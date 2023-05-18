@@ -26,7 +26,6 @@ void main() async {
     name: 'Walletika',
     symbol: 'WTK',
     decimals: 18,
-    website: '',
   );
 
   StakeData stakeData = StakeData(
