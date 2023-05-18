@@ -1,4 +1,5 @@
 import '../models.dart';
+import 'constants.dart';
 import 'db_loader.dart';
 
 Future<void> networksDataBuilder(List<Map<String, dynamic>>? data) async {
@@ -17,7 +18,10 @@ Future<void> tokensDataBuilder(List<Map<String, dynamic>>? data) async {
 
   for (final Map<String, dynamic> token in data) {
     final TokenData tokenData = TokenData.fromJson(token);
-    tokensDB.addRow(tokenData.toJson());
+    tokensDB.addRow({
+      DBKeys.rpc: token[DBKeys.rpc],
+      ...tokenData.toJson(),
+    });
   }
 
   await tokensDB.dump();
