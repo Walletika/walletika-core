@@ -91,7 +91,7 @@ class NetworkData {
         chainID: json[DBKeys.chainID],
         symbol: json[DBKeys.symbol],
         explorer: json[DBKeys.explorer],
-        image: json[DBKeys.image] ?? '',
+        image: (json[DBKeys.image] ?? '').isEmpty ? null : json[DBKeys.image],
       );
 
   Map<String, dynamic> toJson() => {
@@ -177,7 +177,8 @@ class TokenData {
         name: json[DBKeys.name],
         symbol: json[DBKeys.symbol],
         decimals: json[DBKeys.decimals],
-        website: json[DBKeys.website] ?? '',
+        website:
+            (json[DBKeys.website] ?? '').isEmpty ? null : json[DBKeys.website],
       );
 
   Map<String, dynamic> toJson() => {
