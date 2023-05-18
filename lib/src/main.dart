@@ -52,6 +52,7 @@ Future<void> walletikaSDKInitialize({
       DBKeys.chainID,
       DBKeys.symbol,
       DBKeys.explorer,
+      DBKeys.image,
     ],
     key: encryptionKey,
   );

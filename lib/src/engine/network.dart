@@ -19,6 +19,7 @@ Future<bool> addNewNetwork({
   required int chainID,
   required String symbol,
   required String explorer,
+  String? image,
 }) async {
   bool isValid = false;
 
@@ -41,6 +42,7 @@ Future<bool> addNewNetwork({
       DBKeys.chainID: chainID,
       DBKeys.symbol: symbol,
       DBKeys.explorer: explorer,
+      DBKeys.image: image ?? '',
     });
     await networksDB.dump();
   }

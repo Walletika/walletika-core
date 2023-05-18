@@ -75,6 +75,7 @@ class NetworkData {
     required this.chainID,
     required this.symbol,
     required this.explorer,
+    this.image,
   });
 
   final String rpc;
@@ -82,6 +83,7 @@ class NetworkData {
   final int chainID;
   final String symbol;
   final String explorer;
+  final String? image;
 
   factory NetworkData.fromJson(Map<String, dynamic> json) => NetworkData(
         rpc: json[DBKeys.rpc],
@@ -89,6 +91,7 @@ class NetworkData {
         chainID: json[DBKeys.chainID],
         symbol: json[DBKeys.symbol],
         explorer: json[DBKeys.explorer],
+        image: json[DBKeys.image] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -97,6 +100,7 @@ class NetworkData {
         DBKeys.chainID: chainID,
         DBKeys.symbol: symbol,
         DBKeys.explorer: explorer,
+        DBKeys.image: image ?? '',
       };
 }
 

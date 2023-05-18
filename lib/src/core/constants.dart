@@ -27,4 +27,5 @@ class DBKeys {
   static const String endTime = 'endTime';
   static const String isLocked = 'isLocked';
   static const String salt = 'salt';
+  static const String image = 'image';
 }
