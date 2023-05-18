@@ -119,32 +119,20 @@ Future<void> walletikaSDKInitialize({
 
 Future<void> walletikaSDKEncryptionKeyChanger(String key) async {
   walletsDB.setKey(key);
-  if (walletsDB.countRow() > 0) {
-    await walletsDB.dump();
-  }
+  await walletsDB.dump();
 
   addressesBookDB.setKey(key);
-  if (addressesBookDB.countRow() > 0) {
-    await addressesBookDB.dump();
-  }
+  await addressesBookDB.dump();
 
   networksDB.setKey(key);
-  if (networksDB.countRow() > 0) {
-    await networksDB.dump();
-  }
+  await networksDB.dump();
 
   tokensDB.setKey(key);
-  if (tokensDB.countRow() > 0) {
-    await tokensDB.dump();
-  }
+  await tokensDB.dump();
 
   transactionsDB.setKey(key);
-  if (transactionsDB.countRow() > 0) {
-    await transactionsDB.dump();
-  }
+  await transactionsDB.dump();
 
   stakeDB.setKey(key);
-  if (stakeDB.countRow() > 0) {
-    await stakeDB.dump();
-  }
+  await stakeDB.dump();
 }
