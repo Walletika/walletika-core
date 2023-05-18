@@ -98,7 +98,7 @@ website: $website
         expect(contract, equals(tokens[index][DBKeys.contract]));
         expect(symbol, equals(tokens[index][DBKeys.symbol]));
         expect(decimals, equals(tokens[index][DBKeys.decimals]));
-        expect(website, isEmpty);
+        expect(website, isNull);
       }
 
       expect(allTokens.length, equals(tokens.length));

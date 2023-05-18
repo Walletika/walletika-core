@@ -54,6 +54,7 @@ isAdded: $isAdded
         int chainID = networkData.chainID;
         String symbol = networkData.symbol;
         String explorer = networkData.explorer;
+        String? image = networkData.image;
 
         printDebug("""
 rpc: $rpc
@@ -61,6 +62,7 @@ name: $name
 chainID: $chainID
 symbol: $symbol
 explorer: $explorer
+image: $image
         """);
 
         expect(rpc, equals(networks[index][DBKeys.rpc]));
@@ -68,6 +70,7 @@ explorer: $explorer
         expect(chainID, equals(networks[index][DBKeys.chainID]));
         expect(symbol, equals(networks[index][DBKeys.symbol]));
         expect(explorer, equals(networks[index][DBKeys.explorer]));
+        expect(image, isNull);
       }
 
       expect(allNetworks.length, equals(networks.length));
