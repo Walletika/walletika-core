@@ -10,6 +10,8 @@ import 'package:web3dart/crypto.dart';
 import '../core/core.dart';
 import '../models.dart';
 
+final SecretStringStorage _secretStorage = SecretStringStorage();
+
 Stream<WalletData> getAllWallets() async* {
   await for (final DBRow row in walletsDB.select()) {
     yield WalletData.fromJson(row.items);
@@ -50,7 +52,7 @@ Future<bool> removeWallet(WalletData wallet) async {
   await for (final DBRow row in walletsDB.select(
     items: wallet.toJson(),
   )) {
-    SecretStringStorage.instance.remove(wallet.address.hex);
+    _secretStorage.remove(wallet.address.hex);
     walletsDB.removeRow(row.index);
     await walletsDB.dump();
     result = true;
@@ -144,7 +146,7 @@ class WalletEngine {
     if (_isLogged) {
       final WalletGeneratorInfo? walletInfo = await walletGenerator(
         username: wallet.username,
-        password: SecretStringStorage.instance.read(wallet.address.hex)!,
+        password: _secretStorage.read(wallet.address.hex)!,
         securityPassword: wallet.securityPassword,
         otpCode: otpCode,
         createNew: false,
@@ -188,10 +190,7 @@ class WalletEngine {
         password: password,
         securityPassword: wallet.securityPassword,
       )) {
-        SecretStringStorage.instance.write(
-          key: wallet.address.hex,
-          value: password,
-        );
+        _secretStorage.write(key: wallet.address.hex, value: password);
         _isLogged = true;
       }
     }
@@ -200,7 +199,7 @@ class WalletEngine {
   }
 
   void logout() {
-    SecretStringStorage.instance.remove(wallet.address.hex);
+    _secretStorage.remove(wallet.address.hex);
     _isLogged = false;
   }
 }
