@@ -1,5 +1,4 @@
 import 'package:aesdatabase/aesdatabase.dart';
-import 'package:web3dart/web3dart.dart';
 
 import '../core/core.dart';
 import '../models.dart';
@@ -10,20 +9,9 @@ Stream<AddressBookData> getAllAddressesBook() async* {
   }
 }
 
-Future<bool> addNewAddressBook({
-  required String username,
-  required EthereumAddress address,
-  required String salt,
-}) async {
-  addressesBookDB.addRow({
-    DBKeys.username: username,
-    DBKeys.address: address.hexEip55,
-    DBKeys.dateCreated: DateTime.now().toString(),
-    DBKeys.salt: salt,
-  });
+Future<void> addNewAddressBook(AddressBookData addressBookData) async {
+  addressesBookDB.addRow(addressBookData.toJson());
   await addressesBookDB.dump();
-
-  return true;
 }
 
 Future<bool> removeAddressBook(AddressBookData addressBook) async {

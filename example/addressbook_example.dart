@@ -10,11 +10,13 @@ void main() async {
   await walletikaSDKInitialize();
 
   // Add new address book
-  await addNewAddressBook(
+  AddressBookData addressBookData = AddressBookData(
     username: username,
     address: address,
+    dateCreated: DateTime.now(),
     salt: 'Enter unique salt value for verification',
   );
+  await addNewAddressBook(addressBookData);
 
   // Get all addresses book
   List<AddressBookData> allAddressesBook = [

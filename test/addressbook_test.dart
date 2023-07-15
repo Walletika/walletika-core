@@ -20,22 +20,21 @@ void main() async {
   group("AddressBook Storage Group:", () {
     test("Test (addNewAddressBook)", () async {
       for (Map<String, dynamic> wallet in wallets) {
-        String address = wallet[DBKeys.address];
-        String username = wallet[DBKeys.username];
-
-        bool isAdded = await addNewAddressBook(
-          username: username,
-          address: EthereumAddress.fromHex(address),
+        AddressBookData addressBookData = AddressBookData(
+          username: wallet[DBKeys.username],
+          address: EthereumAddress.fromHex(wallet[DBKeys.address]),
+          dateCreated: DateTime.now(),
           salt: saltValue,
         );
+        await addNewAddressBook(addressBookData);
 
         printDebug("""
-username: $username
-isAdded: $isAdded
+address: ${addressBookData.address.hexEip55}
+username: ${addressBookData.username}
         """);
-
-        expect(isAdded, isTrue);
       }
+
+      expect(addressesBookDB.countRow(), equals(wallets.length));
     });
 
     test("Test (getAllAddressesBook)", () async {
