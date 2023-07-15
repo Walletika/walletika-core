@@ -9,7 +9,7 @@ import 'provider.dart';
 Stream<TokenData> getAllTokens() async* {
   await for (final DBRow row in tokensDB.select(
     items: {
-      DBKeys.rpc: Provider.networkData.rpc,
+      DBKeys.rpc: Provider.instance.networkData.rpc,
     },
   )) {
     yield TokenData.fromJson(row.items);
@@ -18,7 +18,7 @@ Stream<TokenData> getAllTokens() async* {
 
 Future<void> addNewToken(TokenData token) async {
   tokensDB.addRow({
-    DBKeys.rpc: Provider.networkData.rpc,
+    DBKeys.rpc: Provider.instance.networkData.rpc,
     ...token.toJson(),
   });
 
@@ -30,7 +30,7 @@ Future<bool> removeToken(TokenData token) async {
 
   await for (final DBRow row in tokensDB.select(
     items: {
-      DBKeys.rpc: Provider.networkData.rpc,
+      DBKeys.rpc: Provider.instance.networkData.rpc,
       ...token.toJson(),
     },
   )) {

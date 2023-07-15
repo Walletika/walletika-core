@@ -21,10 +21,12 @@ void main() async {
   const int networkIndex = 1;
 
   setUpAll(() async {
-    bool isConnected = await Provider.connect(
+    bool isConnected = await Provider.instance.connect(
       NetworkData.fromJson(networks[networkIndex]),
     );
-    printDebug("${Provider.networkData.name} connection status: $isConnected");
+    printDebug(
+      "${Provider.instance.networkData.name} connection status: $isConnected",
+    );
   });
 
   group("Wallet Storage Group:", () {

@@ -22,10 +22,12 @@ void main() async {
   const int maximumCount = 3;
 
   setUpAll(() async {
-    bool isConnected = await Provider.connect(
+    bool isConnected = await Provider.instance.connect(
       NetworkData.fromJson(networks[networkIndex]),
     );
-    printDebug("${Provider.networkData.name} connection status: $isConnected");
+    printDebug(
+      "${Provider.instance.networkData.name} connection status: $isConnected",
+    );
   });
 
   group("Transactions Storage Group:", () {

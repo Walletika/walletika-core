@@ -8,21 +8,27 @@ import 'package:web3dart/web3dart.dart';
 import '../models.dart';
 
 class Provider {
-  static late NetworkData networkData;
-  static late Web3Client web3;
-  static late bool _isConnected;
+  late NetworkData _networkData;
+  late Web3Client _web3;
+  late bool _isConnected;
 
-  static Future<bool> connect(NetworkData network) async {
-    networkData = network;
+  static Provider instance = Provider();
+
+  NetworkData get networkData => _networkData;
+
+  Web3Client get web3 => _web3;
+
+  Future<bool> connect(NetworkData network) async {
     final http.Client httpClient = http.Client();
-    web3 = Web3Client(network.rpc, httpClient);
+    _web3 = Web3Client(network.rpc, httpClient);
+    _networkData = network;
 
     return isConnected();
   }
 
-  static Future<bool> isConnected() async {
+  Future<bool> isConnected() async {
     try {
-      await web3.getClientVersion();
+      await _web3.getClientVersion();
       _isConnected = true;
     } catch (_) {
       _isConnected = false;
@@ -31,31 +37,31 @@ class Provider {
     return _isConnected;
   }
 
-  static Future<EtherAmount> balanceOf({
+  Future<EtherAmount> balanceOf({
     required EthereumAddress address,
     BlockNum? atBlock,
   }) {
     connectionValidator();
-    return web3.getBalance(address, atBlock: atBlock);
+    return _web3.getBalance(address, atBlock: atBlock);
   }
 
-  static Future<int> blockNumber() {
+  Future<int> blockNumber() {
     connectionValidator();
-    return web3.getBlockNumber();
+    return _web3.getBlockNumber();
   }
 
-  static bool isEIP1559Supported() {
+  bool isEIP1559Supported() {
     bool result = false;
 
-    if (networkData.rpc.contains('.infura.io/v3') &&
-        networkData.symbol == 'ETH') {
+    if (_networkData.rpc.contains('.infura.io/v3') &&
+        _networkData.symbol == 'ETH') {
       result = true;
     }
 
     return result;
   }
 
-  static Future<TxDetailsData> transfer({
+  Future<TxDetailsData> transfer({
     required EthereumAddress sender,
     required EthereumAddress recipient,
     required EtherAmount amount,
@@ -66,13 +72,13 @@ class Provider {
       from: sender,
       to: recipient,
       value: amount,
-      nonce: await web3.getTransactionCount(sender),
+      nonce: await _web3.getTransactionCount(sender),
     );
 
     return TxDetailsData(tx: tx);
   }
 
-  static Future<TxGasDetailsData> addGas({
+  Future<TxGasDetailsData> addGas({
     required Transaction tx,
     bool amountAdjustment = true,
     bool eip1559Enabled = false,
@@ -90,7 +96,7 @@ class Provider {
     );
 
     // Gas limit
-    final BigInt gasLimit = await web3.estimateGas(
+    final BigInt gasLimit = await _web3.estimateGas(
       sender: tx.from,
       to: tx.to,
       data: tx.data,
@@ -102,7 +108,7 @@ class Provider {
     // Add gas as legacy or EIP1559
     if (eip1559Enabled) {
       final Map<String, EIP1559Information> gasEIP =
-          await web3.getGasInEIP1559();
+          await _web3.getGasInEIP1559();
       tx = tx.copyWith(
         maxGas: gasLimit.toInt(),
         maxFeePerGas: gasEIP[rate]!.maxFeePerGas,
@@ -111,7 +117,7 @@ class Provider {
       estimateGas = gasLimit * gasEIP[rate]!.estimatedGas;
       maxFee = gasLimit * tx.maxFeePerGas!.getInWei;
     } else {
-      final EtherAmount gasPrice = await web3.getGasPrice();
+      final EtherAmount gasPrice = await _web3.getGasPrice();
       tx = tx.copyWith(
         maxGas: gasLimit.toInt(),
         gasPrice: gasPrice,
@@ -125,7 +131,7 @@ class Provider {
 
     // Adjust the amount if it exceeds the balance
     if (amountAdjustment && tx.value!.getInWei > BigInt.zero) {
-      final EtherAmount balance = await web3.getBalance(tx.from!);
+      final EtherAmount balance = await _web3.getBalance(tx.from!);
       if (maxAmount > balance.getInWei) {
         final BigInt amountLeft = balance.getInWei - maxFee;
         if (amountLeft <= BigInt.zero) {
@@ -149,33 +155,33 @@ class Provider {
     );
   }
 
-  static Future<String> sendTransaction({
+  Future<String> sendTransaction({
     required Transaction tx,
     required EthPrivateKey credentials,
   }) {
     connectionValidator();
-    return web3.sendTransaction(
+    return _web3.sendTransaction(
       credentials,
       tx,
-      chainId: networkData.chainID,
+      chainId: _networkData.chainID,
     );
   }
 
-  static Future<TransactionInformation?> getTransaction(String txHash) async {
+  Future<TransactionInformation?> getTransaction(String txHash) async {
     connectionValidator();
-    return web3.getTransactionByHash(txHash);
+    return _web3.getTransactionByHash(txHash);
   }
 
-  static Future<TransactionReceipt?> getTransactionReceipt(
+  Future<TransactionReceipt?> getTransactionReceipt(
     String txHash,
   ) async {
     connectionValidator();
-    return web3.getTransactionReceipt(txHash);
+    return _web3.getTransactionReceipt(txHash);
   }
 
-  static String getExploreUrl(String address) {
+  String getExploreUrl(String address) {
     return [
-      networkData.explorer,
+      _networkData.explorer,
       address.length <= 42 ? 'address' : 'tx',
       address
     ].join('/');
@@ -193,7 +199,7 @@ class Provider {
     return bytesToInt(bytes);
   }
 
-  static void connectionValidator() {
+  void connectionValidator() {
     if (_isConnected) return;
 
     throw SocketException(

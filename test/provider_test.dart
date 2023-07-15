@@ -32,7 +32,7 @@ void main() async {
         explorer: explorer,
       );
 
-      bool isConnected = await Provider.connect(networkData);
+      bool isConnected = await Provider.instance.connect(networkData);
 
       printDebug("""
 rpc: $rpc
@@ -43,11 +43,11 @@ explorer: $explorer
 isConnected: $isConnected
         """);
 
-      expect(Provider.networkData.rpc, equals(rpc));
-      expect(Provider.networkData.name, equals(name));
-      expect(Provider.networkData.chainID, equals(chainID));
-      expect(Provider.networkData.symbol, equals(symbol));
-      expect(Provider.networkData.explorer, equals(explorer));
+      expect(Provider.instance.networkData.rpc, equals(rpc));
+      expect(Provider.instance.networkData.name, equals(name));
+      expect(Provider.instance.networkData.chainID, equals(chainID));
+      expect(Provider.instance.networkData.symbol, equals(symbol));
+      expect(Provider.instance.networkData.explorer, equals(explorer));
       expect(isConnected, isTrue);
     });
 
@@ -55,7 +55,7 @@ isConnected: $isConnected
       for (Map<String, dynamic> wallet in wallets) {
         String address = wallet[DBKeys.address];
         String username = wallet[DBKeys.username];
-        EtherAmount balance = await Provider.balanceOf(
+        EtherAmount balance = await Provider.instance.balanceOf(
           address: EthereumAddress.fromHex(address),
         );
         double amount = balance.getValueInUnit(EtherUnit.ether);
@@ -71,7 +71,7 @@ balance: $amount
     });
 
     test("Test (blockNumber)", () async {
-      int blockNumber = await Provider.blockNumber();
+      int blockNumber = await Provider.instance.blockNumber();
 
       printDebug("""
 blockNumber: $blockNumber
@@ -81,7 +81,7 @@ blockNumber: $blockNumber
     });
 
     test("Test (isEIP1559Supported)", () async {
-      bool isEIP1559Supported = Provider.isEIP1559Supported();
+      bool isEIP1559Supported = Provider.instance.isEIP1559Supported();
 
       printDebug("""
 isEIP1559Supported: $isEIP1559Supported
@@ -89,7 +89,7 @@ isEIP1559Supported: $isEIP1559Supported
 
       expect(
         isEIP1559Supported,
-        Provider.networkData.symbol == 'ETH' ? isTrue : isFalse,
+        Provider.instance.networkData.symbol == 'ETH' ? isTrue : isFalse,
       );
     });
 
@@ -98,8 +98,8 @@ isEIP1559Supported: $isEIP1559Supported
       String txHash =
           '0xea990434854a23753062bd01ebc87cf3ff452b68d3f0eabeb1fdb545cab537b6';
 
-      String addressURL = Provider.getExploreUrl(address);
-      String txURL = Provider.getExploreUrl(txHash);
+      String addressURL = Provider.instance.getExploreUrl(address);
+      String txURL = Provider.instance.getExploreUrl(txHash);
 
       printDebug("""
 address: $address
@@ -110,16 +110,19 @@ txURL: $txURL
 
       expect(
         addressURL,
-        equals('${Provider.networkData.explorer}/address/$address'),
+        equals('${Provider.instance.networkData.explorer}/address/$address'),
       );
-      expect(txURL, equals('${Provider.networkData.explorer}/tx/$txHash'));
+      expect(txURL,
+          equals('${Provider.instance.networkData.explorer}/tx/$txHash'));
     });
 
     test("Test (getTransaction)", () async {
       String txHash =
           '0x0999608c57697ff7a6051bbbc76f8fe7d2c552d1df7e0f0553d91798f722ec3f';
 
-      TransactionInformation? tx = await Provider.getTransaction(txHash);
+      TransactionInformation? tx = await Provider.instance.getTransaction(
+        txHash,
+      );
 
       printDebug("""
 txHash: $txHash
@@ -136,7 +139,9 @@ value: ${tx.value}
       String txHash =
           '0x0999608c57697ff7a6051bbbc76f8fe7d2c552d1df7e0f0553d91798f722ec3f';
 
-      TransactionReceipt? tx = await Provider.getTransactionReceipt(txHash);
+      TransactionReceipt? tx = await Provider.instance.getTransactionReceipt(
+        txHash,
+      );
 
       printDebug("""
 txHash: $txHash
@@ -181,7 +186,7 @@ to: ${tx.to}
         WalletEngine walletEngine = WalletEngine(walletData);
 
         // Check balance and skip if not enough
-        EtherAmount balance = await Provider.balanceOf(
+        EtherAmount balance = await Provider.instance.balanceOf(
           address: walletData.address,
         );
         if (balance.getInWei <= amount.getInWei) continue;
@@ -192,7 +197,7 @@ to: ${tx.to}
         EthPrivateKey? credentials = await walletEngine.credentials(otpCode);
 
         // Build transaction
-        TxDetailsData txDetails = await Provider.transfer(
+        TxDetailsData txDetails = await Provider.instance.transfer(
           sender: walletData.address,
           recipient: recipient,
           amount: amount,
@@ -202,7 +207,7 @@ to: ${tx.to}
         args = txDetails.args;
 
         // Add gas fee
-        TxGasDetailsData txGasDetails = await Provider.addGas(tx: tx);
+        TxGasDetailsData txGasDetails = await Provider.instance.addGas(tx: tx);
         tx = txGasDetails.tx;
         txJson = txGasDetails.tx.toJson();
         estimateGas = txGasDetails.estimateGas;
@@ -211,7 +216,7 @@ to: ${tx.to}
         maxAmount = txGasDetails.maxAmount;
 
         // Send transaction
-        String sendTransaction = await Provider.sendTransaction(
+        String sendTransaction = await Provider.instance.sendTransaction(
           credentials: credentials!,
           tx: tx,
         );
@@ -228,7 +233,7 @@ estimateGas: ${estimateGas.getValueInUnit(EtherUnit.ether)}
 maxFee: ${maxFee.getValueInUnit(EtherUnit.ether)}
 total: ${total.getValueInUnit(EtherUnit.ether)}
 maxAmount: ${maxAmount.getValueInUnit(EtherUnit.ether)}
-txURL: ${Provider.getExploreUrl(sendTransaction)}
+txURL: ${Provider.instance.getExploreUrl(sendTransaction)}
         """);
 
         expect(tx.from, equals(walletEngine.address()));

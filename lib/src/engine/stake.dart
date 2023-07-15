@@ -9,7 +9,7 @@ import 'provider.dart';
 Stream<StakeData> getAllStakes() async* {
   await for (final DBRow row in stakeDB.select(
     items: {
-      DBKeys.rpc: Provider.networkData.rpc,
+      DBKeys.rpc: Provider.instance.networkData.rpc,
     },
   )) {
     yield StakeData.fromJson(row.items);

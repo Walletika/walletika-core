@@ -31,10 +31,12 @@ void main() async {
   late StakeEngine stakeEngine;
 
   setUpAll(() async {
-    bool isConnected = await Provider.connect(
+    bool isConnected = await Provider.instance.connect(
       NetworkData.fromJson(networks[networkIndex]),
     );
-    printDebug("${Provider.networkData.name} connection status: $isConnected");
+    printDebug(
+      "${Provider.instance.networkData.name} connection status: $isConnected",
+    );
 
     Map<String, dynamic> wallet = wallets[walletIndex];
     String username = wallet[DBKeys.username];
@@ -327,7 +329,7 @@ pendingReward: ${pendingReward.getValueInDecimals(tokenData.decimals)}
     Map<String, dynamic>? args = txDetails.args;
 
     // Add gas fee
-    TxGasDetailsData txGasDetails = await Provider.addGas(tx: tx);
+    TxGasDetailsData txGasDetails = await Provider.instance.addGas(tx: tx);
     tx = txGasDetails.tx;
     Map<String, dynamic> txJson = txGasDetails.tx.toJson();
     EtherAmount estimateGas = txGasDetails.estimateGas;
@@ -336,7 +338,7 @@ pendingReward: ${pendingReward.getValueInDecimals(tokenData.decimals)}
     EtherAmount maxAmount = txGasDetails.maxAmount;
 
     // Send transaction
-    String sendTransaction = await Provider.sendTransaction(
+    String sendTransaction = await Provider.instance.sendTransaction(
       credentials: credentials!,
       tx: tx,
     );
@@ -351,7 +353,7 @@ estimateGas: ${estimateGas.getValueInUnit(EtherUnit.ether)}
 maxFee: ${maxFee.getValueInUnit(EtherUnit.ether)}
 total: ${total.getValueInUnit(EtherUnit.ether)}
 maxAmount: ${maxAmount.getValueInUnit(EtherUnit.ether)}
-txURL: ${Provider.getExploreUrl(sendTransaction)}
+txURL: ${Provider.instance.getExploreUrl(sendTransaction)}
         """);
 
     expect(tx.from, equals(walletEngine.address()));

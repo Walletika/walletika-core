@@ -24,10 +24,10 @@ class ContractEngine {
     List<dynamic>? params,
     BlockNum? atBlock,
   }) async {
-    Provider.connectionValidator();
+    Provider.instance.connectionValidator();
 
     final ContractFunction func = _contract.function(function);
-    final String encodedResult = await Provider.web3.callRaw(
+    final String encodedResult = await Provider.instance.web3.callRaw(
       sender: sender,
       contract: _contract.address,
       data: func.encodeCall(params ?? []),
@@ -41,7 +41,7 @@ class ContractEngine {
     required String function,
     List<dynamic>? params,
   }) async {
-    Provider.connectionValidator();
+    Provider.instance.connectionValidator();
 
     // Function Caller
     final ContractFunction func = _contract.function(function);
@@ -99,7 +99,7 @@ class ContractEngine {
       to: _contract.address,
       value: EtherAmount.zero(),
       data: data,
-      nonce: await Provider.web3.getTransactionCount(sender!),
+      nonce: await Provider.instance.web3.getTransactionCount(sender!),
     );
 
     return TxDetailsData(

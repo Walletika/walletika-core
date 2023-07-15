@@ -23,15 +23,15 @@ NetworkData networkData = NetworkData(
 );
 
 // Connect with RPC
-bool isConnected = await Provider.connect(networkData);
+bool isConnected = await Provider.instance.connect(networkData);
 
 // Check balance
-EtherAmount balance = await Provider.balanceOf(
+EtherAmount balance = await Provider.instance.balanceOf(
     address: EthereumAddress.fromHex('0xC94EA8D9694cfe25b94D977eEd4D60d7c0985BD3'),
 );
 
 // Transfer coin
-TxDetailsData txDetails = await Provider.transfer(
+TxDetailsData txDetails = await Provider.instance.transfer(
     sender: EthereumAddress.fromHex('0xC94EA8D9694cfe25b94D977eEd4D60d7c0985BD3'),
     recipient: EthereumAddress.fromHex('0xC94EA8D9694cfe25b94D977eEd4D60d7c0985BD3'),
     amount: EtherAmount.fromUnitAndValue(EtherUnit.ether, 1.5),
@@ -41,7 +41,7 @@ Map<String, dynamic>? abi = txDetails.abi;
 Map<String, dynamic>? args = txDetails.args;
 
 // Add gas fee
-TxGasDetailsData txGasDetails = await Provider.addGas(tx: tx, eip1559Enabled: true);
+TxGasDetailsData txGasDetails = await Provider.instance.addGas(tx: tx, eip1559Enabled: true);
 tx = txGasDetails.tx;
 EtherAmount estimateGas = txGasDetails.estimateGas;
 EtherAmount maxFee = txGasDetails.maxFee;
@@ -49,7 +49,7 @@ EtherAmount total = txGasDetails.total;
 EtherAmount maxAmount = txGasDetails.maxAmount;
 
 // Send transaction
-String sendTransaction = await Provider.sendTransaction(
+String sendTransaction = await Provider.instance.sendTransaction(
     credentials: EthPrivateKey.fromHex('0xe394b45f...850bfd03f7'),
     tx: tx,
 );
