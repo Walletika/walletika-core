@@ -10,7 +10,7 @@ Future<void> walletikaSDKInitialize({
   List<Map<String, dynamic>>? initialNetworks,
   List<Map<String, dynamic>>? initialTokens,
   List<Map<String, dynamic>>? initialStakeContracts,
-  String directory = "assets",
+  String directory = "storage",
 }) async {
   if (_isInitialized) {
     throw Exception("Walletika SDK already initialized");
