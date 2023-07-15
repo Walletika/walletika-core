@@ -59,7 +59,7 @@ void main() async {
 
   group("Stake Storage Group", () {
     test("Test (importStakeContracts)", () async {
-      await importStakeContracts(stakes);
+      await stakeContractsUpdate(stakes);
 
       expect(stakeDB.countRow(), equals(stakes.length));
     });

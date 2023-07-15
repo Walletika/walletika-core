@@ -112,7 +112,7 @@ Future<void> walletikaSDKInitialize({
   await tokensDataBuilder(initialTokens);
 
   if (initialStakeContracts != null) {
-    await importStakeContracts(initialStakeContracts);
+    await stakeContractsUpdate(initialStakeContracts);
   }
 
   _isInitialized = true;
