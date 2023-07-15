@@ -11,13 +11,14 @@ void main() async {
   await walletikaSDKInitialize();
 
   // Add new network
-  await addNewNetwork(
+  NetworkData networkData = NetworkData(
     rpc: rpc,
     name: name,
     chainID: chainID,
     symbol: symbol,
     explorer: explorer,
   );
+  await addNewNetwork(networkData);
 
   // Get all networks
   List<NetworkData> allNetworks = [

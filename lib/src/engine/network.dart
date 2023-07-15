@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:aesdatabase/aesdatabase.dart';
-import 'package:http/http.dart' as http;
-import 'package:web3dart/web3dart.dart';
 
 import '../core/core.dart';
 import '../models.dart';
+import 'provider.dart';
 
 Stream<NetworkData> getAllNetworks() async* {
   await for (final DBRow row in networksDB.select()) {
@@ -13,37 +10,20 @@ Stream<NetworkData> getAllNetworks() async* {
   }
 }
 
-Future<bool> addNewNetwork({
-  required String rpc,
-  required String name,
-  required int chainID,
-  required String symbol,
-  required String explorer,
-  String? image,
-}) async {
+Future<bool> addNewNetwork(NetworkData networkData) async {
   bool isValid = false;
 
-  try {
-    final int chainID_ = await Web3Client(rpc, http.Client())
-        .getChainId()
-        .then((value) => value.toInt());
+  final Provider provider = Provider();
+  final bool isConnected = await provider.connect(networkData);
 
-    if (chainID_ == chainID) {
+  if (isConnected) {
+    if ((await provider.web3.getChainId()).toInt() == networkData.chainID) {
       isValid = true;
     }
-  } on SocketException {
-    // Nothing to do
   }
 
   if (isValid) {
-    networksDB.addRow({
-      DBKeys.rpc: rpc,
-      DBKeys.name: name,
-      DBKeys.chainID: chainID,
-      DBKeys.symbol: symbol,
-      DBKeys.explorer: explorer,
-      DBKeys.image: image ?? '',
-    });
+    networksDB.addRow(networkData.toJson());
     await networksDB.dump();
   }
 

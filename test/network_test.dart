@@ -19,22 +19,11 @@ void main() async {
   group("Network Storage Group:", () {
     test("Test (addNewNetwork)", () async {
       for (Map<String, dynamic> network in networks) {
-        String rpc = network[DBKeys.rpc];
-        String name = network[DBKeys.name];
-        int chainID = network[DBKeys.chainID];
-        String symbol = network[DBKeys.symbol];
-        String explorer = network[DBKeys.explorer];
-
-        bool isAdded = await addNewNetwork(
-          rpc: rpc,
-          name: name,
-          chainID: chainID,
-          symbol: symbol,
-          explorer: explorer,
-        );
+        NetworkData networkData = NetworkData.fromJson(network);
+        bool isAdded = await addNewNetwork(networkData);
 
         printDebug("""
-name: $name
+name: ${networkData.name}
 isAdded: $isAdded
         """);
 
