@@ -71,7 +71,7 @@ List<Map<String, dynamic>> tokensBSCTestnetDataTest() {
       DBKeys.decimals: 6,
     },
     {
-      DBKeys.contract: '0xCc0710d99467BE543e5d85f67A31cA674125659C',
+      DBKeys.contract: '0xe7D28bAB8f375D0b07f382b92C3B6c9C4c1eeb8a',
       DBKeys.name: 'USD Coin',
       DBKeys.symbol: 'USDC',
       DBKeys.decimals: 18,
