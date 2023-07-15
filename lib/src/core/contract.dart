@@ -7,7 +7,7 @@ import '../models.dart';
 
 class ContractEngine {
   final EthereumAddress? sender;
-  late DeployedContract contract;
+  late DeployedContract _contract;
 
   ContractEngine({
     required EthereumAddress address,
@@ -15,7 +15,7 @@ class ContractEngine {
     required String name,
     this.sender,
   }) {
-    contract = DeployedContract(ContractAbi.fromJson(abi, name), address);
+    _contract = DeployedContract(ContractAbi.fromJson(abi, name), address);
   }
 
   Future<List<dynamic>> functionCall({
@@ -26,10 +26,10 @@ class ContractEngine {
   }) async {
     Provider.connectionValidator();
 
-    final ContractFunction func = contract.function(function);
+    final ContractFunction func = _contract.function(function);
     final String encodedResult = await Provider.web3.callRaw(
       sender: sender,
-      contract: contract.address,
+      contract: _contract.address,
       data: func.encodeCall(params ?? []),
       atBlock: atBlock,
     );
@@ -44,7 +44,7 @@ class ContractEngine {
     Provider.connectionValidator();
 
     // Function Caller
-    final ContractFunction func = contract.function(function);
+    final ContractFunction func = _contract.function(function);
 
     // Build ABI
     final Map<String, dynamic> abi = {
@@ -96,7 +96,7 @@ class ContractEngine {
     final Uint8List data = func.encodeCall(params ?? []);
     final Transaction tx = Transaction(
       from: sender,
-      to: contract.address,
+      to: _contract.address,
       value: EtherAmount.zero(),
       data: data,
       nonce: await Provider.web3.getTransactionCount(sender!),
