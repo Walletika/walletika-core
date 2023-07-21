@@ -75,6 +75,7 @@ class NetworkData {
     required this.chainID,
     required this.symbol,
     required this.explorer,
+    required this.isLocked,
     this.image,
   });
 
@@ -83,6 +84,7 @@ class NetworkData {
   final int chainID;
   final String symbol;
   final String explorer;
+  final bool isLocked;
   final String? image;
 
   factory NetworkData.fromJson(Map<String, dynamic> json) => NetworkData(
@@ -91,6 +93,7 @@ class NetworkData {
         chainID: json[DBKeys.chainID],
         symbol: json[DBKeys.symbol],
         explorer: json[DBKeys.explorer],
+        isLocked: json[DBKeys.isLocked],
         image: (json[DBKeys.image] ?? '').isEmpty ? null : json[DBKeys.image],
       );
 
@@ -100,6 +103,7 @@ class NetworkData {
         DBKeys.chainID: chainID,
         DBKeys.symbol: symbol,
         DBKeys.explorer: explorer,
+        DBKeys.isLocked: isLocked,
         DBKeys.image: image ?? '',
       };
 }

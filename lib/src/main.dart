@@ -45,13 +45,14 @@ Future<void> walletikaSDKInitialize({
 
   networksDB = await databaseLoader(
     directory: directory,
-    filename: "networks",
+    filename: "networks_v2",
     columnTitles: [
       DBKeys.rpc,
       DBKeys.name,
       DBKeys.chainID,
       DBKeys.symbol,
       DBKeys.explorer,
+      DBKeys.isLocked,
       DBKeys.image,
     ],
     key: encryptionKey,

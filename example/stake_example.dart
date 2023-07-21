@@ -14,6 +14,7 @@ void main() async {
     chainID: 97,
     symbol: 'BNB',
     explorer: 'https://testnet.bscscan.com',
+    isLocked: false,
   );
 
   // Connect with RPC

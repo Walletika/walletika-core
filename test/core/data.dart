@@ -44,6 +44,7 @@ List<Map<String, dynamic>> networksDataTest() {
       DBKeys.chainID: 1,
       DBKeys.symbol: "ETH",
       DBKeys.explorer: "https://etherscan.io",
+      DBKeys.isLocked: false,
     },
     {
       DBKeys.rpc: "https://bsc-dataseed1.binance.org",
@@ -51,6 +52,7 @@ List<Map<String, dynamic>> networksDataTest() {
       DBKeys.chainID: 56,
       DBKeys.symbol: "BNB",
       DBKeys.explorer: "https://bscscan.com",
+      DBKeys.isLocked: false,
     },
     {
       DBKeys.rpc: "https://data-seed-prebsc-1-s1.binance.org:8545",
@@ -58,6 +60,7 @@ List<Map<String, dynamic>> networksDataTest() {
       DBKeys.chainID: 97,
       DBKeys.symbol: "BNB",
       DBKeys.explorer: "https://testnet.bscscan.com",
+      DBKeys.isLocked: false,
     },
   ];
 }

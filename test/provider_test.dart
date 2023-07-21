@@ -30,6 +30,7 @@ void main() async {
         chainID: chainID,
         symbol: symbol,
         explorer: explorer,
+        isLocked: false,
       );
 
       bool isConnected = await Provider.instance.connect(networkData);

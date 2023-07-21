@@ -20,6 +20,7 @@ NetworkData networkData = NetworkData(
     chainID: 1,
     symbol: 'ETH',
     explorer: 'https://etherscan.io',
+    isLocked: false,
 );
 
 // Connect with RPC

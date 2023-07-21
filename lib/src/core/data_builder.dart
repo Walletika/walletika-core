@@ -3,9 +3,24 @@ import 'constants.dart';
 import 'db_loader.dart';
 
 Future<void> networksDataBuilder(List<Map<String, dynamic>>? data) async {
-  if (data == null || networksDB.countRow() > 0) return;
+  if (data == null) return;
+
+  final List<Map<String, dynamic>> userNetworks = await networksDB
+      .select(items: {DBKeys.isLocked: false})
+      .map((row) => row.items)
+      .toList();
+
+  networksDB.clear();
 
   for (final Map<String, dynamic> network in data) {
+    final NetworkData networkData = NetworkData.fromJson({
+      ...network,
+      DBKeys.isLocked: true,
+    });
+    networksDB.addRow(networkData.toJson());
+  }
+
+  for (final Map<String, dynamic> network in userNetworks) {
     final NetworkData networkData = NetworkData.fromJson(network);
     networksDB.addRow(networkData.toJson());
   }

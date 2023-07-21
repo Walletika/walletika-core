@@ -33,13 +33,15 @@ Future<bool> addNewNetwork(NetworkData networkData) async {
 Future<bool> removeNetwork(NetworkData network) async {
   bool result = false;
 
-  await for (final DBRow row in networksDB.select(
-    items: network.toJson(),
-  )) {
-    networksDB.removeRow(row.index);
-    await networksDB.dump();
-    result = true;
-    break;
+  if (!network.isLocked) {
+    await for (final DBRow row in networksDB.select(
+      items: network.toJson(),
+    )) {
+      networksDB.removeRow(row.index);
+      await networksDB.dump();
+      result = true;
+      break;
+    }
   }
 
   return result;

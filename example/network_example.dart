@@ -17,6 +17,7 @@ void main() async {
     chainID: chainID,
     symbol: symbol,
     explorer: explorer,
+    isLocked: false,
   );
   await addNewNetwork(networkData);
 

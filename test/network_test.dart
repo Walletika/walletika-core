@@ -43,6 +43,7 @@ isAdded: $isAdded
         int chainID = networkData.chainID;
         String symbol = networkData.symbol;
         String explorer = networkData.explorer;
+        bool isLocked = networkData.isLocked;
         String? image = networkData.image;
 
         printDebug("""
@@ -51,6 +52,7 @@ name: $name
 chainID: $chainID
 symbol: $symbol
 explorer: $explorer
+isLocked: $isLocked
 image: $image
         """);
 
@@ -59,6 +61,7 @@ image: $image
         expect(chainID, equals(networks[index][DBKeys.chainID]));
         expect(symbol, equals(networks[index][DBKeys.symbol]));
         expect(explorer, equals(networks[index][DBKeys.explorer]));
+        expect(isLocked, isFalse);
         expect(image, isNull);
       }
 
