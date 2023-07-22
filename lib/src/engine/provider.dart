@@ -8,6 +8,7 @@ import 'package:web3dart/web3dart.dart';
 import '../models.dart';
 
 class Provider {
+  final Map<String, int> _blockTimeRPCs = {};
   late NetworkData _networkData;
   late Web3Client _web3;
   late bool _isConnected;
@@ -172,11 +173,55 @@ class Provider {
     return _web3.getTransactionByHash(txHash);
   }
 
-  Future<TransactionReceipt?> getTransactionReceipt(
-    String txHash,
-  ) async {
+  Future<TransactionReceipt?> getTransactionReceipt(String txHash) async {
     connectionValidator();
     return _web3.getTransactionReceipt(txHash);
+  }
+
+  Future<double> blockTimeInSeconds([int? blockNumber]) async {
+    connectionValidator();
+
+    blockNumber ??= await _web3.getBlockNumber();
+    final List<int> times = [];
+    int timestamp = 0;
+
+    for (int i = 0; i < 5; i++) {
+      final BlockInformation info = await _web3.getBlockInformation(
+        blockNumber: BlockNum.exact(blockNumber - i).toBlockParam(),
+      );
+      times.add(timestamp - info.timestamp.millisecondsSinceEpoch);
+      timestamp = info.timestamp.millisecondsSinceEpoch;
+    }
+
+    // Remove the first value, because it is a subtraction of 0
+    times.removeAt(0);
+
+    return (times.reduce((a, b) => a + b) / times.length) / 1000;
+  }
+
+  Future<Map<int, DateTime>> estimatedBlockTime({
+    required List<int> blockNumbers,
+    int? currentBlock,
+    DateTime? currentBlockTime,
+  }) async {
+    connectionValidator();
+
+    currentBlock ??= await _web3.getBlockNumber();
+    currentBlockTime ??= DateTime.now();
+    final Map<int, DateTime> result = {};
+
+    _blockTimeRPCs[networkData.rpc] ??=
+        (await blockTimeInSeconds(currentBlock) * 1000).toInt();
+    final int blockTime = _blockTimeRPCs[networkData.rpc]!;
+
+    for (final int blockNumber in blockNumbers) {
+      final int blockCount = blockNumber - currentBlock;
+      result[blockNumber] = DateTime.fromMillisecondsSinceEpoch(
+        currentBlockTime.millisecondsSinceEpoch + (blockCount * blockTime),
+      );
+    }
+
+    return result;
   }
 
   String getExploreUrl(String address) {

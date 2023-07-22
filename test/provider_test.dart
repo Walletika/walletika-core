@@ -153,6 +153,40 @@ to: ${tx.to}
 
       expect(txHash, equals(Provider.fromBytesToHex(tx.transactionHash)));
     });
+
+    test("Test (blockTimeInSeconds)", () async {
+      double blockTimeInSeconds = await Provider.instance.blockTimeInSeconds();
+
+      printDebug("""
+blockTimeInSeconds: $blockTimeInSeconds
+        """);
+
+      expect(blockTimeInSeconds, equals(3.0));
+    });
+
+    test("Test (estimatedBlockTime)", () async {
+      List<int> blocks = [30186682, 30193882, 30197482];
+
+      DateTime expectedDate = DateTime(2023, 5, 28);
+      Map<int, DateTime> result = await Provider.instance.estimatedBlockTime(
+        blockNumbers: blocks,
+      );
+
+      for (MapEntry<int, DateTime> item in result.entries) {
+        int blockNumber = item.key;
+        DateTime time = item.value;
+
+        printDebug("""
+blockNumber: $blockNumber
+time: $time
+        """);
+
+        expect(blocks, contains(blockNumber));
+        expect(time.day, equals(expectedDate.day));
+        expect(time.month, equals(expectedDate.month));
+        expect(time.year, equals(expectedDate.year));
+      }
+    });
   });
 
   group("Provider Transaction Group:", () {
