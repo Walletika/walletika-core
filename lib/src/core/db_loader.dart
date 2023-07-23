@@ -1,6 +1,6 @@
 import 'package:aesdatabase/aesdatabase.dart';
 
-Future<DatabaseEngine> databaseLoader({
+Future<DatabaseEngine> databaseInitialize({
   required String directory,
   required String filename,
   required List<String> columnTitles,

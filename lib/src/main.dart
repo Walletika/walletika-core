@@ -16,7 +16,7 @@ Future<void> walletikaSDKInitialize({
   }
 
   // Database loading
-  walletsDB = await databaseLoader(
+  walletsDB = await databaseInitialize(
     directory: directory,
     filename: "wallets",
     columnTitles: [
@@ -29,8 +29,7 @@ Future<void> walletikaSDKInitialize({
     hasBackup: true,
     key: encryptionKey,
   );
-
-  addressesBookDB = await databaseLoader(
+  addressesBookDB = await databaseInitialize(
     directory: directory,
     filename: "addresses",
     columnTitles: [
@@ -41,8 +40,7 @@ Future<void> walletikaSDKInitialize({
     ],
     key: encryptionKey,
   );
-
-  networksDB = await databaseLoader(
+  networksDB = await databaseInitialize(
     directory: directory,
     filename: "networks_v2",
     columnTitles: [
@@ -56,8 +54,7 @@ Future<void> walletikaSDKInitialize({
     ],
     key: encryptionKey,
   );
-
-  tokensDB = await databaseLoader(
+  tokensDB = await databaseInitialize(
     directory: directory,
     filename: "tokens",
     columnTitles: [
@@ -70,8 +67,7 @@ Future<void> walletikaSDKInitialize({
     ],
     key: encryptionKey,
   );
-
-  transactionsDB = await databaseLoader(
+  transactionsDB = await databaseInitialize(
     directory: directory,
     filename: "transactions",
     columnTitles: [
@@ -89,8 +85,7 @@ Future<void> walletikaSDKInitialize({
     ],
     key: encryptionKey,
   );
-
-  stakeDB = await databaseLoader(
+  stakeDB = await databaseInitialize(
     directory: directory,
     filename: "stakes",
     columnTitles: [
