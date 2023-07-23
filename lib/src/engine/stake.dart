@@ -16,20 +16,6 @@ Stream<StakeData> getAllStakes() async* {
   }
 }
 
-Future<void> stakeContractsUpdate(List<Map<String, dynamic>> data) async {
-  stakeDB.clear();
-
-  for (final Map<String, dynamic> stake in data) {
-    final StakeData stakeData = StakeData.fromJson(stake);
-    stakeDB.addRow({
-      DBKeys.rpc: stake[DBKeys.rpc],
-      ...stakeData.toJson(),
-    });
-  }
-
-  await stakeDB.dump();
-}
-
 class StakeEngine extends ContractEngine {
   final StakeData stakeData;
 

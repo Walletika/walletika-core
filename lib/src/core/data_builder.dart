@@ -41,3 +41,19 @@ Future<void> tokensDataBuilder(List<Map<String, dynamic>>? data) async {
 
   await tokensDB.dump();
 }
+
+Future<void> stakeDataBuilder(List<Map<String, dynamic>>? data) async {
+  if (data == null) return;
+
+  stakeDB.clear();
+
+  for (final Map<String, dynamic> stake in data) {
+    final StakeData stakeData = StakeData.fromJson(stake);
+    stakeDB.addRow({
+      DBKeys.rpc: stake[DBKeys.rpc],
+      ...stakeData.toJson(),
+    });
+  }
+
+  await stakeDB.dump();
+}

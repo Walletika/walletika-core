@@ -10,9 +10,6 @@ void printDebug(String message) {
 }
 
 void main() async {
-  await walletikaSDKInitialize();
-  printDebug("Is Initialized: $walletikaSDKInitialized");
-
   final List<Map<String, dynamic>> wallets = walletsDataTest();
   final List<Map<String, dynamic>> tokens = tokensBSCTestnetDataTest();
   final List<Map<String, dynamic>> stakes = stakesBSCTestnetDataTest();
@@ -21,6 +18,9 @@ void main() async {
   const int tokenIndex = 2; // WTK Token
   const int stakeIndex = 0; // WTK x WTK
   const int networkIndex = 2; // BSC Testnet
+
+  await walletikaSDKInitialize(initialStakeContracts: stakes);
+  printDebug("Is Initialized: $walletikaSDKInitialized");
 
   late WalletEngine walletEngine;
   late EthPrivateKey? credentials;
@@ -60,12 +60,6 @@ void main() async {
   });
 
   group("Stake Storage Group", () {
-    test("Test (importStakeContracts)", () async {
-      await stakeContractsUpdate(stakes);
-
-      expect(stakeDB.countRow(), equals(stakes.length));
-    });
-
     test("Test (getAllStakes)", () async {
       List<StakeData> allStakes = [
         await for (StakeData item in getAllStakes()) item

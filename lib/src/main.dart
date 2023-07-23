@@ -1,5 +1,4 @@
 import 'core/core.dart';
-import 'engine/stake.dart';
 
 bool _isInitialized = false;
 
@@ -112,9 +111,8 @@ Future<void> walletikaSDKInitialize({
 
   await tokensDataBuilder(initialTokens);
 
-  if (initialStakeContracts != null) {
-    await stakeContractsUpdate(initialStakeContracts);
-  }
+  // Add listed stakes
+  await stakeDataBuilder(initialStakeContracts);
 
   _isInitialized = true;
 }
