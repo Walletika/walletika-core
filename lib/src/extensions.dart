@@ -1,5 +1,6 @@
-import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
+
+import 'utils/hex_convert.dart';
 
 extension TransactionExtension on Transaction {
   // Transaction extension not support `factory` tag
@@ -12,7 +13,7 @@ extension TransactionExtension on Transaction {
       'maxGas': maxGas,
       'gasPrice': gasPrice?.getInWei.toString(),
       'value': value?.getInWei.toString(),
-      'data': data == null ? null : bytesToHex(data!, include0x: true),
+      'data': data == null ? null : fromBytesToHex(data!),
       'nonce': nonce,
       'maxFeePerGas': maxFeePerGas?.getInWei.toString(),
       'maxPriorityFeePerGas': maxPriorityFeePerGas?.getInWei.toString(),
@@ -38,7 +39,7 @@ Transaction createTransactionFromJson(Map<String, dynamic> json) {
     gasPrice:
         gasPrice == null ? null : EtherAmount.inWei(BigInt.parse(gasPrice)),
     value: value == null ? null : EtherAmount.inWei(BigInt.parse(value)),
-    data: data == null ? null : hexToBytes(data),
+    data: data == null ? null : fromHexToBytes(data),
     nonce: nonce,
     maxFeePerGas: maxFeePerGas == null
         ? null

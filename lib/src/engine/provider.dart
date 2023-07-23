@@ -1,9 +1,7 @@
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:http/http.dart' as http;
-import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
+import 'package:http/http.dart' as http;
 
 import '../models.dart';
 
@@ -224,18 +222,6 @@ class ProviderEngine {
       address.length <= 42 ? 'address' : 'tx',
       address
     ].join('/');
-  }
-
-  static String fromBytesToHex(List<int> bytes) {
-    return bytesToHex(bytes, include0x: true);
-  }
-
-  static Uint8List fromHexToBytes(String hex) {
-    return hexToBytes(hex);
-  }
-
-  static BigInt fromBytesToInt(List<int> bytes) {
-    return bytesToInt(bytes);
   }
 
   void connectionValidator() {

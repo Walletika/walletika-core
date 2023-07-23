@@ -147,12 +147,12 @@ value: ${tx.value}
 
       printDebug("""
 txHash: $txHash
-hash: ${ProviderEngine.fromBytesToHex(tx!.transactionHash)}
+hash: ${fromBytesToHex(tx!.transactionHash)}
 from: ${tx.from}
 to: ${tx.to}
         """);
 
-      expect(txHash, equals(ProviderEngine.fromBytesToHex(tx.transactionHash)));
+      expect(txHash, equals(fromBytesToHex(tx.transactionHash)));
     });
 
     test("Test (blockTimeInSeconds)", () async {

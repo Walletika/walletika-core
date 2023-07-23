@@ -7,3 +7,4 @@ export 'src/main.dart';
 export 'src/models.dart';
 export 'src/extensions.dart';
 export 'src/engine/engine.dart';
+export 'src/utils/utils.dart';
