@@ -18,32 +18,33 @@ void main() async {
   );
 
   // Connect with RPC
-  await Provider.instance.connect(networkData);
+  await ProviderEngine.instance.connect(networkData);
 
   // Check balance
-  EtherAmount balance = await Provider.instance.balanceOf(address: address);
+  EtherAmount balance =
+      await ProviderEngine.instance.balanceOf(address: address);
 
   // Get current block number
-  await Provider.instance.blockNumber();
+  await ProviderEngine.instance.blockNumber();
 
   // Check is current network supported EIP1559
-  await Provider.instance.isSupportEIP1559();
+  await ProviderEngine.instance.isSupportEIP1559();
 
   // Explorer URL of address
-  Provider.instance.getExploreUrl(address.hexEip55);
+  ProviderEngine.instance.getExploreUrl(address.hexEip55);
 
   // Get transaction
-  await Provider.instance.getTransaction(
+  await ProviderEngine.instance.getTransaction(
     '0x92a00e77d80cb89bcbf844fa8b05640c59087031ff50557299998bd889cce16b',
   );
 
   // Get transaction receipt
-  await Provider.instance.getTransactionReceipt(
+  await ProviderEngine.instance.getTransactionReceipt(
     '0x92a00e77d80cb89bcbf844fa8b05640c59087031ff50557299998bd889cce16b',
   );
 
   // Transfer coin
-  TxDetailsData txDetails = await Provider.instance.transfer(
+  TxDetailsData txDetails = await ProviderEngine.instance.transfer(
     sender: address,
     recipient: address,
     amount: balance,
@@ -53,7 +54,7 @@ void main() async {
   txDetails.args;
 
   // Add gas fee
-  TxGasDetailsData txGasDetails = await Provider.instance.addGas(tx: tx);
+  TxGasDetailsData txGasDetails = await ProviderEngine.instance.addGas(tx: tx);
   tx = txGasDetails.tx;
   txGasDetails.estimateGas;
   txGasDetails.maxFee;
@@ -61,7 +62,7 @@ void main() async {
   txGasDetails.maxAmount;
 
   // Send transaction
-  await Provider.instance.sendTransaction(
+  await ProviderEngine.instance.sendTransaction(
     credentials: EthPrivateKey.fromHex(
       '0xe394b45f8ab120fbf238e356de30c14fdfa6ddf87b2c19253e161a850bfd03f7',
     ),

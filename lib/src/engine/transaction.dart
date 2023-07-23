@@ -15,12 +15,12 @@ Stream<TransactionData> getAllTransactions(
   await for (final DBRow row in transactionsDB.select(
     items: {
       DBKeys.address: walletAddress.hexEip55,
-      DBKeys.rpc: Provider.instance.networkData.rpc,
+      DBKeys.rpc: ProviderEngine.instance.networkData.rpc,
     },
   )) {
     if (row.items[DBKeys.status] == TransactionData.pendingStatus) {
       try {
-        await Provider.instance
+        await ProviderEngine.instance
             .getTransactionReceipt(row.items[DBKeys.txHash])
             .then((tx) {
           if (tx == null) return;
@@ -57,7 +57,7 @@ Future<void> addNewTransaction({
     final List<DBRow> transactions = await transactionsDB.select(
       items: {
         DBKeys.address: walletAddress.hexEip55,
-        DBKeys.rpc: Provider.instance.networkData.rpc,
+        DBKeys.rpc: ProviderEngine.instance.networkData.rpc,
       },
     ).toList();
 
@@ -73,7 +73,7 @@ Future<void> addNewTransaction({
 
   transactionsDB.addRow({
     DBKeys.address: walletAddress.hexEip55,
-    DBKeys.rpc: Provider.instance.networkData.rpc,
+    DBKeys.rpc: ProviderEngine.instance.networkData.rpc,
     ...transaction.toJson(),
   });
 
@@ -86,7 +86,7 @@ Future<bool> removeTransaction(TransactionData transaction) async {
   await for (final DBRow row in transactionsDB.select(
     items: {
       DBKeys.address: transaction.fromAddress.hexEip55,
-      DBKeys.rpc: Provider.instance.networkData.rpc,
+      DBKeys.rpc: ProviderEngine.instance.networkData.rpc,
       ...transaction.toJson(),
     },
   )) {

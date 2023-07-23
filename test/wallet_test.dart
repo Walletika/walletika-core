@@ -21,11 +21,11 @@ void main() async {
   const int networkIndex = 1;
 
   setUpAll(() async {
-    bool isConnected = await Provider.instance.connect(
+    bool isConnected = await ProviderEngine.instance.connect(
       NetworkData.fromJson(networks[networkIndex]),
     );
     printDebug(
-      "${Provider.instance.networkData.name} connection status: $isConnected",
+      "${ProviderEngine.instance.networkData.name} connection status: $isConnected",
     );
   });
 

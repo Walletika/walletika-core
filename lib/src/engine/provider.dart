@@ -7,13 +7,13 @@ import 'package:web3dart/web3dart.dart';
 
 import '../models.dart';
 
-class Provider {
+class ProviderEngine {
   final Map<String, int> _blockTimeRPCs = {};
   late NetworkData _networkData;
   late Web3Client _web3;
   late bool _isConnected;
 
-  static Provider instance = Provider();
+  static ProviderEngine instance = ProviderEngine();
 
   NetworkData get networkData => _networkData;
 

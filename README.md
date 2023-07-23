@@ -12,7 +12,7 @@ import 'package:walletika_creator/walletika_creator.dart';
 await walletikaSDKInitialize();
 ```
 
-### Provider engine to connect with ethereum or any network of layer2
+### ProviderEngine to connect with ethereum or any network of layer2
 ```dart
 NetworkData networkData = NetworkData(
     rpc: 'https://mainnet.infura.io/v3/0bbf89ffa7794d2f9fd1ebd4cae51edd',
@@ -24,15 +24,15 @@ NetworkData networkData = NetworkData(
 );
 
 // Connect with RPC
-bool isConnected = await Provider.instance.connect(networkData);
+bool isConnected = await ProviderEngine.instance.connect(networkData);
 
 // Check balance
-EtherAmount balance = await Provider.instance.balanceOf(
+EtherAmount balance = await ProviderEngine.instance.balanceOf(
     address: EthereumAddress.fromHex('0xC94EA8D9694cfe25b94D977eEd4D60d7c0985BD3'),
 );
 
 // Transfer coin
-TxDetailsData txDetails = await Provider.instance.transfer(
+TxDetailsData txDetails = await ProviderEngine.instance.transfer(
     sender: EthereumAddress.fromHex('0xC94EA8D9694cfe25b94D977eEd4D60d7c0985BD3'),
     recipient: EthereumAddress.fromHex('0xC94EA8D9694cfe25b94D977eEd4D60d7c0985BD3'),
     amount: EtherAmount.fromUnitAndValue(EtherUnit.ether, 1.5),
@@ -42,7 +42,10 @@ Map<String, dynamic>? abi = txDetails.abi;
 Map<String, dynamic>? args = txDetails.args;
 
 // Add gas fee
-TxGasDetailsData txGasDetails = await Provider.instance.addGas(tx: tx, eip1559Enabled: true);
+TxGasDetailsData txGasDetails = await ProviderEngine.instance.addGas(
+    tx: tx,
+    eip1559Enabled: true,
+);
 tx = txGasDetails.tx;
 EtherAmount estimateGas = txGasDetails.estimateGas;
 EtherAmount maxFee = txGasDetails.maxFee;
@@ -50,7 +53,7 @@ EtherAmount total = txGasDetails.total;
 EtherAmount maxAmount = txGasDetails.maxAmount;
 
 // Send transaction
-String sendTransaction = await Provider.instance.sendTransaction(
+String sendTransaction = await ProviderEngine.instance.sendTransaction(
     credentials: EthPrivateKey.fromHex('0xe394b45f...850bfd03f7'),
     tx: tx,
 );

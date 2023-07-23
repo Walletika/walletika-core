@@ -28,11 +28,11 @@ void main() async {
   late WalletikaTokenEngine tokenEngine;
 
   setUpAll(() async {
-    bool isConnected = await Provider.instance.connect(
+    bool isConnected = await ProviderEngine.instance.connect(
       NetworkData.fromJson(networks[networkIndex]),
     );
     printDebug(
-      "${Provider.instance.networkData.name} connection status: $isConnected",
+      "${ProviderEngine.instance.networkData.name} connection status: $isConnected",
     );
 
     Map<String, dynamic> wallet = wallets[walletIndex];
@@ -265,7 +265,8 @@ availableToMintCurrentYear: ${availableToMintCurrentYear.getValueInDecimals(
     Map<String, dynamic>? args = txDetails.args;
 
     // Add gas fee
-    TxGasDetailsData txGasDetails = await Provider.instance.addGas(tx: tx);
+    TxGasDetailsData txGasDetails =
+        await ProviderEngine.instance.addGas(tx: tx);
     tx = txGasDetails.tx;
     Map<String, dynamic> txJson = txGasDetails.tx.toJson();
     EtherAmount estimateGas = txGasDetails.estimateGas;
@@ -274,7 +275,7 @@ availableToMintCurrentYear: ${availableToMintCurrentYear.getValueInDecimals(
     EtherAmount maxAmount = txGasDetails.maxAmount;
 
     // Send transaction
-    String sendTransaction = await Provider.instance.sendTransaction(
+    String sendTransaction = await ProviderEngine.instance.sendTransaction(
       credentials: credentials!,
       tx: tx,
     );
@@ -289,7 +290,7 @@ estimateGas: ${estimateGas.getValueInUnit(EtherUnit.ether)}
 maxFee: ${maxFee.getValueInUnit(EtherUnit.ether)}
 total: ${total.getValueInUnit(EtherUnit.ether)}
 maxAmount: ${maxAmount.getValueInUnit(EtherUnit.ether)}
-txURL: ${Provider.instance.getExploreUrl(sendTransaction)}
+txURL: ${ProviderEngine.instance.getExploreUrl(sendTransaction)}
         """);
 
     expect(tx.from, equals(walletEngine.address()));

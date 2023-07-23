@@ -13,7 +13,7 @@ Stream<NetworkData> getAllNetworks() async* {
 Future<bool> addNewNetwork(NetworkData networkData) async {
   bool isValid = false;
 
-  final Provider provider = Provider();
+  final ProviderEngine provider = ProviderEngine();
   final bool isConnected = await provider.connect(networkData);
 
   if (isConnected) {

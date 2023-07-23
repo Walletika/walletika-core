@@ -18,7 +18,7 @@ void main() async {
   );
 
   // Connect with RPC
-  await Provider.instance.connect(networkData);
+  await ProviderEngine.instance.connect(networkData);
 
   TokenData tokenData = TokenData(
     contract: EthereumAddress.fromHex(
@@ -71,7 +71,7 @@ void main() async {
   txDetails.args;
 
   // Add gas fee
-  TxGasDetailsData txGasDetails = await Provider.instance.addGas(tx: tx);
+  TxGasDetailsData txGasDetails = await ProviderEngine.instance.addGas(tx: tx);
   tx = txGasDetails.tx;
   txGasDetails.estimateGas;
   txGasDetails.maxFee;
@@ -79,7 +79,7 @@ void main() async {
   txGasDetails.maxAmount;
 
   // Send transaction
-  await Provider.instance.sendTransaction(
+  await ProviderEngine.instance.sendTransaction(
     credentials: EthPrivateKey.fromHex(
       '0xe394b45f8ab120fbf238e356de30c14fdfa6ddf87b2c19253e161a850bfd03f7',
     ),
