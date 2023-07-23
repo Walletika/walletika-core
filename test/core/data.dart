@@ -39,7 +39,7 @@ List<Map<String, dynamic>> networksDataTest() {
   return [
     {
       DBKeys.rpc:
-          "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+          "https://mainnet.infura.io/v3/0bbf89ffa7794d2f9fd1ebd4cae51edd",
       DBKeys.name: "Ethereum",
       DBKeys.chainID: 1,
       DBKeys.symbol: "ETH",

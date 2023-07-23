@@ -51,15 +51,9 @@ class Provider {
     return _web3.getBlockNumber();
   }
 
-  bool isEIP1559Supported() {
-    bool result = false;
-
-    if (_networkData.rpc.contains('.infura.io/v3') &&
-        _networkData.symbol == 'ETH') {
-      result = true;
-    }
-
-    return result;
+  Future<bool> isSupportEIP1559() {
+    connectionValidator();
+    return _web3.getBlockInformation().then<bool>((i) => i.isSupportEIP1559);
   }
 
   Future<TxDetailsData> transfer({

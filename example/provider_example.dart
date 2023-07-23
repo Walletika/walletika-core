@@ -27,7 +27,7 @@ void main() async {
   await Provider.instance.blockNumber();
 
   // Check is current network supported EIP1559
-  Provider.instance.isEIP1559Supported();
+  await Provider.instance.isSupportEIP1559();
 
   // Explorer URL of address
   Provider.instance.getExploreUrl(address.hexEip55);

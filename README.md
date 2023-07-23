@@ -15,7 +15,7 @@ await walletikaSDKInitialize();
 ### Provider engine to connect with ethereum or any network of layer2
 ```dart
 NetworkData networkData = NetworkData(
-    rpc: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+    rpc: 'https://mainnet.infura.io/v3/0bbf89ffa7794d2f9fd1ebd4cae51edd',
     name: 'Ethereum',
     chainID: 1,
     symbol: 'ETH',

@@ -82,16 +82,13 @@ blockNumber: $blockNumber
     });
 
     test("Test (isEIP1559Supported)", () async {
-      bool isEIP1559Supported = Provider.instance.isEIP1559Supported();
+      bool isEIP1559Supported = await Provider.instance.isSupportEIP1559();
 
       printDebug("""
 isEIP1559Supported: $isEIP1559Supported
         """);
 
-      expect(
-        isEIP1559Supported,
-        Provider.instance.networkData.symbol == 'ETH' ? isTrue : isFalse,
-      );
+      expect(isEIP1559Supported, isTrue);
     });
 
     test("Test (getExploreUrl)", () async {
