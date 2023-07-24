@@ -72,8 +72,6 @@ void main() async {
         Map<String, dynamic> rewardToken = stakeData.rewardToken.toJson();
         int startBlock = stakeData.startBlock;
         int endBlock = stakeData.endBlock;
-        int startTime = stakeData.startTime.millisecondsSinceEpoch;
-        int endTime = stakeData.endTime.millisecondsSinceEpoch;
         bool isLocked = stakeData.isLocked;
 
         printDebug("""
@@ -82,8 +80,6 @@ stakeToken: $stakeToken
 rewardToken: $rewardToken
 startBlock: $startBlock
 endBlock: $endBlock
-startTime: $startTime
-endTime: $endTime
 isLocked: $isLocked
         """);
 
@@ -92,8 +88,6 @@ isLocked: $isLocked
         expect(rewardToken, equals(stakes[index][DBKeys.rewardToken]));
         expect(startBlock, equals(stakes[index][DBKeys.startBlock]));
         expect(endBlock, equals(stakes[index][DBKeys.endBlock]));
-        expect(startTime, equals(stakes[index][DBKeys.startTime]));
-        expect(endTime, equals(stakes[index][DBKeys.endTime]));
         expect(isLocked, equals(stakes[index][DBKeys.isLocked]));
       }
 

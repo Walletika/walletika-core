@@ -24,8 +24,6 @@ class DBKeys {
   static const String rewardToken = 'rewardToken';
   static const String startBlock = 'startBlock';
   static const String endBlock = 'endBlock';
-  static const String startTime = 'startTime';
-  static const String endTime = 'endTime';
   static const String isLocked = 'isLocked';
   static const String salt = 'salt';
   static const String image = 'image';

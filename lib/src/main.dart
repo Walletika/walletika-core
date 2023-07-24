@@ -98,8 +98,6 @@ Future<void> walletikaSDKInitialize({
       DBKeys.rewardToken,
       DBKeys.startBlock,
       DBKeys.endBlock,
-      DBKeys.startTime,
-      DBKeys.endTime,
       DBKeys.isLocked,
     ],
     key: encryptionKey,

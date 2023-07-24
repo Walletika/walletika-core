@@ -208,8 +208,6 @@ class StakeData {
     required this.rewardToken,
     required this.startBlock,
     required this.endBlock,
-    required this.startTime,
-    required this.endTime,
     required this.isLocked,
   });
 
@@ -218,8 +216,6 @@ class StakeData {
   final TokenData rewardToken;
   final int startBlock;
   final int endBlock;
-  final DateTime startTime;
-  final DateTime endTime;
   final bool isLocked;
 
   factory StakeData.fromJson(Map<String, dynamic> json) => StakeData(
@@ -228,14 +224,6 @@ class StakeData {
         rewardToken: TokenData.fromJson(json[DBKeys.rewardToken]),
         startBlock: json[DBKeys.startBlock],
         endBlock: json[DBKeys.endBlock],
-        startTime: DateTime.fromMillisecondsSinceEpoch(
-          json[DBKeys.startTime],
-          isUtc: true,
-        ),
-        endTime: DateTime.fromMillisecondsSinceEpoch(
-          json[DBKeys.endTime],
-          isUtc: true,
-        ),
         isLocked: json[DBKeys.isLocked],
       );
 
@@ -245,8 +233,6 @@ class StakeData {
         DBKeys.rewardToken: rewardToken.toJson(),
         DBKeys.startBlock: startBlock,
         DBKeys.endBlock: endBlock,
-        DBKeys.startTime: startTime.millisecondsSinceEpoch,
-        DBKeys.endTime: endTime.millisecondsSinceEpoch,
         DBKeys.isLocked: isLocked,
       };
 }

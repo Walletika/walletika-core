@@ -37,8 +37,6 @@ void main() async {
     rewardToken: tokenData,
     startBlock: 23545120,
     endBlock: 128636320,
-    startTime: DateTime.parse('1970-01-01 02:00:00.000'),
-    endTime: DateTime.parse('1970-01-01 02:00:00.000'),
     isLocked: false,
   );
 
