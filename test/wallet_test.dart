@@ -32,6 +32,7 @@ void main() async {
   group("Wallet Storage Group:", () {
     test("Test (addNewWallet)", () async {
       for (Map<String, dynamic> wallet in wallets) {
+        WalletType type = wallet[DBKeys.type];
         String address = wallet[DBKeys.address];
         String username = wallet[DBKeys.username];
         String password = wallet[DBKeys.password];
@@ -40,12 +41,14 @@ void main() async {
         String otpCode = getOTPCode(username, password, securityPassword);
 
         bool isAdded = await addNewWallet(
+          type: type,
           username: username,
           password: password,
           securityPassword: securityPassword,
         );
 
         printDebug("""
+type: $type
 address: $address
 username: $username
 password: $password
@@ -65,6 +68,7 @@ isAdded: $isAdded
 
       for (int index = 0; index < allWallets.length; index++) {
         WalletData walletData = allWallets[index];
+        WalletType type = walletData.type;
         String address = walletData.address.hexEip55;
         String username = walletData.username;
         Uint8List securityPassword = walletData.securityPassword;
@@ -72,6 +76,7 @@ isAdded: $isAdded
         bool isFavorite = walletData.isFavorite;
 
         printDebug("""
+type: $type
 address: $address
 username: $username
 securityPassword: $securityPassword
@@ -79,6 +84,7 @@ dateCreated: ${dateCreated.toString()}
 isFavorite: $isFavorite
         """);
 
+        expect(type, equals(wallets[index][DBKeys.type]));
         expect(address, equals(wallets[index][DBKeys.address]));
         expect(username, equals(wallets[index][DBKeys.username]));
         expect(isFavorite, isFalse);

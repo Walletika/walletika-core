@@ -21,6 +21,7 @@ Stream<WalletData> getAllWallets() async* {
 
 /// Add a new wallet to database
 Future<bool> addNewWallet({
+  required WalletType type,
   required String username,
   required String password,
   required String securityPassword,
@@ -35,13 +36,14 @@ Future<bool> addNewWallet({
   );
 
   if (wallet != null) {
-    walletsDB.addRow({
-      DBKeys.username: wallet.username,
-      DBKeys.address: wallet.address.hexEip55,
-      DBKeys.securityPassword: jsonEncode(wallet.securityPassword),
-      DBKeys.dateCreated: DateTime.now().toString(),
-      DBKeys.isFavorite: false,
-    });
+    walletsDB.addRow(WalletData(
+      type: type,
+      username: wallet.username,
+      address: wallet.address,
+      securityPassword: wallet.securityPassword,
+      dateCreated: DateTime.now(),
+      isFavorite: false,
+    ).toJson());
 
     await walletsDB.dump();
     isValid = true;
@@ -129,6 +131,9 @@ class WalletEngine {
   bool _isLogged = false;
 
   WalletEngine(this.wallet);
+
+  /// Get wallet type
+  WalletType type() => wallet.type;
 
   /// Get wallet username
   String username() => wallet.username;

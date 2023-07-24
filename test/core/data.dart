@@ -1,32 +1,38 @@
 import 'package:walletika_sdk/src/core/core.dart';
+import 'package:walletika_sdk/src/models.dart';
 
 List<Map<String, dynamic>> walletsDataTest() {
   return [
     {
+      DBKeys.type: WalletType.login,
       DBKeys.address: '0xC94EA8D9694cfe25b94D977eEd4D60d7c0985BD3',
       DBKeys.username: 'username1',
       DBKeys.password: 'password1',
       DBKeys.securityPassword: '123456',
     },
     {
+      DBKeys.type: WalletType.login,
       DBKeys.address: '0xB41aD6b3EE5373dbAC2b471E4582A0b50f4bC9DE',
       DBKeys.username: 'username2',
       DBKeys.password: 'password2',
       DBKeys.securityPassword: '123457',
     },
     {
+      DBKeys.type: WalletType.login,
       DBKeys.address: '0xB72bEC2cB81F9B61321575D574BAC577BAb99141',
       DBKeys.username: 'username3',
       DBKeys.password: 'password3',
       DBKeys.securityPassword: '123458',
     },
     {
+      DBKeys.type: WalletType.login,
       DBKeys.address: '0x45EF6cc9f2aD7A85e282D14fc23C745727e547b6',
       DBKeys.username: 'username4',
       DBKeys.password: 'password4',
       DBKeys.securityPassword: '123459',
     },
     {
+      DBKeys.type: WalletType.login,
       DBKeys.address: '0x71471d05114c758eBfC3D3b952a722Ef2d53970b',
       DBKeys.username: 'username5',
       DBKeys.password: 'password5',

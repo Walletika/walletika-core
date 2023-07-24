@@ -5,8 +5,12 @@ import 'package:web3dart/web3dart.dart';
 
 import 'core/core.dart';
 
+/// Wallet types to determine which wallet model works
+enum WalletType { login, fingerprint, faceID, privateKey }
+
 class WalletData {
   WalletData({
+    required this.type,
     required this.username,
     required this.address,
     required this.securityPassword,
@@ -14,6 +18,7 @@ class WalletData {
     required this.isFavorite,
   });
 
+  final WalletType type;
   final String username;
   final EthereumAddress address;
   final Uint8List securityPassword;
@@ -21,6 +26,7 @@ class WalletData {
   bool isFavorite;
 
   factory WalletData.fromJson(Map<String, dynamic> json) => WalletData(
+        type: WalletType.values[json[DBKeys.type]],
         username: json[DBKeys.username],
         address: EthereumAddress.fromHex(json[DBKeys.address]),
         securityPassword: Uint8List.fromList(
@@ -31,6 +37,7 @@ class WalletData {
       );
 
   Map<String, dynamic> toJson() => {
+        DBKeys.type: type.index,
         DBKeys.username: username,
         DBKeys.address: address.hexEip55,
         DBKeys.securityPassword: jsonEncode(securityPassword),

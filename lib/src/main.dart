@@ -22,6 +22,7 @@ Future<void> walletikaSDKInitialize({
     directory: directory,
     filename: "wallets",
     columnTitles: [
+      DBKeys.type,
       DBKeys.username,
       DBKeys.address,
       DBKeys.securityPassword,
@@ -44,7 +45,7 @@ Future<void> walletikaSDKInitialize({
   );
   networksDB = await databaseInitialize(
     directory: directory,
-    filename: "networks_v2",
+    filename: "networks",
     columnTitles: [
       DBKeys.rpc,
       DBKeys.name,

@@ -18,6 +18,7 @@ void main() async {
 
   // Add new wallet
   await addNewWallet(
+    type: WalletType.login,
     username: username,
     password: password,
     securityPassword: securityPassword,

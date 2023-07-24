@@ -1,4 +1,5 @@
 class DBKeys {
+  static const String type = 'type';
   static const String address = 'address';
   static const String username = 'username';
   static const String password = 'password';

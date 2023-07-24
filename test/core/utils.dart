@@ -30,6 +30,7 @@ Future<WalletData> getWalletData(
   );
 
   return WalletData(
+    type: WalletType.login,
     username: username,
     address: walletInfo!.address,
     securityPassword: walletInfo.securityPassword,
