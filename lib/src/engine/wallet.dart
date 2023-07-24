@@ -5,24 +5,28 @@ import 'package:aescrypto/aescrypto.dart';
 import 'package:aesdatabase/aesdatabase.dart';
 import 'package:walletika_creator/walletika_creator.dart';
 import 'package:web3dart/credentials.dart';
-import 'package:web3dart/crypto.dart';
 
 import '../core/core.dart';
 import '../models.dart';
+import '../utils/utils.dart';
 
 final SecretStringStorage _secretStorage = SecretStringStorage();
 
+/// Get all wallets from database
 Stream<WalletData> getAllWallets() async* {
   await for (final DBRow row in walletsDB.select()) {
     yield WalletData.fromJson(row.items);
   }
 }
 
+/// Add a new wallet to database
 Future<bool> addNewWallet({
   required String username,
   required String password,
   required String securityPassword,
 }) async {
+  bool isValid = false;
+
   final WalletGeneratorInfo? wallet = await walletGenerator(
     username: username,
     password: password,
@@ -40,14 +44,15 @@ Future<bool> addNewWallet({
     });
 
     await walletsDB.dump();
-    return true;
+    isValid = true;
   }
 
-  return false;
+  return isValid;
 }
 
+/// Remove a wallet from database
 Future<bool> removeWallet(WalletData wallet) async {
-  bool result = false;
+  bool isValid = false;
 
   await for (final DBRow row in walletsDB.select(
     items: wallet.toJson(),
@@ -55,13 +60,14 @@ Future<bool> removeWallet(WalletData wallet) async {
     _secretStorage.remove(wallet.address.hex);
     walletsDB.removeRow(row.index);
     await walletsDB.dump();
-    result = true;
+    isValid = true;
     break;
   }
 
-  return result;
+  return isValid;
 }
 
+/// Export all wallets to external file
 Future<String> exportWallets({
   String? outputDir,
   List<int>? walletIndexes,
@@ -76,6 +82,7 @@ Future<String> exportWallets({
   );
 }
 
+/// Import all wallets from external file
 Future<bool> importWallets({
   required String path,
   List<int>? walletIndexes,
@@ -94,17 +101,11 @@ Future<bool> importWallets({
 
     // Remove duplicate wallets
     final List<String> addresses = [];
-
     for (final DBRow row in await walletsDB.select().toList()) {
       final String address = row.items[DBKeys.address];
 
       if (addresses.contains(address)) {
-        walletsDB.removeRow(
-          await walletsDB
-              .select(items: row.items)
-              .first
-              .then<int>((row) => row.index),
-        );
+        walletsDB.removeRow(row.index);
         continue;
       }
 
@@ -121,6 +122,7 @@ Future<bool> importWallets({
   return isValid;
 }
 
+/// Wallet engine to access the crypto wallet
 class WalletEngine {
   final WalletData wallet;
 
@@ -128,18 +130,25 @@ class WalletEngine {
 
   WalletEngine(this.wallet);
 
+  /// Get wallet username
   String username() => wallet.username;
 
+  /// Get wallet address
   EthereumAddress address() => wallet.address;
 
+  /// Get wallet security password in encrypted
   Uint8List securityPassword() => wallet.securityPassword;
 
+  /// Get wallet date created
   DateTime dateCreated() => wallet.dateCreated;
 
+  /// Get wallet favorite status
   bool isFavorite() => wallet.isFavorite;
 
+  /// Get wallet logging status
   bool isLogged() => _isLogged;
 
+  /// Get wallet credentials, must be logged in
   Future<EthPrivateKey?> credentials(String otpCode) async {
     EthPrivateKey? result;
 
@@ -160,28 +169,30 @@ class WalletEngine {
     return result;
   }
 
+  /// Get wallet private key, must be logged in
   Future<String?> privateKey(String otpCode) async {
     final EthPrivateKey? credential = await credentials(otpCode);
-
-    return credential != null
-        ? bytesToHex(
-            credential.privateKey,
-            include0x: true,
-          )
-        : null;
+    return credential != null ? fromBytesToHex(credential.privateKey) : null;
   }
 
-  Future<void> setFavorite(bool status) async {
+  /// Mark the wallet as favorite
+  Future<bool> setFavorite(bool status) async {
+    bool isValid = false;
+
     await for (final DBRow row in walletsDB.select(
       items: wallet.toJson(),
     )) {
       wallet.isFavorite = status;
       walletsDB.edit(rowIndex: row.index, items: {DBKeys.isFavorite: status});
       await walletsDB.dump();
+      isValid = true;
       break;
     }
+
+    return isValid;
   }
 
+  /// Login to the wallet
   Future<bool> login(String password) async {
     if (!_isLogged) {
       if (await passwordTestPlugin(
@@ -198,6 +209,7 @@ class WalletEngine {
     return _isLogged;
   }
 
+  /// Log out from the wallet
   void logout() {
     _secretStorage.remove(wallet.address.hex);
     _isLogged = false;

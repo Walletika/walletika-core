@@ -2,8 +2,10 @@ import 'core/core.dart';
 
 bool _isInitialized = false;
 
+/// Get initialization status
 bool get walletikaSDKInitialized => _isInitialized;
 
+/// WalletikaSDK requires to initialize before use
 Future<void> walletikaSDKInitialize({
   String? encryptionKey,
   List<Map<String, dynamic>>? initialNetworks,
@@ -102,16 +104,19 @@ Future<void> walletikaSDKInitialize({
     key: encryptionKey,
   );
 
+  // Add initial networks
   await networksDataBuilder(initialNetworks);
 
+  // Add initial tokens
   await tokensDataBuilder(initialTokens);
 
-  // Add listed stakes
-  await stakeDataBuilder(initialStakeContracts);
+  // Add initial stake contracts
+  await stakesDataBuilder(initialStakeContracts);
 
   _isInitialized = true;
 }
 
+/// Change encryption key for all database
 Future<void> walletikaSDKEncryptionKeyChanger(String key) async {
   walletsDB.setKey(key);
   await walletsDB.dump();

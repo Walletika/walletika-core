@@ -5,18 +5,24 @@ import 'package:http/http.dart' as http;
 
 import '../models.dart';
 
+/// Provider engine to access the web3 blockchain network
+/// It's able to connect to multiple networks
 class ProviderEngine {
   final Map<String, int> _blockTimeRPCs = {};
   late NetworkData _networkData;
   late Web3Client _web3;
   late bool _isConnected;
 
+  /// The provider singleton instance
   static ProviderEngine instance = ProviderEngine();
 
+  /// Get the network model
   NetworkData get networkData => _networkData;
 
+  /// Web3 instance
   Web3Client get web3 => _web3;
 
+  /// Connect with a RPC of blockchain network
   Future<bool> connect(NetworkData network) async {
     final http.Client httpClient = http.Client();
     _web3 = Web3Client(network.rpc, httpClient);
@@ -25,6 +31,7 @@ class ProviderEngine {
     return isConnected();
   }
 
+  /// Check the blockchain network connection
   Future<bool> isConnected() async {
     try {
       await _web3.getClientVersion();
@@ -36,6 +43,7 @@ class ProviderEngine {
     return _isConnected;
   }
 
+  /// Check wallet balance for current blockchain network coin
   Future<EtherAmount> balanceOf({
     required EthereumAddress address,
     BlockNum? atBlock,
@@ -44,16 +52,19 @@ class ProviderEngine {
     return _web3.getBalance(address, atBlock: atBlock);
   }
 
+  /// Get current block number
   Future<int> blockNumber() {
     connectionValidator();
     return _web3.getBlockNumber();
   }
 
+  /// Check EIP1559 support for the current blockchain
   Future<bool> isSupportEIP1559() {
     connectionValidator();
     return _web3.getBlockInformation().then<bool>((i) => i.isSupportEIP1559);
   }
 
+  /// Build a transaction to transfer the amount to another address
   Future<TxDetailsData> transfer({
     required EthereumAddress sender,
     required EthereumAddress recipient,
@@ -71,6 +82,7 @@ class ProviderEngine {
     return TxDetailsData(tx: tx);
   }
 
+  /// Add the gas fee to the transaction already built
   Future<TxGasDetailsData> addGas({
     required Transaction tx,
     bool amountAdjustment = true,
@@ -139,6 +151,7 @@ class ProviderEngine {
       }
     }
 
+    // Build tx details
     return TxGasDetailsData(
       tx: tx,
       estimateGas: EtherAmount.inWei(estimateGas),
@@ -148,6 +161,7 @@ class ProviderEngine {
     );
   }
 
+  /// Send a transaction to be valid and recorded on the blockchain
   Future<String> sendTransaction({
     required Transaction tx,
     required EthPrivateKey credentials,
@@ -160,16 +174,20 @@ class ProviderEngine {
     );
   }
 
+  /// Get a transaction by hash
   Future<TransactionInformation?> getTransaction(String txHash) async {
     connectionValidator();
     return _web3.getTransactionByHash(txHash);
   }
 
+  /// Get an receipt of a transaction by hash
   Future<TransactionReceipt?> getTransactionReceipt(String txHash) async {
     connectionValidator();
     return _web3.getTransactionReceipt(txHash);
   }
 
+  /// Get the block time in seconds for the current blockchain
+  /// It's can use a block number to calculate based on it
   Future<double> blockTimeInSeconds([int? blockNumber]) async {
     connectionValidator();
 
@@ -177,6 +195,7 @@ class ProviderEngine {
     final List<int> times = [];
     int timestamp = 0;
 
+    // Get the time difference between the last 5 blocks
     for (int i = 0; i < 5; i++) {
       final BlockInformation info = await _web3.getBlockInformation(
         blockNumber: BlockNum.exact(blockNumber - i).toBlockParam(),
@@ -188,9 +207,12 @@ class ProviderEngine {
     // Remove the first value, because it is a subtraction of 0
     times.removeAt(0);
 
+    // Calculate the average time
     return (times.reduce((a, b) => a + b) / times.length) / 1000;
   }
 
+  /// Get the estimated block time by a block number
+  /// It's can use a block number and block time to calculate based on it
   Future<Map<int, DateTime>> estimatedBlockTime({
     required List<int> blockNumbers,
     int? currentBlock,
@@ -202,10 +224,12 @@ class ProviderEngine {
     currentBlockTime ??= DateTime.now();
     final Map<int, DateTime> result = {};
 
+    // Cache blockTime to be faster next time
     _blockTimeRPCs[networkData.rpc] ??=
         (await blockTimeInSeconds(currentBlock) * 1000).toInt();
     final int blockTime = _blockTimeRPCs[networkData.rpc]!;
 
+    // Calc the estimated time
     for (final int blockNumber in blockNumbers) {
       final int blockCount = blockNumber - currentBlock;
       result[blockNumber] = DateTime.fromMillisecondsSinceEpoch(
@@ -216,6 +240,7 @@ class ProviderEngine {
     return result;
   }
 
+  /// Get the explorer url for the current blockchain
   String getExploreUrl(String address) {
     return [
       _networkData.explorer,
@@ -224,6 +249,7 @@ class ProviderEngine {
     ].join('/');
   }
 
+  /// Check connection based on last state by 'isConnected' method
   void connectionValidator() {
     if (_isConnected) return;
 

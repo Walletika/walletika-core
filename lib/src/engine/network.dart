@@ -4,12 +4,14 @@ import '../core/core.dart';
 import '../models.dart';
 import 'provider.dart';
 
+/// Get all networks from database
 Stream<NetworkData> getAllNetworks() async* {
   await for (final DBRow row in networksDB.select()) {
     yield NetworkData.fromJson(row.items);
   }
 }
 
+/// Add a new network to database
 Future<bool> addNewNetwork(NetworkData networkData) async {
   bool isValid = false;
 
@@ -30,8 +32,9 @@ Future<bool> addNewNetwork(NetworkData networkData) async {
   return isValid;
 }
 
+/// Remove a network from database
 Future<bool> removeNetwork(NetworkData network) async {
-  bool result = false;
+  bool isValid = false;
 
   if (!network.isLocked) {
     await for (final DBRow row in networksDB.select(
@@ -39,10 +42,10 @@ Future<bool> removeNetwork(NetworkData network) async {
     )) {
       networksDB.removeRow(row.index);
       await networksDB.dump();
-      result = true;
+      isValid = true;
       break;
     }
   }
 
-  return result;
+  return isValid;
 }

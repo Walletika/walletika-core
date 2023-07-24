@@ -5,6 +5,7 @@ import 'package:web3dart/web3dart.dart';
 import '../engine/provider.dart';
 import '../models.dart';
 
+/// Contract engine to call the smart contract APIs
 class ContractEngine {
   final EthereumAddress? sender;
   late DeployedContract _contract;
@@ -18,6 +19,7 @@ class ContractEngine {
     _contract = DeployedContract(ContractAbi.fromJson(abi, name), address);
   }
 
+  /// Call the smart contract API function to read the data
   Future<List<dynamic>> functionCall({
     EthereumAddress? sender,
     required String function,
@@ -26,27 +28,32 @@ class ContractEngine {
   }) async {
     ProviderEngine.instance.connectionValidator();
 
+    // A function defined in the ABI of an compiled contract
     final ContractFunction func = _contract.function(function);
-    final String encodedResult = await ProviderEngine.instance.web3.callRaw(
+
+    // Call the function by ProviderEngine
+    final String response = await ProviderEngine.instance.web3.callRaw(
       sender: sender,
       contract: _contract.address,
       data: func.encodeCall(params ?? []),
       atBlock: atBlock,
     );
 
-    return func.decodeReturnValues(encodedResult);
+    // Decode response data
+    return func.decodeReturnValues(response);
   }
 
+  /// Call the smart contract API function to build a transaction
   Future<TxDetailsData> buildTransaction({
     required String function,
     List<dynamic>? params,
   }) async {
     ProviderEngine.instance.connectionValidator();
 
-    // Function Caller
+    // A function defined in the ABI of an compiled contract
     final ContractFunction func = _contract.function(function);
 
-    // Build ABI
+    // Build the ABI
     final Map<String, dynamic> abi = {
       "inputs": func.parameters.map((e) {
         return {
@@ -67,7 +74,7 @@ class ContractEngine {
       "type": func.type.name,
     };
 
-    // Build Arguments
+    // Build arguments
     final Map<String, dynamic> args = {};
     for (int index = 0; index < func.parameters.length; index++) {
       final String name = func.parameters[index].name;

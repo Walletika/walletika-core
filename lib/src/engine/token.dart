@@ -6,6 +6,7 @@ import '../core/core.dart';
 import '../models.dart';
 import 'provider.dart';
 
+/// Get all tokens from database
 Stream<TokenData> getAllTokens() async* {
   await for (final DBRow row in tokensDB.select(
     items: {
@@ -16,6 +17,7 @@ Stream<TokenData> getAllTokens() async* {
   }
 }
 
+/// Add a new token to database
 Future<void> addNewToken(TokenData token) async {
   tokensDB.addRow({
     DBKeys.rpc: ProviderEngine.instance.networkData.rpc,
@@ -25,8 +27,9 @@ Future<void> addNewToken(TokenData token) async {
   await tokensDB.dump();
 }
 
+/// Remove a token from database
 Future<bool> removeToken(TokenData token) async {
-  bool result = false;
+  bool isValid = false;
 
   await for (final DBRow row in tokensDB.select(
     items: {
@@ -36,13 +39,14 @@ Future<bool> removeToken(TokenData token) async {
   )) {
     tokensDB.removeRow(row.index);
     await tokensDB.dump();
-    result = true;
+    isValid = true;
     break;
   }
 
-  return result;
+  return isValid;
 }
 
+/// Token engine to access the token smart contract
 class TokenEngine extends ContractEngine {
   final TokenData tokenData;
 
@@ -168,6 +172,7 @@ class TokenEngine extends ContractEngine {
   }
 }
 
+/// Walletika Token engine to access the token smart contract
 class WalletikaTokenEngine extends TokenEngine {
   WalletikaTokenEngine({required super.tokenData, super.sender});
 

@@ -6,6 +6,7 @@ import '../core/core.dart';
 import '../models.dart';
 import 'provider.dart';
 
+/// Get all stakes from database
 Stream<StakeData> getAllStakes() async* {
   await for (final DBRow row in stakeDB.select(
     items: {
@@ -16,6 +17,7 @@ Stream<StakeData> getAllStakes() async* {
   }
 }
 
+/// Stake engine to access the stake smart contract
 class StakeEngine extends ContractEngine {
   final StakeData stakeData;
 

@@ -6,21 +6,21 @@ extension TransactionExtension on Transaction {
   // Transaction extension not support `factory` tag
   // Use `createTransactionFromJson` to create from json
 
-  Map<String, dynamic> toJson() {
-    return {
-      'from': from?.hexEip55,
-      'to': to?.hexEip55,
-      'maxGas': maxGas,
-      'gasPrice': gasPrice?.getInWei.toString(),
-      'value': value?.getInWei.toString(),
-      'data': data == null ? null : fromBytesToHex(data!),
-      'nonce': nonce,
-      'maxFeePerGas': maxFeePerGas?.getInWei.toString(),
-      'maxPriorityFeePerGas': maxPriorityFeePerGas?.getInWei.toString(),
-    };
-  }
+  /// Convert from `Transaction` object to json format
+  Map<String, dynamic> toJson() => {
+        'from': from?.hexEip55,
+        'to': to?.hexEip55,
+        'maxGas': maxGas,
+        'gasPrice': gasPrice?.getInWei.toString(),
+        'value': value?.getInWei.toString(),
+        'data': data == null ? null : fromBytesToHex(data!),
+        'nonce': nonce,
+        'maxFeePerGas': maxFeePerGas?.getInWei.toString(),
+        'maxPriorityFeePerGas': maxPriorityFeePerGas?.getInWei.toString(),
+      };
 }
 
+/// Convert from json format to `Transaction` object
 Transaction createTransactionFromJson(Map<String, dynamic> json) {
   final String? from = json['from'];
   final String? to = json['to'];

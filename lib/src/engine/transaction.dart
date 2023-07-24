@@ -7,6 +7,7 @@ import '../core/core.dart';
 import '../models.dart';
 import 'provider.dart';
 
+/// Get all transactions from database
 Stream<TransactionData> getAllTransactions(
   EthereumAddress walletAddress,
 ) async* {
@@ -48,6 +49,7 @@ Stream<TransactionData> getAllTransactions(
   }
 }
 
+/// Add a new transaction to database
 Future<void> addNewTransaction({
   required EthereumAddress walletAddress,
   required TransactionData transaction,
@@ -80,8 +82,9 @@ Future<void> addNewTransaction({
   await transactionsDB.dump();
 }
 
+/// Remove a transaction from database
 Future<bool> removeTransaction(TransactionData transaction) async {
-  bool result = false;
+  bool isValid = false;
 
   await for (final DBRow row in transactionsDB.select(
     items: {
@@ -92,9 +95,9 @@ Future<bool> removeTransaction(TransactionData transaction) async {
   )) {
     transactionsDB.removeRow(row.index);
     await transactionsDB.dump();
-    result = true;
+    isValid = true;
     break;
   }
 
-  return result;
+  return isValid;
 }
