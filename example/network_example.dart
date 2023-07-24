@@ -1,4 +1,4 @@
-import 'package:walletika_sdk/walletika_sdk.dart';
+import 'package:walletika_core/walletika_core.dart';
 
 void main() async {
   String rpc = 'https://data-seed-prebsc-1-s1.binance.org:8545';
@@ -7,8 +7,8 @@ void main() async {
   String symbol = 'BNB';
   String explorer = 'https://testnet.bscscan.com';
 
-  // initialize walletika SDK
-  await walletikaSDKInitialize();
+  // initialize walletika Core
+  await walletikaCoreInitialize();
 
   // Add new network
   NetworkData networkData = NetworkData(

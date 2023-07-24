@@ -1,15 +1,15 @@
-# Walletika SDK
-Software development kit of walletika
+# Walletika Core
+The Walletika core library that allows to storage and connect with web3.
 - Designed by: Walletika Team
 
 ## Overview
 - Check example folder to learn more.
 
-### Walletika SDK Initialization
+### Walletika Core Initialization
 ```dart
 import 'package:walletika_creator/walletika_creator.dart';
 
-await walletikaSDKInitialize();
+await walletikaCoreInitialize();
 ```
 
 ### ProviderEngine to connect with ethereum or any network of layer2

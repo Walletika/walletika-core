@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:walletika_creator/walletika_creator.dart';
-import 'package:walletika_sdk/src/models.dart';
+import 'package:walletika_core/src/models.dart';
 
 String getOTPCode(
   String username,

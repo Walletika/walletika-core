@@ -1,5 +1,5 @@
-import 'package:walletika_sdk/src/core/core.dart';
-import 'package:walletika_sdk/walletika_sdk.dart';
+import 'package:walletika_core/src/core/core.dart';
+import 'package:walletika_core/walletika_core.dart';
 import 'package:test/test.dart';
 
 import 'core/core.dart';
@@ -19,8 +19,8 @@ void main() async {
   const int stakeIndex = 0; // WTK x WTK
   const int networkIndex = 2; // BSC Testnet
 
-  await walletikaSDKInitialize(initialStakeContracts: stakes);
-  printDebug("Is Initialized: $walletikaSDKInitialized");
+  await walletikaCoreInitialize(initialStakeContracts: stakes);
+  printDebug("Is Initialized: $walletikaCoreInitialized");
 
   late WalletEngine walletEngine;
   late EthPrivateKey? credentials;

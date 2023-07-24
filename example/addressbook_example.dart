@@ -1,4 +1,4 @@
-import 'package:walletika_sdk/walletika_sdk.dart';
+import 'package:walletika_core/walletika_core.dart';
 
 void main() async {
   String username = 'username';
@@ -6,8 +6,8 @@ void main() async {
     '0xC94EA8D9694cfe25b94D977eEd4D60d7c0985BD3',
   );
 
-  // initialize walletika SDK
-  await walletikaSDKInitialize();
+  // initialize walletika Core
+  await walletikaCoreInitialize();
 
   // Add new address book
   AddressBookData addressBookData = AddressBookData(

@@ -3,10 +3,10 @@ import 'core/core.dart';
 bool _isInitialized = false;
 
 /// Get initialization status
-bool get walletikaSDKInitialized => _isInitialized;
+bool get walletikaCoreInitialized => _isInitialized;
 
-/// WalletikaSDK requires to initialize before use
-Future<void> walletikaSDKInitialize({
+/// WalletikaCore requires to initialize before use
+Future<void> walletikaCoreInitialize({
   String? encryptionKey,
   List<Map<String, dynamic>>? initialNetworks,
   List<Map<String, dynamic>>? initialTokens,
@@ -14,7 +14,7 @@ Future<void> walletikaSDKInitialize({
   String directory = "storage",
 }) async {
   if (_isInitialized) {
-    throw Exception("Walletika SDK already initialized");
+    throw Exception("Walletika Core already initialized");
   }
 
   // Database loading
@@ -116,7 +116,7 @@ Future<void> walletikaSDKInitialize({
 }
 
 /// Change encryption key for all database
-Future<void> walletikaSDKEncryptionKeyChanger(String key) async {
+Future<void> walletikaCoreEncryptionKeyChanger(String key) async {
   walletsDB.setKey(key);
   await walletsDB.dump();
 

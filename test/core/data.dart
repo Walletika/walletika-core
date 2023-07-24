@@ -1,5 +1,5 @@
-import 'package:walletika_sdk/src/core/core.dart';
-import 'package:walletika_sdk/src/models.dart';
+import 'package:walletika_core/src/core/core.dart';
+import 'package:walletika_core/src/models.dart';
 
 List<Map<String, dynamic>> walletsDataTest() {
   return [

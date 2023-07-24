@@ -1,5 +1,5 @@
-import 'package:walletika_sdk/src/core/core.dart';
-import 'package:walletika_sdk/walletika_sdk.dart';
+import 'package:walletika_core/src/core/core.dart';
+import 'package:walletika_core/walletika_core.dart';
 
 void main() async {
   TransactionData transaction = TransactionData.fromJson({
@@ -14,8 +14,8 @@ void main() async {
     DBKeys.status: 1,
   });
 
-  // initialize walletika SDK
-  await walletikaSDKInitialize();
+  // initialize walletika Core
+  await walletikaCoreInitialize();
 
   // Add transaction
   await addNewTransaction(

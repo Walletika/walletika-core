@@ -1,4 +1,4 @@
-import 'package:walletika_sdk/walletika_sdk.dart';
+import 'package:walletika_core/walletika_core.dart';
 
 void main() async {
   String username = 'username';
@@ -13,8 +13,8 @@ void main() async {
 
   String otpCode = getOTPCodePlugin(otpKey);
 
-  // initialize walletika SDK
-  await walletikaSDKInitialize();
+  // initialize walletika Core
+  await walletikaCoreInitialize();
 
   // Add new wallet
   await addNewWallet(

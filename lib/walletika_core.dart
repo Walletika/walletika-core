@@ -1,4 +1,4 @@
-library walletika_sdk;
+library walletika_core;
 
 export 'package:walletika_creator/walletika_creator.dart';
 export 'package:web3dart/web3dart.dart';

@@ -1,5 +1,5 @@
-import 'package:walletika_sdk/src/core/core.dart';
-import 'package:walletika_sdk/walletika_sdk.dart';
+import 'package:walletika_core/src/core/core.dart';
+import 'package:walletika_core/walletika_core.dart';
 import 'package:test/test.dart';
 
 import 'core/core.dart';
@@ -10,8 +10,8 @@ void printDebug(String message) {
 }
 
 void main() async {
-  await walletikaSDKInitialize();
-  printDebug("Is Initialized: $walletikaSDKInitialized");
+  await walletikaCoreInitialize();
+  printDebug("Is Initialized: $walletikaCoreInitialized");
 
   final List<Map<String, dynamic>> wallets = walletsDataTest();
   final List<Map<String, dynamic>> networks = networksDataTest();
