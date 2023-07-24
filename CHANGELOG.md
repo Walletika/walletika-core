@@ -1,3 +1,27 @@
-## 2.0.0
+## 4.0.0
 
-- Initial version.
+
+- Dart 3 compatible
+- Rename package name to `WalletikaCore`
+- Convert `ContractEngine.contract` to be private
+#### Database
+- Default directory folder name become `storage`
+- Rename `databaseLoader` function to `databaseInitialize`
+#### Stake
+- Added `stakesDataBuilder` function
+- Removed `importStakeContracts` function
+- Removed `startTime` and `endTime` from `stakeData`
+#### Network and provider
+- Use `NetworkData` with `addNewNetwork` function
+- Added `isLocked` attribute to `NetworkData`
+- Rename `Provider` to `ProviderEngine` and support singleton algorithm
+- Added `blockTimeInSeconds` to `ProviderEngine`
+- Added `estimatedBlockTime` to `ProviderEngine`
+- Added `isSupportEIP1559` instead of `isEIP1559Supported` to `ProviderEngine`
+- Move hex converting methods from `ProviderEngine` to utils
+#### Address book
+- Use `AddressBookData` with `addNewAddressBook` function
+- Returns `void` instead `bool` for `addNewAddressBook` 
+#### Wallet
+- Added `type` attribute to `WalletData`
+- returns `bool` for `setFavorite` method in `WalletEngine`
