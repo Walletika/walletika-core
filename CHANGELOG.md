@@ -1,5 +1,8 @@
-## 4.0.0
+## 4.0.1
+- Get methods become returns future instead of stream
+- Added aprCalculator function
 
+## 4.0.0
 
 - Dart 3 compatible
 - Rename package name to `WalletikaCore`
