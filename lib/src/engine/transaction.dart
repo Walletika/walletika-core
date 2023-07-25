@@ -8,45 +8,39 @@ import '../models.dart';
 import 'provider.dart';
 
 /// Get all transactions from database
-Stream<TransactionData> getAllTransactions(
+Future<List<TransactionData>> getAllTransactions(
   EthereumAddress walletAddress,
-) async* {
-  bool saveRequired = false;
+) async {
+  final List<TransactionData> result = [];
 
-  await for (final DBRow row in transactionsDB.select(
-    items: {
-      DBKeys.address: walletAddress.hexEip55,
-      DBKeys.rpc: ProviderEngine.instance.networkData.rpc,
-    },
-  )) {
+  await for (final DBRow row in transactionsDB.select(items: {
+    DBKeys.address: walletAddress.hexEip55,
+    DBKeys.rpc: ProviderEngine.instance.networkData.rpc,
+  })) {
     if (row.items[DBKeys.status] == TransactionData.pendingStatus) {
       try {
-        await ProviderEngine.instance
-            .getTransactionReceipt(row.items[DBKeys.txHash])
-            .then((tx) {
-          if (tx == null) return;
+        final TransactionReceipt? tx = await ProviderEngine.instance
+            .getTransactionReceipt(row.items[DBKeys.txHash]);
 
+        if (tx != null) {
           final Map<String, int> status = {
-            DBKeys.status: tx.status!
+            DBKeys.status: tx.status == true
                 ? TransactionData.successStatus
                 : TransactionData.failedStatus
           };
-
           transactionsDB.edit(rowIndex: row.index, items: status);
           row.items.addAll(status);
-          saveRequired = true;
-        });
+          await transactionsDB.dump();
+        }
       } on SocketException {
         // Nothing to do
       }
     }
 
-    yield TransactionData.fromJson(row.items);
+    result.add(TransactionData.fromJson(row.items));
   }
 
-  if (saveRequired) {
-    await transactionsDB.dump();
-  }
+  return result;
 }
 
 /// Add a new transaction to database

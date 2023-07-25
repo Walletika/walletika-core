@@ -30,9 +30,7 @@ void main() async {
   );
 
   // Get all tokens
-  await for (TokenData item in getAllTokens()) {
-    item;
-  }
+  await getAllTokens();
 
   // Add token
   await addNewToken(tokenData);

@@ -7,14 +7,13 @@ import '../models.dart';
 import 'provider.dart';
 
 /// Get all tokens from database
-Stream<TokenData> getAllTokens() async* {
-  await for (final DBRow row in tokensDB.select(
-    items: {
-      DBKeys.rpc: ProviderEngine.instance.networkData.rpc,
-    },
-  )) {
-    yield TokenData.fromJson(row.items);
-  }
+Future<List<TokenData>> getAllTokens() {
+  return tokensDB
+      .select(items: {
+        DBKeys.rpc: ProviderEngine.instance.networkData.rpc,
+      })
+      .map((row) => TokenData.fromJson(row.items))
+      .toList();
 }
 
 /// Add a new token to database

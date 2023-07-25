@@ -56,10 +56,8 @@ txHash: $txHash
     });
 
     test("Test (getAllTransactions)", () async {
-      List<TransactionData> allTransactions = [
-        await for (TransactionData item in getAllTransactions(walletAddress))
-          item
-      ];
+      List<TransactionData> allTransactions =
+          await getAllTransactions(walletAddress);
 
       for (int index = 0; index < allTransactions.length; index++) {
         TransactionData transactionData = allTransactions[index];
@@ -99,12 +97,8 @@ status: $status
     });
 
     test("Test (removeTransaction)", () async {
-      List<TransactionData> allTransactions = [
-        await for (TransactionData item in getAllTransactions(
-          walletAddress,
-        ))
-          item
-      ];
+      List<TransactionData> allTransactions =
+          await getAllTransactions(walletAddress);
 
       for (int index = 0; index < allTransactions.length; index++) {
         TransactionData transactionData = allTransactions[index];

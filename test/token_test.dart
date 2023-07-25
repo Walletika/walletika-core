@@ -77,9 +77,7 @@ decimals: $decimals
     });
 
     test("Test (getAllTokens)", () async {
-      List<TokenData> allTokens = [
-        await for (TokenData item in getAllTokens()) item
-      ];
+      List<TokenData> allTokens = await getAllTokens();
 
       for (int index = 0; index < allTokens.length; index++) {
         TokenData tokenData = allTokens[index];
@@ -107,9 +105,7 @@ website: $website
     });
 
     test("Test (removeToken)", () async {
-      List<TokenData> allTokens = [
-        await for (TokenData item in getAllTokens()) item
-      ];
+      List<TokenData> allTokens = await getAllTokens();
 
       for (int index = 0; index < allTokens.length; index++) {
         TokenData tokenData = allTokens[index];

@@ -13,10 +13,11 @@ import '../utils/utils.dart';
 final SecretStringStorage _secretStorage = SecretStringStorage();
 
 /// Get all wallets from database
-Stream<WalletData> getAllWallets() async* {
-  await for (final DBRow row in walletsDB.select()) {
-    yield WalletData.fromJson(row.items);
-  }
+Future<List<WalletData>> getAllWallets() {
+  return walletsDB
+      .select()
+      .map((row) => WalletData.fromJson(row.items))
+      .toList();
 }
 
 /// Add a new wallet to database

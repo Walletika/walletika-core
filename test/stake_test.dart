@@ -61,9 +61,7 @@ void main() async {
 
   group("Stake Storage Group", () {
     test("Test (getAllStakes)", () async {
-      List<StakeData> allStakes = [
-        await for (StakeData item in getAllStakes()) item
-      ];
+      List<StakeData> allStakes = await getAllStakes();
 
       for (int index = 0; index < allStakes.length; index++) {
         StakeData stakeData = allStakes[index];

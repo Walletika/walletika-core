@@ -38,9 +38,7 @@ username: ${addressBookData.username}
     });
 
     test("Test (getAllAddressesBook)", () async {
-      List<AddressBookData> allAddressesBook = [
-        await for (AddressBookData item in getAllAddressesBook()) item
-      ];
+      List<AddressBookData> allAddressesBook = await getAllAddressesBook();
 
       for (int index = 0; index < allAddressesBook.length; index++) {
         AddressBookData addressBookData = allAddressesBook[index];
@@ -66,9 +64,7 @@ salt: $salt
     });
 
     test("Test (removeAddressBook)", () async {
-      List<AddressBookData> allAddressesBook = [
-        await for (AddressBookData item in getAllAddressesBook()) item
-      ];
+      List<AddressBookData> allAddressesBook = await getAllAddressesBook();
 
       for (int index = 0; index < allAddressesBook.length; index++) {
         AddressBookData addressBookData = allAddressesBook[index];

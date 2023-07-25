@@ -62,9 +62,7 @@ isAdded: $isAdded
     });
 
     test("Test (getAllWallets)", () async {
-      List<WalletData> allWallets = [
-        await for (WalletData item in getAllWallets()) item
-      ];
+      List<WalletData> allWallets = await getAllWallets();
 
       for (int index = 0; index < allWallets.length; index++) {
         WalletData walletData = allWallets[index];
@@ -94,9 +92,7 @@ isFavorite: $isFavorite
     });
 
     test("Test (removeWallet)", () async {
-      List<WalletData> allWallets = [
-        await for (WalletData item in getAllWallets()) item
-      ];
+      List<WalletData> allWallets = await getAllWallets();
 
       // Keep wallet 0 for testing with walletEngine
       for (int index = 1; index < allWallets.length; index++) {
@@ -139,9 +135,7 @@ isExists: $isExists
     late WalletEngine walletEngine;
 
     setUpAll(() async {
-      List<WalletData> allWallets = [
-        await for (WalletData item in getAllWallets()) item
-      ];
+      List<WalletData> allWallets = await getAllWallets();
       walletData = allWallets[walletIndex];
       walletEngine = WalletEngine(walletData);
     });

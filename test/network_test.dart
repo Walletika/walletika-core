@@ -32,9 +32,7 @@ isAdded: $isAdded
     });
 
     test("Test (getAllNetworks)", () async {
-      List<NetworkData> allNetworks = [
-        await for (NetworkData item in getAllNetworks()) item
-      ];
+      List<NetworkData> allNetworks = await getAllNetworks();
 
       for (int index = 0; index < allNetworks.length; index++) {
         NetworkData networkData = allNetworks[index];
@@ -69,9 +67,7 @@ image: $image
     });
 
     test("Test (removeNetwork)", () async {
-      List<NetworkData> allNetworks = [
-        await for (NetworkData item in getAllNetworks()) item
-      ];
+      List<NetworkData> allNetworks = await getAllNetworks();
 
       for (int index = 0; index < allNetworks.length; index++) {
         NetworkData networkData = allNetworks[index];

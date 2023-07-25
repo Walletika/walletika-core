@@ -25,11 +25,7 @@ void main() async {
 
   // Get all transactions
 
-  await for (TransactionData item in getAllTransactions(
-    transaction.fromAddress,
-  )) {
-    item;
-  }
+  await getAllTransactions(transaction.fromAddress);
 
   // Remove transaction
   await removeTransaction(transaction);

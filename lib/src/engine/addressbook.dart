@@ -4,10 +4,11 @@ import '../core/core.dart';
 import '../models.dart';
 
 /// Get all addresses book from database
-Stream<AddressBookData> getAllAddressesBook() async* {
-  await for (final DBRow row in addressesBookDB.select()) {
-    yield AddressBookData.fromJson(row.items);
-  }
+Future<List<AddressBookData>> getAllAddressesBook() {
+  return addressesBookDB
+      .select()
+      .map((row) => AddressBookData.fromJson(row.items))
+      .toList();
 }
 
 /// Add a new address book to database

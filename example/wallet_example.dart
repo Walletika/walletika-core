@@ -25,9 +25,7 @@ void main() async {
   );
 
   // Get all wallets
-  List<WalletData> allWallets = [
-    await for (WalletData wallet in getAllWallets()) wallet
-  ];
+  List<WalletData> allWallets = await getAllWallets();
 
   // Remove a wallet
   await removeWallet(allWallets[0]);

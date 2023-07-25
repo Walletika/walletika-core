@@ -1,4 +1,3 @@
-import 'package:aesdatabase/aesdatabase.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../abi/stake.dart';
@@ -7,14 +6,13 @@ import '../models.dart';
 import 'provider.dart';
 
 /// Get all stakes from database
-Stream<StakeData> getAllStakes() async* {
-  await for (final DBRow row in stakeDB.select(
-    items: {
-      DBKeys.rpc: ProviderEngine.instance.networkData.rpc,
-    },
-  )) {
-    yield StakeData.fromJson(row.items);
-  }
+Future<List<StakeData>> getAllStakes() {
+  return stakeDB
+      .select(items: {
+        DBKeys.rpc: ProviderEngine.instance.networkData.rpc,
+      })
+      .map((row) => StakeData.fromJson(row.items))
+      .toList();
 }
 
 /// Stake engine to access the stake smart contract

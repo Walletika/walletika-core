@@ -19,9 +19,7 @@ void main() async {
   await addNewAddressBook(addressBookData);
 
   // Get all addresses book
-  List<AddressBookData> allAddressesBook = [
-    await for (AddressBookData item in getAllAddressesBook()) item
-  ];
+  List<AddressBookData> allAddressesBook = await getAllAddressesBook();
 
   // Remove a address book
   await removeAddressBook(allAddressesBook[0]);

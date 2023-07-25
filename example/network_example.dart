@@ -22,9 +22,7 @@ void main() async {
   await addNewNetwork(networkData);
 
   // Get all networks
-  List<NetworkData> allNetworks = [
-    await for (NetworkData item in getAllNetworks()) item
-  ];
+  List<NetworkData> allNetworks = await getAllNetworks();
 
   // Remove a network
   await removeNetwork(allNetworks[0]);

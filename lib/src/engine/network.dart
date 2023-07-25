@@ -5,10 +5,11 @@ import '../models.dart';
 import 'provider.dart';
 
 /// Get all networks from database
-Stream<NetworkData> getAllNetworks() async* {
-  await for (final DBRow row in networksDB.select()) {
-    yield NetworkData.fromJson(row.items);
-  }
+Future<List<NetworkData>> getAllNetworks() {
+  return networksDB
+      .select()
+      .map((row) => NetworkData.fromJson(row.items))
+      .toList();
 }
 
 /// Add a new network to database
