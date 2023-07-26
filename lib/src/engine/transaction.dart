@@ -50,20 +50,13 @@ Future<void> addNewTransaction({
   int? autoRemoveOlderCount,
 }) async {
   if (autoRemoveOlderCount != null) {
-    final List<DBRow> transactions = await transactionsDB.select(
-      items: {
-        DBKeys.address: walletAddress.hexEip55,
-        DBKeys.rpc: ProviderEngine.instance.networkData.rpc,
-      },
-    ).toList();
+    final List<DBRow> transactions = await transactionsDB.select(items: {
+      DBKeys.address: walletAddress.hexEip55,
+      DBKeys.rpc: ProviderEngine.instance.networkData.rpc,
+    }).toList();
 
     while (transactions.length >= autoRemoveOlderCount) {
-      transactionsDB.removeRow(
-        await transactionsDB
-            .select(items: transactions.removeAt(0).items)
-            .first
-            .then<int>((row) => row.index),
-      );
+      transactionsDB.removeRow(transactions.removeAt(0).index);
     }
   }
 
