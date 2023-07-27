@@ -1,3 +1,7 @@
+## 4.0.2
+
+- Code improvement for addNewTransaction function
+
 ## 4.0.1
 - Get methods become returns future instead of stream
 - Added aprCalculator function
