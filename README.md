@@ -71,17 +71,17 @@ String otpKey_ = otpKeyGenerator(
 ### Use `walletGenerator` function to get wallet details
 ```dart
 // Generate a wallet
-WalletGeneratorInfo? wallet = await walletGenerator(
+WalletGeneratorInfo wallet = await walletGenerator(
     username: 'username',
     password: 'password',
     securityPassword: utf8.encoder.convert('securityPassword'),
     createNew: true,
-);
+)!;
 // Wallet details
-String username = wallet!.username;
-String address = wallet!.address.hexEip55;
-String privateKey = bytesToHex(wallet!.credentials.privateKey);
-Uint8List securityPasswordBytes = wallet!.securityPassword;
+String username = wallet.username;
+String address = wallet.address.hexEip55;
+String privateKey = fromBytesToHex(wallet.credentials.privateKey);
+Uint8List securityPasswordBytes = wallet.securityPassword;
 ```
 
 ### Wallet engine for wallet management
