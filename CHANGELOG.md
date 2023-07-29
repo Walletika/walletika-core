@@ -1,3 +1,7 @@
+## 4.0.3
+
+- Fix: isSupportEIP1559 to check by value
+
 ## 4.0.2
 
 - Code improvement for addNewTransaction function
