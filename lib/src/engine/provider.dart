@@ -61,7 +61,9 @@ class ProviderEngine {
   /// Check EIP1559 support for the current blockchain
   Future<bool> isSupportEIP1559() {
     connectionValidator();
-    return _web3.getBlockInformation().then<bool>((i) => i.isSupportEIP1559);
+    return _web3
+        .getBlockInformation()
+        .then<bool>((i) => (i.baseFeePerGas?.getInWei.toDouble() ?? 0) > 0);
   }
 
   /// Build a transaction to transfer the amount to another address

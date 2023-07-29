@@ -81,15 +81,14 @@ blockNumber: $blockNumber
       expect(blockNumber, greaterThan(0));
     });
 
-    test("Test (isEIP1559Supported)", () async {
-      bool isEIP1559Supported =
-          await ProviderEngine.instance.isSupportEIP1559();
+    test("Test (isSupportEIP1559)", () async {
+      bool isSupportEIP1559 = await ProviderEngine.instance.isSupportEIP1559();
 
       printDebug("""
-isEIP1559Supported: $isEIP1559Supported
+isSupportEIP1559: $isSupportEIP1559
         """);
 
-      expect(isEIP1559Supported, isTrue);
+      expect(isSupportEIP1559, isFalse);
     });
 
     test("Test (getExploreUrl)", () async {
