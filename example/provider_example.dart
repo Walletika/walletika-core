@@ -18,7 +18,7 @@ void main() async {
   );
 
   // Connect with RPC
-  await ProviderEngine.instance.connect(networkData);
+  ProviderEngine.instance.connect(networkData);
 
   // Check balance
   EtherAmount balance =

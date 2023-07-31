@@ -24,7 +24,7 @@ NetworkData networkData = NetworkData(
 );
 
 // Connect with RPC
-bool isConnected = await ProviderEngine.instance.connect(networkData);
+ProviderEngine.instance.connect(networkData);
 
 // Check balance
 EtherAmount balance = await ProviderEngine.instance.balanceOf(

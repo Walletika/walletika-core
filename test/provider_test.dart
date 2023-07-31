@@ -33,7 +33,8 @@ void main() async {
         isLocked: false,
       );
 
-      bool isConnected = await ProviderEngine.instance.connect(networkData);
+      ProviderEngine.instance.connect(networkData);
+      bool isConnected = await ProviderEngine.instance.isConnected();
 
       printDebug("""
 rpc: $rpc

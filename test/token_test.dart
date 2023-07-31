@@ -28,9 +28,10 @@ void main() async {
   late WalletikaTokenEngine tokenEngine;
 
   setUpAll(() async {
-    bool isConnected = await ProviderEngine.instance.connect(
+    ProviderEngine.instance.connect(
       NetworkData.fromJson(networks[networkIndex]),
     );
+    bool isConnected = await ProviderEngine.instance.isConnected();
     printDebug(
       "${ProviderEngine.instance.networkData.name} connection status: $isConnected",
     );

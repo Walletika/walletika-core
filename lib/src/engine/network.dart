@@ -17,7 +17,8 @@ Future<bool> addNewNetwork(NetworkData networkData) async {
   bool isValid = false;
 
   final ProviderEngine provider = ProviderEngine();
-  final bool isConnected = await provider.connect(networkData);
+  provider.connect(networkData);
+  final bool isConnected = await provider.isConnected();
 
   if (isConnected) {
     if ((await provider.web3.getChainId()).toInt() == networkData.chainID) {

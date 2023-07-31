@@ -23,12 +23,10 @@ class ProviderEngine {
   Web3Client get web3 => _web3;
 
   /// Connect with a RPC of blockchain network
-  Future<bool> connect(NetworkData network) async {
+  void connect(NetworkData network) {
     final http.Client httpClient = http.Client();
     _web3 = Web3Client(network.rpc, httpClient);
     _networkData = network;
-
-    return isConnected();
   }
 
   /// Check the blockchain network connection
