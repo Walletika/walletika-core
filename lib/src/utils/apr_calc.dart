@@ -1,6 +1,6 @@
 const int yearInSec = 86400 * 365;
 
-double? aprCalculator({
+double aprCalculator({
   required DateTime startTime,
   required DateTime endTime,
   required int currentBlock,
@@ -11,11 +11,13 @@ double? aprCalculator({
   required double? rewardTokenPrice,
   required double? stakeTokenPrice,
 }) {
-  double? result;
+  double result = 0;
 
-  if (endBlock <= currentBlock) {
-    result = 0;
-  } else if (rewardTokenPrice != null && stakeTokenPrice != null) {
+  if (endBlock > currentBlock &&
+      rewardPerBlock != 0 &&
+      totalStaked != 0 &&
+      rewardTokenPrice != null &&
+      stakeTokenPrice != null) {
     final int stakePeriod = endTime.difference(startTime).inSeconds;
     final int blocks = endBlock - startBlock;
     final double reward = (rewardPerBlock * rewardTokenPrice) * blocks;
