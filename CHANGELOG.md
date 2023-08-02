@@ -1,3 +1,8 @@
+## 4.0.4
+
+- Provider connect method become sync and returns void
+- Fix: aprCalculator function returns infinity value
+
 ## 4.0.3
 
 - Fix: isSupportEIP1559 to check by value
