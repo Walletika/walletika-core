@@ -71,7 +71,8 @@ txHash: $txHash
         String dateCreated = transactionData.dateCreated.toString();
         int status = transactionData.status;
 
-        printDebug("""
+        printDebug(
+            """
 txHash: $txHash
 function: $function
 fromAddress: $fromAddress
@@ -113,7 +114,8 @@ status: $status
             row
         ].isNotEmpty;
 
-        printDebug("""
+        printDebug(
+            """
 txHash: $txHash
 isRemoved: $isRemoved
 isExists: $isExists

@@ -36,7 +36,8 @@ void main() async {
       ProviderEngine.instance.connect(networkData);
       bool isConnected = await ProviderEngine.instance.isConnected();
 
-      printDebug("""
+      printDebug(
+          """
 rpc: $rpc
 name: $name
 chainID: $chainID
@@ -62,7 +63,8 @@ isConnected: $isConnected
         );
         double amount = balance.getValueInUnit(EtherUnit.ether);
 
-        printDebug("""
+        printDebug(
+            """
 address: $address
 username: $username
 balance: $amount
@@ -100,7 +102,8 @@ isSupportEIP1559: $isSupportEIP1559
       String addressURL = ProviderEngine.instance.getExploreUrl(address);
       String txURL = ProviderEngine.instance.getExploreUrl(txHash);
 
-      printDebug("""
+      printDebug(
+          """
 address: $address
 addressURL: $addressURL
 txHash: $txHash
@@ -127,7 +130,8 @@ txURL: $txURL
         txHash,
       );
 
-      printDebug("""
+      printDebug(
+          """
 txHash: $txHash
 hash: ${tx!.hash}
 from: ${tx.from}
@@ -145,7 +149,8 @@ value: ${tx.value}
       TransactionReceipt? tx =
           await ProviderEngine.instance.getTransactionReceipt(txHash);
 
-      printDebug("""
+      printDebug(
+          """
 txHash: $txHash
 hash: ${fromBytesToHex(tx!.transactionHash)}
 from: ${tx.from}
@@ -258,7 +263,8 @@ time: $time
           tx: tx,
         );
 
-        printDebug("""
+        printDebug(
+            """
 username: ${walletEngine.username()}
 address: ${walletEngine.address()}
 recipient: ${recipient.hexEip55}

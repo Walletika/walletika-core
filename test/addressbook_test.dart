@@ -28,7 +28,8 @@ void main() async {
         );
         await addNewAddressBook(addressBookData);
 
-        printDebug("""
+        printDebug(
+            """
 address: ${addressBookData.address.hexEip55}
 username: ${addressBookData.username}
         """);
@@ -47,7 +48,8 @@ username: ${addressBookData.username}
         DateTime dateCreated = addressBookData.dateCreated;
         String salt = addressBookData.salt;
 
-        printDebug("""
+        printDebug(
+            """
 address: $address
 username: $username
 dateCreated: ${dateCreated.toString()}
@@ -78,7 +80,8 @@ salt: $salt
             row
         ].isNotEmpty;
 
-        printDebug("""
+        printDebug(
+            """
 username: $username
 isRemoved: $isRemoved
 isExists: $isExists

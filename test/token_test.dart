@@ -25,7 +25,7 @@ void main() async {
   late EthPrivateKey? credentials;
 
   late TokenData tokenData;
-  late WalletikaTokenEngine tokenEngine;
+  late TokenEngine tokenEngine;
 
   setUpAll(() async {
     ProviderEngine.instance.connect(
@@ -49,7 +49,7 @@ void main() async {
     credentials = await walletEngine.credentials(otpCode);
 
     tokenData = TokenData.fromJson(tokens[tokenIndex]);
-    tokenEngine = WalletikaTokenEngine(
+    tokenEngine = TokenEngine(
       tokenData: tokenData,
       sender: walletEngine.address(),
     );
@@ -66,7 +66,8 @@ void main() async {
         TokenData tokenData = TokenData.fromJson(token);
         await addNewToken(tokenData);
 
-        printDebug("""
+        printDebug(
+            """
 contract: $contract
 name: $name
 symbol: $symbol
@@ -88,7 +89,8 @@ decimals: $decimals
         int decimals = tokenData.decimals;
         String? website = tokenData.website;
 
-        printDebug("""
+        printDebug(
+            """
 contract: $contract
 name: $name
 symbol: $symbol
@@ -121,7 +123,8 @@ website: $website
             row
         ].isNotEmpty;
 
-        printDebug("""
+        printDebug(
+            """
 contract: $contract
 symbol: $symbol
 isRemoved: $isRemoved
@@ -168,7 +171,8 @@ decimals: $decimals
     test("Test (totalSupply)", () async {
       EtherAmount totalSupply = await tokenEngine.totalSupply();
 
-      printDebug("""
+      printDebug(
+          """
 totalSupply: ${totalSupply.getValueInDecimals(tokenData.decimals)}
         """);
 
@@ -180,7 +184,8 @@ totalSupply: ${totalSupply.getValueInDecimals(tokenData.decimals)}
         address: walletEngine.address(),
       );
 
-      printDebug("""
+      printDebug(
+          """
 balance: ${balance.getValueInDecimals(tokenData.decimals)}
         """);
 
@@ -193,65 +198,12 @@ balance: ${balance.getValueInDecimals(tokenData.decimals)}
         spender: walletEngine.address(),
       );
 
-      printDebug("""
+      printDebug(
+          """
 allowance: ${allowance.getValueInDecimals(tokenData.decimals)}
         """);
 
       expect(allowance.getInWei, greaterThanOrEqualTo(BigInt.zero));
-    });
-
-    test("Test (owner)", () async {
-      EthereumAddress owner = await tokenEngine.owner();
-
-      printDebug("""
-owner: ${owner.hexEip55}
-        """);
-
-      expect(
-          owner.hexEip55,
-          equals(
-            '0x8AE5368C7F46572236a5B9dA4E0bf3924E16E60C',
-          ));
-    });
-
-    test("Test (inflationRateAnnually)", () async {
-      int inflationRateAnnually = await tokenEngine.inflationRateAnnually();
-
-      printDebug("""
-inflationRateAnnually: $inflationRateAnnually
-        """);
-
-      expect(inflationRateAnnually, equals(5));
-    });
-
-    test("Test (inflationDurationEndDate)", () async {
-      DateTime inflationDurationEndDate =
-          await tokenEngine.inflationDurationEndDate();
-
-      printDebug("""
-inflationDurationEndDate: ${inflationDurationEndDate.toString()}
-        """);
-
-      expect(
-        inflationDurationEndDate.millisecondsSinceEpoch,
-        greaterThanOrEqualTo(0),
-      );
-    });
-
-    test("Test (availableToMintCurrentYear)", () async {
-      EtherAmount availableToMintCurrentYear =
-          await tokenEngine.availableToMintCurrentYear();
-
-      printDebug("""
-availableToMintCurrentYear: ${availableToMintCurrentYear.getValueInDecimals(
-        tokenData.decimals,
-      )}
-        """);
-
-      expect(
-        availableToMintCurrentYear.getInWei,
-        greaterThanOrEqualTo(BigInt.zero),
-      );
     });
   });
 
@@ -277,7 +229,8 @@ availableToMintCurrentYear: ${availableToMintCurrentYear.getValueInDecimals(
       tx: tx,
     );
 
-    printDebug("""
+    printDebug(
+        """
 username: ${walletEngine.username()}
 address: ${walletEngine.address()}
 abi: $abi
