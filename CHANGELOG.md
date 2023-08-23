@@ -1,14 +1,14 @@
-## 4.0.4
+## 4.0.5
+- Removed WalletikaTokenEngine
 
+## 4.0.4
 - Provider connect method become sync and returns void
 - Fix: aprCalculator function returns infinity value
 
 ## 4.0.3
-
 - Fix: isSupportEIP1559 to check by value
 
 ## 4.0.2
-
 - Code improvement for addNewTransaction function
 
 ## 4.0.1
@@ -16,7 +16,6 @@
 - Added aprCalculator function
 
 ## 4.0.0
-
 - Dart 3 compatible
 - Rename package name to `WalletikaCore`
 - Convert `ContractEngine.contract` to be private
