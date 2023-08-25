@@ -44,8 +44,7 @@ isAdded: $isAdded
         bool isLocked = networkData.isLocked;
         String? image = networkData.image;
 
-        printDebug(
-            """
+        printDebug("""
 rpc: $rpc
 name: $name
 chainID: $chainID
@@ -82,8 +81,7 @@ image: $image
             row
         ].isNotEmpty;
 
-        printDebug(
-            """
+        printDebug("""
 name: $name
 isRemoved: $isRemoved
 isExists: $isExists

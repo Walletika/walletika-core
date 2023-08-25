@@ -48,8 +48,7 @@ void main() async {
           securityPassword: securityPassword,
         );
 
-        printDebug(
-            """
+        printDebug("""
 type: $type
 address: $address
 username: $username
@@ -75,8 +74,7 @@ isAdded: $isAdded
         DateTime dateCreated = walletData.dateCreated;
         bool isFavorite = walletData.isFavorite;
 
-        printDebug(
-            """
+        printDebug("""
 type: $type
 address: $address
 username: $username
@@ -110,8 +108,7 @@ isFavorite: $isFavorite
             row
         ].isNotEmpty;
 
-        printDebug(
-            """
+        printDebug("""
 username: $username
 isRemoved: $isRemoved
 isExists: $isExists
@@ -158,8 +155,7 @@ isExists: $isExists
       bool isFavorite = walletEngine.isFavorite();
       bool isLogged = walletEngine.isLogged();
 
-      printDebug(
-          """
+      printDebug("""
 address: $address
 username: $username
 securityPassword: $securityPassword
@@ -181,8 +177,7 @@ isLogged: $isLogged
       await walletEngine.setFavorite(true);
       bool isFavoriteAfter = walletEngine.isFavorite();
 
-      printDebug(
-          """
+      printDebug("""
 isFavoriteBefore: $isFavoriteBefore
 isFavoriteAfter: $isFavoriteAfter
         """);
@@ -248,8 +243,7 @@ privateKey: $privateKey
       walletEngine.logout();
       bool isLoggedAfter = walletEngine.isLogged();
 
-      printDebug(
-          """
+      printDebug("""
 isLoggedBefore: $isLoggedBefore
 isLoggedAfter: $isLoggedAfter
         """);

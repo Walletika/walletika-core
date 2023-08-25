@@ -66,8 +66,7 @@ void main() async {
         TokenData tokenData = TokenData.fromJson(token);
         await addNewToken(tokenData);
 
-        printDebug(
-            """
+        printDebug("""
 contract: $contract
 name: $name
 symbol: $symbol
@@ -89,8 +88,7 @@ decimals: $decimals
         int decimals = tokenData.decimals;
         String? website = tokenData.website;
 
-        printDebug(
-            """
+        printDebug("""
 contract: $contract
 name: $name
 symbol: $symbol
@@ -123,8 +121,7 @@ website: $website
             row
         ].isNotEmpty;
 
-        printDebug(
-            """
+        printDebug("""
 contract: $contract
 symbol: $symbol
 isRemoved: $isRemoved
@@ -171,8 +168,7 @@ decimals: $decimals
     test("Test (totalSupply)", () async {
       EtherAmount totalSupply = await tokenEngine.totalSupply();
 
-      printDebug(
-          """
+      printDebug("""
 totalSupply: ${totalSupply.getValueInDecimals(tokenData.decimals)}
         """);
 
@@ -184,8 +180,7 @@ totalSupply: ${totalSupply.getValueInDecimals(tokenData.decimals)}
         address: walletEngine.address(),
       );
 
-      printDebug(
-          """
+      printDebug("""
 balance: ${balance.getValueInDecimals(tokenData.decimals)}
         """);
 
@@ -198,8 +193,7 @@ balance: ${balance.getValueInDecimals(tokenData.decimals)}
         spender: walletEngine.address(),
       );
 
-      printDebug(
-          """
+      printDebug("""
 allowance: ${allowance.getValueInDecimals(tokenData.decimals)}
         """);
 
@@ -229,8 +223,7 @@ allowance: ${allowance.getValueInDecimals(tokenData.decimals)}
       tx: tx,
     );
 
-    printDebug(
-        """
+    printDebug("""
 username: ${walletEngine.username()}
 address: ${walletEngine.address()}
 abi: $abi
@@ -269,9 +262,9 @@ txURL: ${ProviderEngine.instance.getExploreUrl(sendTransaction)}
       EthereumAddress recipient = EthereumAddress.fromHex(
         '0x8AE5368C7F46572236a5B9dA4E0bf3924E16E60C',
       );
-      EtherAmount amount = EtherAmount.fromUnitAndValue(
+      EtherAmount amount = EtherAmount.fromBase10String(
         EtherAmount.getUintDecimals(tokenData.decimals),
-        0.1,
+        '0.1',
       );
       TxDetailsData txDetails = await tokenEngine.transfer(
         recipient: recipient,

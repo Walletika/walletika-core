@@ -35,7 +35,7 @@ EtherAmount balance = await ProviderEngine.instance.balanceOf(
 TxDetailsData txDetails = await ProviderEngine.instance.transfer(
     sender: EthereumAddress.fromHex('0xC94EA8D9694cfe25b94D977eEd4D60d7c0985BD3'),
     recipient: EthereumAddress.fromHex('0xC94EA8D9694cfe25b94D977eEd4D60d7c0985BD3'),
-    amount: EtherAmount.fromUnitAndValue(EtherUnit.ether, 1.5),
+    amount: EtherAmount.fromBase10String(EtherUnit.ether, '1.5'),
 );
 Transaction tx = txDetails.tx;
 Map<String, dynamic>? abi = txDetails.abi;
