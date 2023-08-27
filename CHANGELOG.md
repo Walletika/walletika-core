@@ -1,3 +1,6 @@
+## 4.0.6
+- Upgrade web3dart to v2.4.4
+
 ## 4.0.5
 - Removed WalletikaTokenEngine
 
